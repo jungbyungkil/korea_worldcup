@@ -8,7 +8,6 @@
 
 - `korea/overview`, `korea/fixtures` (AFC 확장·페이지네이션 포함)
 - `korea/_team-candidates`, `korea/_fixtures-raw`, `korea/_league-candidates` (디버그)
-- `ai-opinion` (OpenAI 호환 Chat Completions, `OPENAI_API_KEY`)
 - `prediction/win-probability` (Elo + 최근 폼)
 - `korea/player-features` (별도 player feature 집계)
 
@@ -16,8 +15,8 @@
 
 - `/` 홈
 - `/history/worldcup` — **한국 월드컵 본선 과거 이력** (표 + 하이라이트)
-- `/2026/korea` — **2026 한국 대시보드** (일정·브리핑·비교·AI 의견·승률)
-- `/2026/korea/players` — 국대 선수 feature JSON
+- `/2026/korea` — **2026 한국 대시보드** (일정·브리핑·비교·승률 등)
+- `/2026/korea/players` — 한국 대표팀 선수 feature JSON
 
 ## 앞으로 줄일 손실
 
@@ -32,6 +31,6 @@
 
 - 2002/2022 토너먼트 상세 페이지·라우터
 - Docker Compose
-- Claude(Anthropic) 전용 엔드포인트 — 현재 AI 의견은 **OpenAI** 기준 (`ai_opinion.py`)
+- Claude(Anthropic) 전용 엔드포인트 — 베스트 11 등은 **OpenAI** 기준 (`ai_best_xi.py`)
 
 필요하면 이슈/요청으로 범위를 알려 주세요.

@@ -32,16 +32,6 @@ export interface KoreaFixtures {
   fixtures: Fixture[];
 }
 
-export interface AiOpinion {
-  ai: {
-    summary: string;
-    key_points: string[];
-    risks: string[];
-    watch_matches: string[];
-    assumptions: string[];
-  };
-}
-
 export interface WinProbabilityResponse {
   input: { team: string; opponent: string };
   features: {
@@ -85,15 +75,75 @@ export async function getKoreaFixtures(): Promise<KoreaFixtures> {
   return res.json();
 }
 
-export async function postAiOpinion(payload: { data: unknown; question?: string }): Promise<AiOpinion> {
-  const res = await fetch(apiUrl("/api/v1/worldcup2026/ai-opinion"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
+export interface SupplementSources {
+  api_football: boolean;
+  football_data_org: boolean;
+  thesportsdb_custom_key: boolean;
+  thesportsdb: boolean;
+  sportmonks: boolean;
+  notes?: Record<string, string>;
+}
+
+export interface TeamMediaSlim {
+  id?: string | null;
+  name?: string | null;
+  badge?: string | null;
+  logo?: string | null;
+  jersey?: string | null;
+  website?: string | null;
+  formed?: string | null;
+  stadium?: string | null;
+  description?: string | null;
+}
+
+export interface AGroupMediaResponse {
+  source: string;
+  teams: Record<string, TeamMediaSlim | null>;
+}
+
+export interface FdWcMatchSlim {
+  utcDate?: string;
+  status?: string;
+  stage?: string;
+  group?: string;
+  matchday?: number | null;
+  home?: string | null;
+  away?: string | null;
+  score_fulltime?: { home?: number | null; away?: number | null } | null;
+}
+
+export interface FdWcMatchesResponse {
+  source: string;
+  competition?: unknown;
+  filters?: Record<string, unknown>;
+  matches: FdWcMatchSlim[];
+}
+
+export async function getSupplementSources(): Promise<SupplementSources> {
+  const res = await fetch(apiUrl("/api/v1/worldcup2026/supplement/sources"));
+  if (!res.ok) throw new Error("보조 API 상태를 불러오지 못했습니다.");
+  return res.json();
+}
+
+export async function getSupplementAGroupMedia(): Promise<AGroupMediaResponse> {
+  const res = await fetch(apiUrl("/api/v1/worldcup2026/supplement/thesportsdb/a-group-media"));
+  if (!res.ok) throw new Error("팀 배지를 불러오지 못했습니다.");
+  return res.json();
+}
+
+export async function getFootballDataWcMatches(opts?: {
+  season?: string;
+  status?: string;
+  limit?: number;
+}): Promise<FdWcMatchesResponse> {
+  const q = new URLSearchParams();
+  if (opts?.season) q.set("season", opts.season);
+  if (opts?.status) q.set("status", opts.status);
+  if (opts?.limit != null) q.set("limit", String(opts.limit));
+  const res = await fetch(apiUrl(`/api/v1/worldcup2026/supplement/football-data/world-cup/matches?${q}`));
   if (!res.ok) {
     const body = (await res.json().catch(() => ({}))) as { detail?: string };
-    throw new Error(body.detail || "AI 의견 생성에 실패했습니다.");
+    throw new Error(body.detail || "Football-Data WC 일정을 불러오지 못했습니다.");
   }
   return res.json();
 }

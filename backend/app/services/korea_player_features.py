@@ -3,7 +3,7 @@
 - 스쿼드(players/squads)
 - 부상/결장(injuries)
 - 선수 프로필 + 시즌별 통계(players?id=) — 클럽 리그 기준 출전·분 등
-- 최근 국대 경기 라인업(fixtures + lineups) — 요청 수가 많아 기본은 끔
+- 최근 대표팀 경기 라인업(fixtures + lineups) — 요청 수가 많아 기본은 끔
 
 개별 호출은 ``api_football.api_get`` 캐시(TTL)를 사용합니다.
 집계 응답은 엔드포인트 레벨에서 짧게 캐시합니다.
@@ -13,10 +13,11 @@ from __future__ import annotations
 
 import asyncio
 import os
+import unicodedata
 from datetime import datetime, timezone
 from typing import Any
 
-from app.services.api_football import api_get
+from app.services.api_football import api_get, api_get_all_pages
 
 KOREA_QUERY = "Korea"
 
@@ -38,40 +39,166 @@ def _bool_env(name: str, default: bool = False) -> bool:
     return v in ("1", "true", "yes", "on")
 
 
-async def find_korea_national_team_id() -> int | None:
-    """국가대표 'Korea Republic' 팀 ID (API-Football teams search)."""
-    data = await api_get("teams", params={"search": KOREA_QUERY}, ttl_seconds=24 * 3600)
-    candidates = data.get("response", []) or []
+def _accent_fold(s: str) -> str:
+    """소문자 + 결합분음 부호 제거 (예: México → mexico)."""
+    if not s:
+        return ""
+    nk = unicodedata.normalize("NFKD", s.strip())
+    return "".join(c for c in nk if not unicodedata.combining(c)).lower()
 
-    def _score(item: dict[str, Any]) -> int:
-        team = (item or {}).get("team") or {}
-        name = str(team.get("name") or "").lower()
-        country = str(team.get("country") or "").lower()
-        national = bool(team.get("national"))
-        score = 0
-        if national:
-            score += 50
-        if name in ("korea republic", "south korea"):
-            score += 30
-        if "korea" in name:
-            score += 10
-        if country in ("korea", "south korea", "korea republic"):
-            score += 10
-        return score
 
+def _junior_or_womens_name(folded_name: str) -> bool:
+    """U17/U20 등 연령대·여자 대표팀은 시니어 남자 대표팀보다 후순위로 둔다."""
+    n = f" {folded_name} "
+    if "women" in n or "woman" in n or "female" in n:
+        return True
+    for token in (" u17", " u18", " u19", " u20", " u21", " u23", " olympic"):
+        if token in n:
+            return True
+    return False
+
+
+def _score_national_team_candidate(
+    item: dict[str, Any],
+    *,
+    folded_exact: frozenset[str],
+    name_bonus_substrings: frozenset[str],
+    country_bonus: frozenset[str],
+) -> int:
+    team = (item or {}).get("team") or {}
+    name = _accent_fold(str(team.get("name") or ""))
+    country = _accent_fold(str(team.get("country") or ""))
+    national = bool(team.get("national"))
+    score = 0
+    if national:
+        score += 50
+    if name in folded_exact:
+        score += 40
+    for sub in name_bonus_substrings:
+        fs = _accent_fold(sub)
+        if fs and fs in name:
+            score += 12
+            break
+    for c in country_bonus:
+        fc = _accent_fold(c)
+        if fc and (fc == country or fc in country):
+            score += 10
+            break
+    if national and _junior_or_womens_name(name):
+        score -= 55
+    return score
+
+
+def _pick_best_team_id(
+    candidates: list[Any],
+    *,
+    exact_team_names: frozenset[str],
+    name_bonus_substrings: frozenset[str],
+    country_bonus: frozenset[str],
+    min_score: int,
+) -> int | None:
+    folded_exact = frozenset(_accent_fold(x) for x in exact_team_names)
     best: dict[str, Any] | None = None
-    best_score = -1
+    best_score = -10_000
     for item in candidates:
-        s = _score(item)
+        if not isinstance(item, dict):
+            continue
+        s = _score_national_team_candidate(
+            item,
+            folded_exact=folded_exact,
+            name_bonus_substrings=name_bonus_substrings,
+            country_bonus=country_bonus,
+        )
         if s > best_score:
             best, best_score = item, s
+    if best is None or best_score < min_score:
+        return None
+    team = (best or {}).get("team") or {}
+    tid = team.get("id")
+    return tid if isinstance(tid, int) else None
 
-    if best and best_score > 0:
-        team = (best or {}).get("team") or {}
-        tid = team.get("id")
-        if isinstance(tid, int):
-            return tid
+
+def _pick_team_id_by_exact_name_no_junior(
+    candidates: list[Any],
+    *,
+    exact_team_names: frozenset[str],
+) -> int | None:
+    """national 플래그가 빠진 API 대비: 국가명과 정확히 일치하는 시니어 팀 ID."""
+    folded_exact = frozenset(_accent_fold(x) for x in exact_team_names)
+    for item in candidates:
+        if not isinstance(item, dict):
+            continue
+        team = (item or {}).get("team") or {}
+        name = _accent_fold(str(team.get("name") or ""))
+        if name in folded_exact and not _junior_or_womens_name(name):
+            tid = team.get("id")
+            if isinstance(tid, int):
+                return tid
     return None
+
+
+async def find_national_team_id(
+    search_query: str,
+    *,
+    exact_team_names: frozenset[str],
+    name_bonus_substrings: frozenset[str] | None = None,
+    country_bonus: frozenset[str] | None = None,
+    teams_country_fallback: str | None = None,
+) -> int | None:
+    """API-Football ``teams?search=`` 로 국가대표 팀 ID 탐색.
+
+    검색 결과에 대표팀이 없거나 클럽만 앞에 오는 경우 ``teams?country=`` 로 재시도한다.
+    """
+    name_bonus_substrings = name_bonus_substrings or frozenset()
+    country_bonus = country_bonus or frozenset()
+
+    data = await api_get("teams", params={"search": search_query}, ttl_seconds=24 * 3600)
+    candidates = data.get("response", []) or []
+
+    tid = _pick_best_team_id(
+        candidates,
+        exact_team_names=exact_team_names,
+        name_bonus_substrings=name_bonus_substrings,
+        country_bonus=country_bonus,
+        min_score=50,
+    )
+    if tid is not None:
+        return tid
+
+    if not teams_country_fallback:
+        return None
+
+    try:
+        extra = await api_get_all_pages(
+            "teams",
+            params={"country": teams_country_fallback},
+            ttl_seconds=24 * 3600,
+            max_pages=20,
+        )
+    except Exception:
+        extra = []
+
+    tid = _pick_best_team_id(
+        extra,
+        exact_team_names=exact_team_names,
+        name_bonus_substrings=name_bonus_substrings,
+        country_bonus=country_bonus,
+        min_score=50,
+    )
+    if tid is not None:
+        return tid
+
+    return _pick_team_id_by_exact_name_no_junior(extra, exact_team_names=exact_team_names)
+
+
+async def find_korea_national_team_id() -> int | None:
+    """국가대표 'Korea Republic' 팀 ID."""
+    return await find_national_team_id(
+        KOREA_QUERY,
+        exact_team_names=frozenset({"korea republic", "south korea"}),
+        name_bonus_substrings=frozenset({"korea"}),
+        country_bonus=frozenset({"korea", "south korea", "korea republic"}),
+    )
 
 
 async def fetch_squad(team_id: int) -> list[dict[str, Any]]:
@@ -101,7 +228,7 @@ async def fetch_player_full(player_id: int) -> dict[str, Any] | None:
 
 
 async def fetch_recent_fixture_ids(team_id: int, last: int = 3) -> list[int]:
-    """최근 국대 경기 fixture id (라인업 조회용)."""
+    """최근 대표팀 경기 fixture id (라인업 조회용)."""
     data = await api_get("fixtures", params={"team": team_id, "last": last}, ttl_seconds=15 * 60)
     out: list[int] = []
     for it in data.get("response") or []:
@@ -178,7 +305,8 @@ async def build_korea_player_features_payload() -> dict[str, Any]:
         }
 
     season = _int_env("API_FOOTBALL_INJURY_SEASON", datetime.now().year)
-    limit = max(1, min(_int_env("API_FOOTBALL_PLAYER_FEATURE_LIMIT", 25), 100))
+    # 2026 북중미 WC 본선 명단 상한 26명(FIFA, 최소 23~최대 26)에 맞춘 기본값
+    limit = max(1, min(_int_env("API_FOOTBALL_PLAYER_FEATURE_LIMIT", 26), 100))
     include_stats = _bool_env("API_FOOTBALL_PLAYER_INCLUDE_CLUB_STATS", True)
     include_lineups = _bool_env("API_FOOTBALL_PLAYER_INCLUDE_LINEUPS", False)
     lineup_fixtures = _int_env("API_FOOTBALL_LINEUP_FIXTURES", 2)

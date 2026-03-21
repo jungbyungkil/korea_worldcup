@@ -26,3 +26,9 @@ Thumbs.db
 
 *.log
 .cursor/
+
+# 오프라인 ML (SQLite + StatsBomb 클론)
+data/ml/*.sqlite
+data/ml/*.sqlite-shm
+data/ml/*.sqlite-wal
+data/open-data/

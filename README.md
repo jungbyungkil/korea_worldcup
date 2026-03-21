@@ -1,6 +1,6 @@
 # 2026 북중미 월드컵 · 대한민국 축구 허브
 
-FastAPI 백엔드 + React(Vite) 프론트엔드. 국대 일정·선수 데이터·월드컵 개요·AI 기능 등.
+FastAPI 백엔드 + React(Vite) 프론트엔드. 한국 대표팀 일정·선수 데이터·월드컵 개요·AI 기능 등.
 
 ## 구성
 
@@ -8,7 +8,8 @@ FastAPI 백엔드 + React(Vite) 프론트엔드. 국대 일정·선수 데이터
 |------|------|
 | `backend/` | FastAPI, API-Football 연동 |
 | `frontend/` | Vite + React Router |
-| `docs/` | 데이터 소스·백엔드 설계 등 |
+| `docs/` | 데이터 소스·백엔드 설계 등 ([AI 학습: Kaggle·StatsBomb → 로컬 DB](docs/DATA-SOURCES.md#offline-ml-local-db)) |
+| `etl/` | Kaggle CSV + StatsBomb JSON → **SQLite** 적재 ([etl/README.md](./etl/README.md)) |
 
 ## 빠른 시작
 

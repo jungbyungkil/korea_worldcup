@@ -1,20 +1,11 @@
 from __future__ import annotations
 
 import os
-import time
-from dataclasses import dataclass
 from typing import Any
 
 import httpx
 
-
-@dataclass(frozen=True)
-class CacheEntry:
-    value: Any
-    expires_at: float
-
-
-_CACHE: dict[str, CacheEntry] = {}
+from app.services.http_cache import cache_get, cache_set
 
 
 def _base_url() -> str:
@@ -26,20 +17,6 @@ def _key() -> str | None:
     return v.strip() if v else None
 
 
-def _get_cached(key: str) -> Any | None:
-    entry = _CACHE.get(key)
-    if not entry:
-        return None
-    if time.time() >= entry.expires_at:
-        _CACHE.pop(key, None)
-        return None
-    return entry.value
-
-
-def _set_cached(key: str, value: Any, ttl_seconds: int) -> None:
-    _CACHE[key] = CacheEntry(value=value, expires_at=time.time() + ttl_seconds)
-
-
 async def api_get(path: str, params: dict[str, Any] | None = None, ttl_seconds: int = 900) -> dict[str, Any]:
     """API-Football GET with in-memory cache."""
     key = _key()
@@ -47,8 +24,8 @@ async def api_get(path: str, params: dict[str, Any] | None = None, ttl_seconds: 
         raise RuntimeError("API-Football이 설정되지 않았습니다. (API_FOOTBALL_KEY 필요)")
 
     url = f"{_base_url()}/{path.lstrip('/')}"
-    cache_key = f"GET:{url}:{params}"
-    cached = _get_cached(cache_key)
+    cache_key = f"af:{url}:{params}"
+    cached = cache_get(cache_key)
     if cached is not None:
         return cached
 
@@ -58,7 +35,7 @@ async def api_get(path: str, params: dict[str, Any] | None = None, ttl_seconds: 
         resp.raise_for_status()
         data = resp.json()
 
-    _set_cached(cache_key, data, ttl_seconds=ttl_seconds)
+    cache_set(cache_key, data, ttl_seconds=ttl_seconds)
     return data
 
 

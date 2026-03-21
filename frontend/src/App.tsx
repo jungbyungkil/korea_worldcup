@@ -26,7 +26,16 @@ export default function App() {
               2026 한국 대시보드
             </NavLink>
             <NavLink to="/2026/korea/players" className={navClass}>
-              국대 선수 데이터
+              한국 대표팀 데이터
+            </NavLink>
+            <NavLink to="/2026/playoff-d" className={navClass}>
+              A조 1차전 상대
+            </NavLink>
+            <NavLink to="/2026/mexico" className={navClass}>
+              멕시코 대표팀
+            </NavLink>
+            <NavLink to="/2026/south-africa" className={navClass}>
+              남아공 대표팀
             </NavLink>
           </nav>
         </div>

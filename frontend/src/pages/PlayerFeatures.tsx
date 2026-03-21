@@ -141,7 +141,7 @@ export default function PlayerFeatures() {
   if (err)
     return (
       <main className="page">
-        <h1 className="page-title">국대 선수 데이터</h1>
+        <h1 className="page-title">한국 대표팀 데이터</h1>
         <p className="text-error">{err}</p>
         <p className="muted">
           <code>backend/.env</code>에 <code>API_FOOTBALL_KEY</code>와 백엔드 실행을 확인하세요.
@@ -152,8 +152,8 @@ export default function PlayerFeatures() {
   if (!data || data.error === "korea_team_not_found")
     return (
       <main className="page">
-        <h1 className="page-title">국대 선수 데이터</h1>
-        <p className="text-error">국가대표 팀을 찾지 못했습니다.</p>
+        <h1 className="page-title">한국 대표팀 데이터</h1>
+        <p className="text-error">한국 대표팀을 찾지 못했습니다.</p>
       </main>
     );
 
@@ -161,9 +161,9 @@ export default function PlayerFeatures() {
 
   return (
     <main className="page">
-      <h1 className="page-title">국대 선수 · 스쿼드 &amp; 클럽 스탯</h1>
+      <h1 className="page-title">한국 대표팀 · 스쿼드 &amp; 클럽 스탯</h1>
       <p className="page-lead">
-        API-Football 기준 스쿼드 목록과, 설정된 인원까지 클럽 리그 통계 요약입니다.{" "}
+        API-Football 기준 전체 스쿼드 목록과, 2026 WC 본선 명단 규모(최대 26명)에 맞춰 설정된 인원까지 클럽 리그 통계 요약입니다.{" "}
         <span className="muted">
           <code>GET /api/v1/worldcup2026/korea/player-features</code>
         </span>

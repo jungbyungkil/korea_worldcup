@@ -1,4 +1,4 @@
-"""전술(포메이션) 기준 대한민국 국대 베스트 11 — OpenAI JSON 응답."""
+"""전술(포메이션) 기준 한국 대표팀 베스트 11 — OpenAI JSON 응답."""
 
 from __future__ import annotations
 

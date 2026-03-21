@@ -8,7 +8,6 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from app.services.ai_opinion import generate_worldcup2026_opinion
 from app.services.api_football import api_get, api_get_all_pages
 
 
@@ -21,6 +20,8 @@ _ELO_BASELINE = 1500
 _ELO_TABLE: dict[str, int] = {
     "south korea": 1760,
     "korea republic": 1760,
+    "mexico": 1720,
+    "south africa": 1595,
     "japan": 1810,
     "iran": 1785,
     "australia": 1775,
@@ -499,17 +500,6 @@ async def korea_fixtures() -> dict[str, Any]:
     _DERIVED_FIXTURES_CACHE["value"] = payload
     _DERIVED_FIXTURES_CACHE["expires_at"] = now_ts + 600
     return payload
-
-
-@router.post("/ai-opinion")
-async def ai_opinion(payload: dict[str, Any]) -> dict[str, Any]:
-    try:
-        result = await generate_worldcup2026_opinion(payload)
-    except RuntimeError as e:
-        raise HTTPException(status_code=501, detail=str(e)) from e
-    except Exception as e:
-        raise HTTPException(status_code=502, detail="AI 의견 생성에 실패했습니다.") from e
-    return {"ai": result}
 
 
 @router.post("/prediction/win-probability")
