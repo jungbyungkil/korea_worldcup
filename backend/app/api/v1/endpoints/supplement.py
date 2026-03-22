@@ -22,16 +22,34 @@ A_GROUP_TEAMS: dict[str, str] = {
 }
 
 
+def _http_from_tsdb_runtime(e: RuntimeError) -> HTTPException:
+    msg = str(e)
+    if "TheSportsDB 요청 한도" in msg:
+        return HTTPException(status_code=429, detail=msg)
+    return HTTPException(status_code=502, detail=msg)
+
+
+def _thesportsdb_custom_key() -> bool:
+    """비어 있거나 공식 무료 키(123)·레거시 1이면 커스텀이 아님."""
+    k = os.getenv("THESPORTSDB_API_KEY", "").strip()
+    if not k:
+        return False
+    return k not in ("123", "1")
+
+
 @router.get("/sources")
 async def supplement_sources() -> dict[str, Any]:
     return {
         "api_football": bool(os.getenv("API_FOOTBALL_KEY", "").strip()),
         "football_data_org": football_data_org.is_configured(),
-        "thesportsdb_custom_key": bool(os.getenv("THESPORTSDB_API_KEY", "").strip()),
+        "thesportsdb_custom_key": _thesportsdb_custom_key(),
         "thesportsdb": True,
         "sportmonks": sportmonks_api.is_configured(),
         "notes": {
-            "thesportsdb": "기본 API 키 1(데모) 사용 가능. Patreon 키는 THESPORTSDB_API_KEY.",
+            "thesportsdb": (
+                "v1 무료: THESPORTSDB_API_KEY 비우면 공식 무료 키 123 사용(URL 경로 인증). "
+                "프리미엄 키는 THESPORTSDB_API_KEY. 문서: thesportsdb.com/documentation"
+            ),
             "football_data_org": "무료 티어는 분당 호출 제한·일부 대회 제한 가능.",
             "sportmonks": "무료 크레딧은 플랜에 따라 다름.",
         },
@@ -113,9 +131,14 @@ async def tsdb_team_media(
 async def tsdb_a_group_media() -> dict[str, Any]:
     """A조 3개 상대 + 대한민국 배지(TheSportsDB) — 캐시로 호출 최소화."""
     out: dict[str, Any] = {}
-    for slug, name in A_GROUP_TEAMS.items():
-        row = await thesportsdb.search_team_first(name)
-        out[slug] = thesportsdb.slim_team_media(row) if row else None
+    try:
+        for slug, name in A_GROUP_TEAMS.items():
+            row = await thesportsdb.search_team_first(name)
+            out[slug] = thesportsdb.slim_team_media(row) if row else None
+    except RuntimeError as e:
+        raise _http_from_tsdb_runtime(e) from e
+    except httpx.HTTPError as e:
+        raise HTTPException(status_code=502, detail=f"TheSportsDB HTTP 오류: {e}") from e
     return {"source": "thesportsdb.com", "teams": out}
 
 

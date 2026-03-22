@@ -1,9 +1,90 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { postAiFunStep3Guide, type AiFunStep3AGroup, type AiFunStep3Glossary } from "../api/worldcup2026";
 
 const NAMU_WIKI_URL =
   "https://namu.wiki/w/2026%20FIFA%20%EC%9B%94%EB%93%9C%EC%BB%B5";
 const FIFA_URL =
   "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026";
+
+function GuideAiStep3Panel() {
+  const [term, setTerm] = useState("오프사이드");
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [out, setOut] = useState<AiFunStep3AGroup | AiFunStep3Glossary | null>(null);
+
+  const runA = async () => {
+    setLoading(true);
+    setErr(null);
+    setOut(null);
+    try {
+      setOut(await postAiFunStep3Guide({ kind: "a_group_qa" }));
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "오류");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const runG = async () => {
+    setLoading(true);
+    setErr(null);
+    setOut(null);
+    try {
+      setOut(await postAiFunStep3Guide({ kind: "glossary", term: term.trim() || "오프사이드" }));
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "오류");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section className="panel ai-seven-panel">
+      <h2 className="panel-title">③ AI · A조 입문 Q&amp;A / 용어</h2>
+      <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem" }}>
+        2026 대회 맥락의 가벼운 설명입니다. 일정·명단은 공식 발표를 확인하세요.
+      </p>
+      <div className="ai-seven-btn-row">
+        <button type="button" className="btn btn-primary" disabled={loading} onClick={() => void runA()}>
+          A조 입문 Q&amp;A 생성
+        </button>
+      </div>
+      <div className="ai-seven-row" style={{ marginTop: "0.75rem" }}>
+        <label className="ai-seven-label">
+          용어 검색
+          <input className="ai-seven-input" value={term} onChange={(e) => setTerm(e.target.value)} />
+        </label>
+        <button type="button" className="btn btn-secondary" disabled={loading} onClick={() => void runG()}>
+          용어 풀이
+        </button>
+      </div>
+      {loading ? <p className="muted">생성 중…</p> : null}
+      {err ? <p className="text-error">{err}</p> : null}
+      {out && out.kind === "a_group_qa" ? (
+        <ul className="ai-seven-faq">
+          {out.pairs.map((p, i) => (
+            <li key={i}>
+              <strong>{p.q}</strong>
+              <p className="muted" style={{ margin: "0.25rem 0 0", fontSize: "0.88rem" }}>
+                {p.a}
+              </p>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {out && out.kind === "glossary" ? (
+        <div className="ai-seven-result">
+          <p className="ai-seven-headline">{out.term_ko}</p>
+          <p>{out.explain_ko}</p>
+          {out.example_ko ? <p className="muted">{out.example_ko}</p> : null}
+          <p className="muted ai-seven-disclaimer">{out.disclaimer_ko}</p>
+        </div>
+      ) : null}
+      {out && out.kind === "a_group_qa" ? <p className="muted ai-seven-disclaimer">{out.disclaimer_ko}</p> : null}
+    </section>
+  );
+}
 
 export default function WorldCup2026Guide() {
   return (
@@ -125,6 +206,8 @@ export default function WorldCup2026Guide() {
           <li>아시아 지역 예선 쿼터 확대 등 지역별 본선 배당 변화도 2026 대회의 큰 변화 중 하나입니다.</li>
         </ul>
       </section>
+
+      <GuideAiStep3Panel />
 
       <section className="panel">
         <h2 className="panel-title">더 보기</h2>

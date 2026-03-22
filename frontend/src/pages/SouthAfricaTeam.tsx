@@ -18,6 +18,7 @@ export default function SouthAfricaTeam() {
       namuUrl={SOUTH_AFRICA_NAMU_WIKI_URL}
       namuArticleTitle="남아프리카 공화국 축구 국가대표팀"
       introSections={southAfricaIntroSections}
+      aiFanLinesTeamKey="south_africa"
     />
   );
 }

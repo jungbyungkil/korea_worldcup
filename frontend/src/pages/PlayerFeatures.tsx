@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { apiUrl } from "../api/client";
 import FormationPitch from "../components/FormationPitch";
+import PlayerAiStep1Panel from "../components/PlayerAiStep1Panel";
 import { FORMATIONS } from "../formationLayouts";
 import {
   groupSquadByPosition,
@@ -253,6 +254,8 @@ export default function PlayerFeatures() {
           </div>
         ) : null}
       </div>
+
+      <PlayerAiStep1Panel data={data} />
 
       {data.injuries.length > 0 ? (
         <div className="panel">

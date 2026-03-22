@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { postWinProbability, type WinProbabilityResponse } from "../api/worldcup2026";
+import { postAiFunStep5ProbabilityStory, postWinProbability, type WinProbabilityResponse } from "../api/worldcup2026";
 
 export type EloStripVisualVariant = "mexico" | "south-africa";
 
@@ -19,6 +19,10 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
   const [prediction, setPrediction] = useState<WinProbabilityResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [storyLoading, setStoryLoading] = useState(false);
+  const [storyErr, setStoryErr] = useState<string | null>(null);
+  const [storyText, setStoryText] = useState<string | null>(null);
+  const [storyDisclaimer, setStoryDisclaimer] = useState<string | null>(null);
 
   const fetchPred = useCallback(async () => {
     setLoading(true);
@@ -37,6 +41,22 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
   useEffect(() => {
     void fetchPred();
   }, [fetchPred]);
+
+  const fetchStory = useCallback(async () => {
+    setStoryLoading(true);
+    setStoryErr(null);
+    setStoryText(null);
+    setStoryDisclaimer(null);
+    try {
+      const s = await postAiFunStep5ProbabilityStory(opponentQuery);
+      setStoryText(s.story_ko);
+      setStoryDisclaimer(s.disclaimer_ko);
+    } catch (e) {
+      setStoryErr(e instanceof Error ? e.message : "오류");
+    } finally {
+      setStoryLoading(false);
+    }
+  }, [opponentQuery]);
 
   const winPct = prediction ? Math.round(prediction.probability.win * 1000) / 10 : 0;
   const otherPct = prediction ? Math.round(prediction.probability.draw_or_loss * 1000) / 10 : 0;
@@ -91,7 +111,19 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
         )}
       </div>
       {error ? <p className="spotlight-elo-strip__err">{error}</p> : null}
-      <p className="spotlight-elo-strip__hint">통계 모델(Elo)·생성형 AI 아님 · 상대: {opponentNameKo}</p>
+      <div className="spotlight-elo-strip__ai">
+        <button type="button" className="btn btn-secondary spotlight-elo-strip__ai-btn" disabled={storyLoading} onClick={() => void fetchStory()}>
+          {storyLoading ? "⑤ AI 해설 생성 중…" : "⑤ AI로 숫자 풀이 (Elo·승률)"}
+        </button>
+        {storyErr ? <p className="spotlight-elo-strip__err">{storyErr}</p> : null}
+        {storyText ? (
+          <div className="ai-seven-result spotlight-elo-strip__ai-box">
+            <p>{storyText}</p>
+            {storyDisclaimer ? <p className="muted ai-seven-disclaimer">{storyDisclaimer}</p> : null}
+          </div>
+        ) : null}
+      </div>
+      <p className="spotlight-elo-strip__hint">막대는 Elo 기반 단순 모델 · ⑤는 OpenAI 해설(참고용) · 상대: {opponentNameKo}</p>
     </div>
   );
 }

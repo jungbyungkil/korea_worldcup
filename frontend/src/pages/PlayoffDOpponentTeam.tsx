@@ -27,6 +27,7 @@ export default function PlayoffDOpponentTeam() {
       namuUrl={PLAYOFF_D_GROUP_A_NAMU}
       namuArticleTitle="2026 FIFA 월드컵/A조"
       introSections={playoffDIntroSections}
+      aiFanLinesTeamKey="playoff_d"
       teamNotFoundHint={
         <p style={{ fontSize: "0.88rem", lineHeight: 1.6 }}>
           <code>GROUP_A_PLAYOFF_D_TEAM_SEARCH</code>(API 검색어)와 선택 항목{" "}

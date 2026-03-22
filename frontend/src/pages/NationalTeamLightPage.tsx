@@ -1,6 +1,11 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiUrl } from "../api/client";
+import {
+  postAiFunStep6TeamFanLines,
+  type AiFunStep6FanLines,
+  type AiFunTeamFanKey,
+} from "../api/worldcup2026";
 import FormationPitch from "../components/FormationPitch";
 
 export type IntroSection = { title: string; paragraphs: string[] };
@@ -50,7 +55,49 @@ export type NationalTeamLightPageProps = {
   introSections: IntroSection[];
   /** 팀 미발견 시 추가 안내 */
   teamNotFoundHint?: ReactNode;
+  /** ⑥ AI 팬 시점 한 줄 (멕시코/남아공/플레이오프 D) */
+  aiFanLinesTeamKey?: AiFunTeamFanKey;
 };
+
+function TeamFanLinesPanel({ team }: { team: AiFunTeamFanKey }) {
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [out, setOut] = useState<AiFunStep6FanLines | null>(null);
+
+  const run = () => {
+    setLoading(true);
+    setErr(null);
+    setOut(null);
+    void postAiFunStep6TeamFanLines(team)
+      .then(setOut)
+      .catch((e) => setErr(e instanceof Error ? e.message : "오류"))
+      .finally(() => setLoading(false));
+  };
+
+  return (
+    <section className="panel ai-seven-panel">
+      <h2 className="panel-title">⑥ AI · 팬 시점 한 줄</h2>
+      <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem" }}>
+        가상의 상대 팬 vs 한국 팬 톤으로 짧은 한 줄씩. 놀이용입니다.
+      </p>
+      <button type="button" className="btn btn-primary" disabled={loading} onClick={run}>
+        {loading ? "생성 중…" : "한 줄씩 생성"}
+      </button>
+      {err ? <p className="text-error">{err}</p> : null}
+      {out ? (
+        <div className="ai-seven-result" style={{ marginTop: "0.65rem" }}>
+          <p>
+            <strong>상대 팬:</strong> {out.opponent_fan_line_ko}
+          </p>
+          <p>
+            <strong>한국 팬:</strong> {out.korea_fan_line_ko}
+          </p>
+          <p className="muted ai-seven-disclaimer">{out.disclaimer_ko}</p>
+        </div>
+      ) : null}
+    </section>
+  );
+}
 
 function renderParagraph(para: string) {
   return para.split(/(\*\*[^*]+\*\*)/g).map((chunk, j) => {
@@ -75,6 +122,7 @@ export default function NationalTeamLightPage({
   namuArticleTitle,
   introSections,
   teamNotFoundHint,
+  aiFanLinesTeamKey,
 }: NationalTeamLightPageProps) {
   const [data, setData] = useState<NtLightPayload | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -172,6 +220,8 @@ export default function NationalTeamLightPage({
           ))}
         </section>
       ))}
+
+      {aiFanLinesTeamKey ? <TeamFanLinesPanel team={aiFanLinesTeamKey} /> : null}
 
       <div className="panel">
         <h2 className="panel-title">API 요약</h2>

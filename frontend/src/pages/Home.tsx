@@ -1,6 +1,17 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getAiFunStep7HomeDaily, type AiFunStep7HomeDaily } from "../api/worldcup2026";
 
 export default function Home() {
+  const [daily, setDaily] = useState<AiFunStep7HomeDaily | null>(null);
+  const [dailyErr, setDailyErr] = useState<string | null>(null);
+
+  useEffect(() => {
+    void getAiFunStep7HomeDaily()
+      .then(setDaily)
+      .catch((e) => setDailyErr(e instanceof Error ? e.message : "오류"));
+  }, []);
+
   return (
     <div className="page">
       <section className="hero">
@@ -10,6 +21,20 @@ export default function Home() {
           API-Football 등 외부 소스와 연동됩니다.
         </p>
       </section>
+
+      {daily || dailyErr ? (
+        <aside className="home-daily-ai ai-seven-panel" aria-label="오늘의 한 줄 AI">
+          <div className="home-daily-ai__head">
+            <span className="home-daily-ai__badge">⑦ 홈 · AI 한 줄</span>
+            {daily?.headline_ko ? <h2 className="home-daily-ai__title">{daily.headline_ko}</h2> : null}
+          </div>
+          {dailyErr ? <p className="text-error">{dailyErr}</p> : null}
+          {daily?.line_ko ? <p className="home-daily-ai__body">{daily.line_ko}</p> : null}
+          {daily?.disclaimer_ko ? <p className="muted ai-seven-disclaimer">{daily.disclaimer_ko}</p> : null}
+        </aside>
+      ) : (
+        <p className="muted home-daily-ai home-daily-ai--loading">⑦ 홈 카드 불러오는 중…</p>
+      )}
 
       <div className="feature-grid">
         <Link to="/history/worldcup" className="feature-card">

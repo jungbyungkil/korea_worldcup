@@ -7,12 +7,13 @@ cd backend
 .\.venv\Scripts\activate
 pip install -r requirements.txt
 # .env 에 API_FOOTBALL_KEY 설정 (필수)
-# 선택: FOOTBALL_DATA_ORG_TOKEN, THESPORTSDB_API_KEY, SPORTMONKS_API_TOKEN — 보조 API
+# 선택: FOOTBALL_DATA_ORG_TOKEN, THESPORTSDB_API_KEY(비우면 TheSportsDB 무료 키 123), SPORTMONKS_API_TOKEN — 보조 API
 uvicorn app.main:app --reload --host 0.0.0.0
 ```
 
 - 문서: http://localhost:8000/docs  
 - 한국 월드컵 본선 이력: http://localhost:8000/api/v1/korea/world-cup-history  
+- 대회 연도별 상세·TheSportsDB 하이라이트: http://localhost:8000/api/v1/korea/world-cup-tournament/2022  
 - 한국 대표팀 선수 feature: http://localhost:8000/api/v1/worldcup2026/korea/player-features  
 - A조 1차전 상대(UEFA 플레이오프 D): http://localhost:8000/api/v1/worldcup2026/group-a-playoff-d/player-features  
 

@@ -87,8 +87,8 @@ JSON 응답, 문서, 과금/쿼터가 명확한 편입니다.
 | 항목 | 내용 |
 |------|------|
 | **강점** | **팀 배지·로고·저지** 등 UI 메타데이터. 크라우드소싱 기반, 기본 키로도 실험 가능. |
-| **활용 (본 레포)** | `GET .../supplement/thesportsdb/a-group-media` — A조(한·멕시코·남아공) 배지. `THESPORTSDB_API_KEY` 비우면 공개 데모 키 `1` (느릴 수 있음). |
-| **문서** | [TheSportsDB](https://www.thesportsdb.com/) |
+| **활용 (본 레포)** | `GET .../supplement/thesportsdb/a-group-media` — A조(한·멕시코·남아공) 배지. `THESPORTSDB_API_KEY` 비우면 공식 **무료 키 `123`** (v1 URL 경로 인증). 무료는 **분당 30회** 제한. |
+| **문서** | [TheSportsDB](https://www.thesportsdb.com/) · [OpenAPI / 문서](https://www.thesportsdb.com/documentation#openapi) |
 
 ---
 

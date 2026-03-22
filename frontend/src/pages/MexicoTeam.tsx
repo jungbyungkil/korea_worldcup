@@ -18,6 +18,7 @@ export default function MexicoTeam() {
       namuUrl={MEXICO_NAMU_WIKI_URL}
       namuArticleTitle="멕시코 축구 국가대표팀"
       introSections={mexicoIntroSections}
+      aiFanLinesTeamKey="mexico"
     />
   );
 }

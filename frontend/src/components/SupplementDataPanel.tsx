@@ -3,12 +3,56 @@ import {
   getFootballDataWcMatches,
   getSupplementAGroupMedia,
   getSupplementSources,
+  postAiFunStep4Supplement,
   type AGroupMediaResponse,
+  type AiFunStep4Supplement,
   type FdWcMatchSlim,
   type FdWcMatchesResponse,
   type SupplementSources,
   type TeamMediaSlim,
 } from "../api/worldcup2026";
+
+function SupplementAiStep4({ lines }: { lines: string[] }) {
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [out, setOut] = useState<AiFunStep4Supplement | null>(null);
+
+  const run = () => {
+    if (lines.length === 0) return;
+    setLoading(true);
+    setErr(null);
+    setOut(null);
+    void postAiFunStep4Supplement(lines)
+      .then(setOut)
+      .catch((e) => setErr(e instanceof Error ? e.message : "오류"))
+      .finally(() => setLoading(false));
+  };
+
+  return (
+    <div className="supplement-panel__ai ai-seven-panel" style={{ marginTop: "1rem" }}>
+      <h4 className="supplement-panel__h3">④ AI · 이번 주 볼거리 (일정 줄글 기반)</h4>
+      <p className="muted" style={{ fontSize: "0.82rem", marginTop: 0 }}>
+        위 표의 한국 관련 경기 줄만 넣어 짧은 큐레이션 문구를 만듭니다.
+      </p>
+      <button type="button" className="btn btn-secondary" disabled={loading || lines.length === 0} onClick={run}>
+        {loading ? "생성 중…" : "AI 큐레이션"}
+      </button>
+      {err ? <p className="text-error">{err}</p> : null}
+      {out ? (
+        <div className="ai-seven-result" style={{ marginTop: "0.65rem" }}>
+          <p className="ai-seven-headline">{out.title_ko}</p>
+          <p>{out.intro_ko}</p>
+          <ul className="ai-seven-list">
+            {out.bullets_ko.map((b, i) => (
+              <li key={i}>{b}</li>
+            ))}
+          </ul>
+          <p className="muted ai-seven-disclaimer">{out.disclaimer_ko}</p>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 function BadgeCard({ flag, label, media }: { flag: string; label: string; media: TeamMediaSlim | null | undefined }) {
   const src = media?.badge || media?.logo;
@@ -64,6 +108,18 @@ export default function SupplementDataPanel() {
     });
   }, [fd]);
 
+  const aiLines = useMemo(
+    () =>
+      koreaRows.map((m) => {
+        const score =
+          m.score_fulltime?.home != null && m.score_fulltime?.away != null
+            ? ` ${m.score_fulltime.home}-${m.score_fulltime.away}`
+            : "";
+        return `${m.utcDate ?? "일정미상"} · ${m.home ?? "?"} vs ${m.away ?? "?"}${score} (${m.status ?? "?"})`;
+      }),
+    [koreaRows],
+  );
+
   return (
     <section className="supplement-panel" aria-label="보조 데이터 소스">
       <h2 className="supplement-panel__title">추가 데이터 (호출 분산)</h2>
@@ -87,7 +143,9 @@ export default function SupplementDataPanel() {
         <ul className="supplement-panel__sources muted">
           <li>API-Football: {sources.api_football ? "설정됨" : "미설정"}</li>
           <li>Football-Data.org: {sources.football_data_org ? "설정됨" : "미설정"}</li>
-          <li>TheSportsDB: {sources.thesportsdb_custom_key ? "커스텀 키" : "데모 키(1)"}</li>
+          <li>
+            TheSportsDB: {sources.thesportsdb_custom_key ? "프리미엄·개인 키" : "무료 기본 키(123)"}
+          </li>
           <li>Sportmonks: {sources.sportmonks ? "설정됨" : "미설정"}</li>
         </ul>
       ) : null}
@@ -131,6 +189,7 @@ export default function SupplementDataPanel() {
               </tbody>
             </table>
           </div>
+          <SupplementAiStep4 lines={aiLines} />
         </div>
       ) : fdErr && sources?.football_data_org ? (
         <p className="supplement-panel__fd-err muted">Football-Data WC: {fdErr}</p>

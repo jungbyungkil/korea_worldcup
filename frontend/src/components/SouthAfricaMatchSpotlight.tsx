@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import GroupStageMatchSpotlight from "./GroupStageMatchSpotlight";
 import KoreaOpponentEloStrip from "./KoreaOpponentEloStrip";
+import GroupStageAiFunPanel from "./GroupStageAiFunPanel";
 import { GROUP_A_FALLBACK_KICKOFF_UTC, NAMU_WIKI_2026, SOUTH_AFRICA_MATCH_HOOKS_KO } from "../data/korea2026NamuContext";
 
 type Props = {
@@ -45,12 +46,21 @@ export default function SouthAfricaMatchSpotlight({ officialKickoffIso, official
         </>
       }
       footer={
-        <KoreaOpponentEloStrip
-          opponentQuery="South Africa"
-          opponentFlag="🇿🇦"
-          opponentNameKo="남아프리카 공화국"
-          visualVariant="south-africa"
-        />
+        <>
+          <GroupStageAiFunPanel
+            opponent="south_africa"
+            panelTitle="남아공전 · AI 재미 패널"
+            opponentFlag="🇿🇦"
+            opponentShortLabel="남아공"
+            theme="south-africa"
+          />
+          <KoreaOpponentEloStrip
+            opponentQuery="South Africa"
+            opponentFlag="🇿🇦"
+            opponentNameKo="남아프리카 공화국"
+            visualVariant="south-africa"
+          />
+        </>
       }
     />
   );

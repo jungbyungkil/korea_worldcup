@@ -3,6 +3,7 @@ import { getKoreaFixtures, getKoreaOverview, type Fixture, type KoreaFixtures, t
 import FirstGroupMatchSpotlight from "../components/FirstGroupMatchSpotlight";
 import MexicoMatchSpotlight from "../components/MexicoMatchSpotlight";
 import SouthAfricaMatchSpotlight from "../components/SouthAfricaMatchSpotlight";
+import OpponentBriefingPanel from "../components/OpponentBriefingPanel";
 import SupplementDataPanel from "../components/SupplementDataPanel";
 import { bucketByCompetition } from "../lib/fixtureBuckets";
 
@@ -111,6 +112,8 @@ export default function WorldCup2026Korea() {
       </p>
 
       <SupplementDataPanel />
+
+      <OpponentBriefingPanel />
 
       <FirstGroupMatchSpotlight
         officialKickoffIso={firstMatchKickoffIso}

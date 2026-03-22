@@ -1,0 +1,62 @@
+{
+  "_comment": "TheSportsDB searchevents.php 의 e= 파라미터 (언더스코어). 시즌 s=연도와 함께 사용. 팀명은 DB의 strEvent 와 맞춤.",
+  "1954": [
+    "Hungary_vs_South_Korea",
+    "Turkey_vs_South_Korea"
+  ],
+  "1986": [
+    "Argentina_vs_South_Korea",
+    "South_Korea_vs_Italy",
+    "South_Korea_vs_Bulgaria"
+  ],
+  "1990": [
+    "Belgium_vs_South_Korea",
+    "South_Korea_vs_Spain",
+    "Uruguay_vs_South_Korea"
+  ],
+  "1994": [
+    "Germany_vs_South_Korea",
+    "South_Korea_vs_Spain",
+    "South_Korea_vs_Bolivia"
+  ],
+  "1998": [
+    "South_Korea_vs_Mexico",
+    "Netherlands_vs_South_Korea",
+    "Belgium_vs_South_Korea"
+  ],
+  "2002": [
+    "South_Korea_vs_Poland",
+    "USA_vs_South_Korea",
+    "Portugal_vs_South_Korea",
+    "South_Korea_vs_Italy",
+    "Germany_vs_South_Korea",
+    "South_Korea_vs_Turkey"
+  ],
+  "2006": [
+    "France_vs_South_Korea",
+    "South_Korea_vs_Togo",
+    "Switzerland_vs_South_Korea"
+  ],
+  "2010": [
+    "South_Korea_vs_Greece",
+    "Argentina_vs_South_Korea",
+    "Nigeria_vs_South_Korea",
+    "Uruguay_vs_South_Korea"
+  ],
+  "2014": [
+    "Russia_vs_South_Korea",
+    "South_Korea_vs_Algeria",
+    "South_Korea_vs_Belgium"
+  ],
+  "2018": [
+    "Sweden_vs_South_Korea",
+    "South_Korea_vs_Mexico",
+    "South_Korea_vs_Germany"
+  ],
+  "2022": [
+    "Uruguay_vs_South_Korea",
+    "South_Korea_vs_Ghana",
+    "South_Korea_vs_Portugal",
+    "Brazil_vs_South_Korea"
+  ]
+}
