@@ -55,7 +55,7 @@ export type NationalTeamLightPageProps = {
   introSections: IntroSection[];
   /** 팀 미발견 시 추가 안내 */
   teamNotFoundHint?: ReactNode;
-  /** ⑥ AI 팬 시점 한 줄 (멕시코/남아공/플레이오프 D) */
+  /** 팬 시점 한 줄 (멕시코/남아공/플레이오프 D) */
   aiFanLinesTeamKey?: AiFunTeamFanKey;
 };
 
@@ -76,9 +76,9 @@ function TeamFanLinesPanel({ team }: { team: AiFunTeamFanKey }) {
 
   return (
     <section className="panel ai-seven-panel">
-      <h2 className="panel-title">⑥ AI · 팬 시점 한 줄</h2>
+      <h2 className="panel-title">팬 시점 한 줄</h2>
       <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem" }}>
-        가상의 상대 팬 vs 한국 팬 톤으로 짧은 한 줄씩. 놀이용입니다.
+        멕시코팬·남아공팬·A조 1차전 상대 팬 vs 한국 팬 톤으로 짧은 한 줄씩. 놀이용입니다.
       </p>
       <button type="button" className="btn btn-primary" disabled={loading} onClick={run}>
         {loading ? "생성 중…" : "한 줄씩 생성"}

@@ -93,8 +93,6 @@ export default function Home() {
         <br />
         <span className="muted">2026 일정·선수 API는 </span>
         <code>API_FOOTBALL_KEY</code>
-        <span className="muted"> 가 필요합니다. 베스트 11 등 일부 기능은 </span>
-        <code>OPENAI_API_KEY</code>
         <span className="muted"> 가 필요합니다.</span>
       </div>
     </div>

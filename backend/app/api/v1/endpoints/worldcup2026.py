@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import math
 import os
+import re
 from datetime import date, datetime, timezone
 from typing import Any
 
@@ -40,6 +41,25 @@ def _now_iso() -> str:
 
 def _iso(d: date) -> str:
     return d.isoformat()
+
+
+# FIFA 공식: 2026-06-18 과달라하라(에스타디오 아크론) 대한민국 vs 멕시코(A조) 현지 19:00 → UTC 2026-06-19 01:00
+_FIFA_KR_VS_MEXICO_GROUP_A_UTC = "2026-06-19T01:00:00.000Z"
+
+
+def _apply_fifa_korea_mexico_group_kickoff(items: list[dict[str, Any]]) -> None:
+    """API-Football 등이 과거 추정 시각을 주는 경우, A조 2차전 멕시코전을 FIFA 확정 킥오프로 맞춤."""
+    for it in items:
+        opp = str(it.get("opponent") or "")
+        if not re.search(r"mexico|méxico", opp, re.I):
+            continue
+        league = str(it.get("league") or "").lower()
+        if "world cup" not in league:
+            continue
+        ds = str(it.get("date") or "")
+        if not ds.startswith("2026-06"):
+            continue
+        it["date"] = _FIFA_KR_VS_MEXICO_GROUP_A_UTC
 
 
 def _is_worldcup_related_league(league_name: str) -> bool:
@@ -476,6 +496,8 @@ async def korea_fixtures() -> dict[str, Any]:
                 "score": score,
             }
         )
+
+    _apply_fifa_korea_mexico_group_kickoff(items)
 
     def _key(x: dict[str, Any]) -> tuple[int, str]:
         dts = str(x.get("date") or "")

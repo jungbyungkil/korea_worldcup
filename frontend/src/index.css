@@ -34,12 +34,16 @@ a:hover {
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-bg);
   background-image: radial-gradient(ellipse 100% 60% at 50% -15%, rgba(29, 78, 216, 0.11), transparent);
   color: var(--color-text);
   font-family: var(--font);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  /* iOS 노치·홈 인디케이터와 겹침 완화 */
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 
 code {
@@ -69,11 +73,64 @@ code {
 .site-header__inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0.65rem 1.25rem;
+  padding: calc(0.65rem + env(safe-area-inset-top, 0px)) 1.25rem 0.65rem;
+  padding-left: calc(1.25rem + env(safe-area-inset-left, 0px));
+  padding-right: calc(1.25rem + env(safe-area-inset-right, 0px));
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 1.25rem;
+}
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.75rem;
+}
+
+.site-nav__toggle {
+  display: none;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-soft);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.site-nav__toggle-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 22px;
+}
+
+.site-nav__toggle-bars span {
+  display: block;
+  height: 2px;
+  background: var(--color-primary);
+  border-radius: 1px;
+}
+
+.site-nav__backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .site-header a.site-brand {
@@ -94,6 +151,17 @@ code {
   flex-wrap: wrap;
   gap: 0.2rem;
   align-items: center;
+}
+
+/* 데스크톱: 가로 메뉴 */
+.site-nav--desktop {
+  flex: 1;
+  justify-content: flex-end;
+}
+
+/* 모바일 드로어 (기본 숨김 — 미디어쿼리에서 위치 지정) */
+.site-nav--drawer {
+  display: none;
 }
 
 .nav-link {
@@ -124,7 +192,9 @@ code {
 .page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 3rem;
+  padding: 1.5rem 1.25rem calc(3rem + env(safe-area-inset-bottom, 0px));
+  padding-left: calc(1.25rem + env(safe-area-inset-left, 0px));
+  padding-right: calc(1.25rem + env(safe-area-inset-right, 0px));
 }
 
 .page-title {
@@ -1505,13 +1575,6 @@ code {
   color: #fecaca;
 }
 
-.spotlight-elo-strip__hint {
-  margin: 0;
-  font-size: 0.6rem;
-  opacity: 0.55;
-  letter-spacing: 0.01em;
-}
-
 @keyframes elo-sweep {
   0% {
     background-position: 100% 0;
@@ -1519,138 +1582,6 @@ code {
   100% {
     background-position: -100% 0;
   }
-}
-
-/* 보조 API 패널 (Football-Data / TheSportsDB / Sportmonks) */
-.supplement-panel {
-  margin: 1.25rem 0 1.75rem;
-  padding: 1rem 1.1rem;
-  border-radius: var(--radius-md, 10px);
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  background: rgba(15, 23, 42, 0.45);
-}
-
-.supplement-panel__title {
-  margin: 0 0 0.35rem;
-  font-size: 1.05rem;
-}
-
-.supplement-panel__lead {
-  margin: 0 0 0.75rem;
-  font-size: 0.85rem;
-  line-height: 1.45;
-}
-
-.supplement-panel__lead a {
-  color: #93c5fd;
-}
-
-.supplement-panel__loading {
-  margin: 0 0 0.5rem;
-  font-size: 0.82rem;
-}
-
-.supplement-panel__sources {
-  margin: 0 0 1rem;
-  padding-left: 1.2rem;
-  font-size: 0.78rem;
-  line-height: 1.5;
-}
-
-.supplement-panel__h3 {
-  margin: 0 0 0.5rem;
-  font-size: 0.88rem;
-  font-weight: 700;
-  opacity: 0.92;
-}
-
-.supplement-panel__badges {
-  margin-bottom: 1rem;
-}
-
-.supplement-panel__badge-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
-  align-items: flex-start;
-}
-
-.supplement-badge-card {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  min-width: 0;
-}
-
-.supplement-badge-card__img {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 4px;
-}
-
-.supplement-badge-card__ph {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  font-size: 1.35rem;
-}
-
-.supplement-badge-card__meta {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  min-width: 0;
-}
-
-.supplement-badge-card__flag {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.supplement-badge-card__name {
-  font-size: 0.78rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 10rem;
-}
-
-.supplement-panel__table-wrap {
-  overflow-x: auto;
-  border-radius: 8px;
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-
-.supplement-panel__table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.78rem;
-}
-
-.supplement-panel__table th,
-.supplement-panel__table td {
-  padding: 0.4rem 0.55rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
-}
-
-.supplement-panel__table th {
-  background: rgba(0, 0, 0, 0.2);
-  font-weight: 700;
-}
-
-.supplement-panel__fd-err,
-.supplement-panel__hint {
-  margin: 0.5rem 0 0;
-  font-size: 0.78rem;
 }
 
 /* 상대별 AI 전술·스쿼드 브리핑 (2026 한국 대시보드) */
@@ -1948,22 +1879,6 @@ code {
   line-height: 1.6;
 }
 
-.spotlight-elo-strip__ai {
-  margin-top: 0.65rem;
-  padding-top: 0.65rem;
-  border-top: 1px dashed var(--color-border);
-}
-
-.spotlight-elo-strip__ai-btn {
-  font-size: 0.78rem;
-  padding: 0.28rem 0.55rem;
-}
-
-.spotlight-elo-strip__ai-box {
-  margin-top: 0.5rem;
-  font-size: 0.82rem;
-}
-
 /* 한국 월드컵 이력 — 개최국 클릭 → 상세·YouTube */
 .wc-host-btn {
   display: inline;
@@ -1983,6 +1898,30 @@ code {
 
 .wc-host-btn:hover {
   color: #1e3a8a;
+}
+
+/* 이력 표 — 요약·스코어를 통계와 같은 행(맨 오른쪽 열) */
+.wc-history-main-table__summary-cell {
+  min-width: min(22rem, 42vw);
+  max-width: 32rem;
+  vertical-align: top;
+  background: #f8fafc;
+}
+
+.wc-history-main-table__summary-text {
+  margin: 0;
+  font-size: 0.81rem;
+  line-height: 1.52;
+  color: var(--color-text);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 720px) {
+  .wc-history-main-table__summary-cell {
+    min-width: 16rem;
+    max-width: none;
+  }
 }
 
 .wc-history-inline-btn {
@@ -2115,6 +2054,40 @@ code {
   font-size: 0.82rem;
 }
 
+.wc-tournament-modal__links {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.wc-tournament-modal__url-list {
+  margin: 0.75rem 0 0;
+  padding-left: 1.25rem;
+  line-height: 1.5;
+}
+
+.wc-tournament-modal__url-list li {
+  margin-bottom: 0.9rem;
+}
+
+.wc-tournament-modal__url-list-label {
+  font-weight: 600;
+  font-size: 0.88rem;
+  margin-bottom: 0.2rem;
+}
+
+.wc-tournament-modal__url-list-href {
+  display: inline-block;
+  font-size: 0.76rem;
+  word-break: break-all;
+  color: var(--color-primary);
+}
+
+.wc-tournament-modal__url-list-empty {
+  margin-top: 0.65rem;
+  font-size: 0.86rem;
+}
+
 .wc-tournament-modal__embed-wrap {
   position: relative;
   width: 100%;
@@ -2194,14 +2167,89 @@ code {
   color: var(--color-primary);
 }
 
-@media (max-width: 640px) {
-  .site-header__inner {
-    flex-direction: column;
-    align-items: flex-start;
+/* 모바일·태블릿: 햄버거 + 드로어 */
+@media (max-width: 899px) {
+  .site-nav__toggle {
+    display: inline-flex;
   }
 
+  .site-nav__backdrop {
+    display: block;
+  }
+
+  .site-nav--desktop {
+    display: none !important;
+  }
+
+  .site-nav--drawer {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 50;
+    pointer-events: none;
+    width: min(18rem, 88vw);
+    height: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.15rem;
+    padding: calc(4.25rem + env(safe-area-inset-top, 0px)) 1rem 1.25rem;
+    padding-bottom: calc(1.25rem + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: #fff;
+    border-left: 1px solid var(--color-border);
+    box-shadow: -12px 0 40px rgba(15, 23, 42, 0.12);
+    transform: translateX(100%);
+    transition: transform 0.22s ease;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .site-nav--drawer.site-nav--drawer-open {
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .site-nav--drawer .nav-link {
+    min-height: 48px;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .site-nav--drawer {
+    display: none !important;
+  }
+
+  .site-nav__backdrop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 640px) {
   .wc-tournament-modal__thumb {
     width: 100px;
     height: 56px;
+  }
+
+  .page-title {
+    font-size: clamp(1.35rem, 5.5vw, 1.75rem);
+    line-height: 1.25;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.35rem, 6vw, 1.85rem);
   }
 }

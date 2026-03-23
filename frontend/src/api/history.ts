@@ -1,5 +1,11 @@
 import { apiUrl } from "./client";
 
+/** 이력 JSON `video_links` — 임베드 없이 새 탭으로만 열기 */
+export interface KoreaWcVideoLink {
+  label: string;
+  url: string;
+}
+
 export interface KoreaWorldCupTournament {
   year: number;
   host: string;
@@ -12,6 +18,8 @@ export interface KoreaWorldCupTournament {
   goals_for: number;
   goals_against: number;
   highlights: string;
+  /** 수동 보강 YouTube(등) 링크. TheSportsDB URL과 합쳐서 모달에 표시 */
+  video_links?: KoreaWcVideoLink[];
 }
 
 export interface KoreaWorldCupHistoryResponse {

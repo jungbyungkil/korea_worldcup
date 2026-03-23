@@ -16,7 +16,8 @@ export const NAMU_WIKI_2026 = {
 export const GROUP_A_FALLBACK_KICKOFF_UTC = {
   /** 1차전: UEFA 플레이오프 D 승자 — 미국 동부 6/11 22:00 ET(EDT) ≈ 6/12 02:00 UTC (FOX·FIFA 스케줄 계열) */
   firstMatch: "2026-06-12T02:00:00.000Z",
-  mexico: "2026-06-19T03:00:00.000Z",
+  /** 2차전 vs 멕시코: FIFA 확정 — 6/18 과달라하라(에스타디오 아크론) 현지 19:00 (America/Mexico_City, UTC−6) → 6/19 01:00 UTC */
+  mexico: "2026-06-19T01:00:00.000Z",
   southAfrica: "2026-06-25T01:00:00.000Z",
 } as const;
 

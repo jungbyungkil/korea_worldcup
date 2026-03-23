@@ -61,10 +61,9 @@ export default function PlayerAiStep1Panel({ data }: Props) {
 
   return (
     <div className="panel ai-seven-panel">
-      <h2 className="panel-title">① AI 재미 · 선수/포지션</h2>
+      <h2 className="panel-title">선수 평 / 포지션 감독 픽</h2>
       <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem", lineHeight: 1.55 }}>
-        스쿼드 데이터를 바탕으로 짧은 한 줄 평·컨디션 카드·같은 포지션 내 &quot;감독 픽&quot; 놀이를 생성합니다.{" "}
-        <code>OPENAI_API_KEY</code> 필요.
+        스쿼드 데이터를 바탕으로 짧은 한 줄 평·컨디션 카드·같은 포지션 내 &quot;감독 픽&quot; 놀이를 생성합니다.
       </p>
 
       <div className="ai-seven-row">

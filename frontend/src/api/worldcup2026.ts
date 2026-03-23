@@ -200,7 +200,7 @@ export type GroupMatchAiFunResponse =
 function groupMatchAiErrorMessage(res: Response, detail: unknown): string {
   const d = typeof detail === "string" && detail.trim() ? detail : "";
   if (d) return d;
-  if (res.status === 501) return "OPENAI_API_KEY가 없어 AI 카드를 쓸 수 없습니다. backend/.env를 확인하세요.";
+  if (res.status === 501) return "AI 카드를 지금은 사용할 수 없습니다. 서버 설정을 확인하세요.";
   return "AI 카드를 불러오지 못했습니다.";
 }
 
@@ -249,9 +249,7 @@ export async function postKoreaOpponentBriefing(
     const d = typeof body.detail === "string" && body.detail.trim() ? body.detail : "";
     throw new Error(
       d ||
-        (res.status === 501
-          ? "OPENAI_API_KEY가 없습니다. backend/.env를 확인하세요."
-          : "상대 브리핑을 불러오지 못했습니다."),
+        (res.status === 501 ? "AI 브리핑을 지금은 사용할 수 없습니다. 서버 설정을 확인하세요." : "상대 브리핑을 불러오지 못했습니다."),
     );
   }
   return res.json();
@@ -289,7 +287,7 @@ function aiSevenErr(res: Response, body: unknown): string {
     typeof body === "object" && body !== null && "detail" in body && typeof (body as { detail: unknown }).detail === "string"
       ? (body as { detail: string }).detail.trim()
       : "";
-  if (res.status === 501 && d.includes("OPENAI")) return "OPENAI_API_KEY가 없습니다. backend/.env를 확인하세요.";
+  if (res.status === 501 && d.toLowerCase().includes("openai")) return "AI 기능을 지금은 사용할 수 없습니다. 서버 설정을 확인하세요.";
   return d || "AI 요청에 실패했습니다.";
 }
 

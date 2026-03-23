@@ -3,6 +3,8 @@ import type { WcTournamentTsdbHighlight } from "../api/history";
 /**
  * 2022 FIFA 월드컵 카타르 — 대한민국 본선 4경기
  * FIFA 공식 YouTube 채널(https://www.youtube.com/@fifa) 하이라이트 (watch URL)
+ *
+ * 모달 표시용 소스는 `backend/app/data/korea_world_cup_history.json` 의 `video_links`와 동기화할 것.
  */
 export const KOREA_2022_WC_OFFICIAL_YOUTUBE_HIGHLIGHTS = [
   {

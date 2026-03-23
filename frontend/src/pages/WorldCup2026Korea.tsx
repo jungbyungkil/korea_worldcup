@@ -4,7 +4,6 @@ import FirstGroupMatchSpotlight from "../components/FirstGroupMatchSpotlight";
 import MexicoMatchSpotlight from "../components/MexicoMatchSpotlight";
 import SouthAfricaMatchSpotlight from "../components/SouthAfricaMatchSpotlight";
 import OpponentBriefingPanel from "../components/OpponentBriefingPanel";
-import SupplementDataPanel from "../components/SupplementDataPanel";
 import { bucketByCompetition } from "../lib/fixtureBuckets";
 
 /** A조에서 멕시코·남아공이 아닌 경기 = 1차전(UEFA 플레이오프 D 승자)로 간주 */
@@ -110,8 +109,6 @@ export default function WorldCup2026Korea() {
         {overview?.status.groups_confirmed ? "조편성 확정" : "조편성 미확정"}) · 감독{" "}
         <strong>홍명보</strong> (홍명보호 성인 2기, 나무위키 등 커뮤니티 표기)
       </p>
-
-      <SupplementDataPanel />
 
       <OpponentBriefingPanel />
 

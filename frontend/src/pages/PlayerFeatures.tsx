@@ -124,7 +124,11 @@ export default function PlayerFeatures() {
       });
       const b = (await r.json().catch(() => ({}))) as { detail?: string } & Partial<BestXiResponse>;
       if (!r.ok) {
-        throw new Error(typeof b.detail === "string" ? b.detail : r.statusText);
+        const raw = typeof b.detail === "string" ? b.detail : r.statusText;
+        const hideKeyHint = /OPENAI_API_KEY|openai.*api.*key/i.test(raw);
+        throw new Error(
+          r.status === 501 && hideKeyHint ? "AI 베스트 11을 지금은 사용할 수 없습니다. 서버 설정을 확인하세요." : raw,
+        );
       }
       if (!b.xi || !Array.isArray(b.xi)) {
         throw new Error("응답 형식이 올바르지 않습니다.");
@@ -164,10 +168,7 @@ export default function PlayerFeatures() {
     <main className="page">
       <h1 className="page-title">한국 대표팀 · 스쿼드 &amp; 클럽 스탯</h1>
       <p className="page-lead">
-        API-Football 기준 전체 스쿼드 목록과, 2026 WC 본선 명단 규모(최대 26명)에 맞춰 설정된 인원까지 클럽 리그 통계 요약입니다.{" "}
-        <span className="muted">
-          <code>GET /api/v1/worldcup2026/korea/player-features</code>
-        </span>
+        API-Football 기준 전체 스쿼드 목록과, 2026 WC 본선 명단 규모(최대 26명)에 맞춰 설정된 인원까지 클럽 리그 통계 요약입니다.
       </p>
 
       <div className="panel">
@@ -208,8 +209,7 @@ export default function PlayerFeatures() {
       <div className="panel best-xi-panel">
         <h2 className="panel-title">AI 베스트 11</h2>
         <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem", lineHeight: 1.55 }}>
-          전술(포메이션)만 고르면 OpenAI가 현재 스쿼드·클럽 스탯·부상 제외를 반영해 선발 11명을 제안합니다.{" "}
-          <code>OPENAI_API_KEY</code>가 백엔드에 설정되어 있어야 합니다.
+          전술(포메이션)만 고르면 AI가 현재 스쿼드·클럽 스탯·부상 제외를 반영해 선발 11명을 제안합니다.
         </p>
         <div className="formation-picker">
           {FORMATIONS.map((f) => (
