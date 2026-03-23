@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import os
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
@@ -80,13 +81,20 @@ def _pick_heuristic_xi_433(squad: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 async def build_light_national_team_payload(cfg: LightNationalTeamConfig) -> dict[str, Any]:
     now = datetime.now(timezone.utc).isoformat()
-    team_id = await find_national_team_id(
-        cfg.search_query,
-        exact_team_names=cfg.exact_team_names,
-        name_bonus_substrings=cfg.name_bonus_substrings,
-        country_bonus=cfg.country_bonus,
-        teams_country_fallback=cfg.teams_country_fallback,
-    )
+    team_id: int | None = None
+    if cfg.team_id_override_env:
+        raw = (os.getenv(cfg.team_id_override_env) or "").strip()
+        if raw.isdigit():
+            team_id = int(raw)
+
+    if team_id is None:
+        team_id = await find_national_team_id(
+            cfg.search_query,
+            exact_team_names=cfg.exact_team_names,
+            name_bonus_substrings=cfg.name_bonus_substrings,
+            country_bonus=cfg.country_bonus,
+            teams_country_fallback=cfg.teams_country_fallback,
+        )
 
     if not team_id:
         return {

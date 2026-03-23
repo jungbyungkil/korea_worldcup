@@ -152,8 +152,16 @@ async def find_national_team_id(
     name_bonus_substrings = name_bonus_substrings or frozenset()
     country_bonus = country_bonus or frozenset()
 
-    data = await api_get("teams", params={"search": search_query}, ttl_seconds=24 * 3600)
-    candidates = data.get("response", []) or []
+    # 검색어가 짧으면(예: Mexico) 클럽이 수십 건 앞에 나와 국가대표가 1페이지 밖으로 밀릴 수 있음 → 페이지 합산
+    try:
+        candidates = await api_get_all_pages(
+            "teams",
+            params={"search": search_query},
+            ttl_seconds=24 * 3600,
+            max_pages=25,
+        )
+    except Exception:
+        candidates = []
 
     tid = _pick_best_team_id(
         candidates,

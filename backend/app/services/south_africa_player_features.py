@@ -16,6 +16,7 @@ _SOUTH_AFRICA_CFG = LightNationalTeamConfig(
     include_stats_env="API_FOOTBALL_SOUTH_AFRICA_INCLUDE_CLUB_STATS",
     cache_env_documentation="API_FOOTBALL_SOUTH_AFRICA_FEATURES_CACHE_SEC",
     teams_country_fallback="South Africa",
+    team_id_override_env="API_FOOTBALL_TEAM_ID_SOUTH_AFRICA",
 )
 
 

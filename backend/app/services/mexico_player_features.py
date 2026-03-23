@@ -16,6 +16,8 @@ _MEXICO_CFG = LightNationalTeamConfig(
     include_stats_env="API_FOOTBALL_MEXICO_INCLUDE_CLUB_STATS",
     cache_env_documentation="API_FOOTBALL_MEXICO_FEATURES_CACHE_SEC",
     teams_country_fallback="Mexico",
+    # API-Sports 남자 국가대표팀은 보통 id=16 (검색 페이지 밀림·플랜 제한 시 .env에 숫자만 설정)
+    team_id_override_env="API_FOOTBALL_TEAM_ID_MEXICO",
 )
 
 
