@@ -34,6 +34,8 @@ class LightNationalTeamConfig:
     cache_env_documentation: str
     #: API-Football ``teams?country=`` (검색만으로 대표팀이 안 잡힐 때)
     teams_country_fallback: str | None = None
+    #: 비우지 않으면 해당 환경 변수에 숫자 팀 ID가 있을 때 검색을 건너뜀 (배포·API 응답 이슈 우회)
+    team_id_override_env: str | None = None
 
 
 def _pick_heuristic_xi_433(squad: list[dict[str, Any]]) -> list[dict[str, Any]]:
