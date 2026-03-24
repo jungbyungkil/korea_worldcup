@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { apiUrl } from "../api/client";
+import { apiUrl, humanizeFetchError } from "../api/client";
 import {
   postAiFunStep6TeamFanLines,
   type AiFunStep6FanLines,
@@ -70,7 +70,7 @@ function TeamFanLinesPanel({ team }: { team: AiFunTeamFanKey }) {
     setOut(null);
     void postAiFunStep6TeamFanLines(team)
       .then(setOut)
-      .catch((e) => setErr(e instanceof Error ? e.message : "오류"))
+      .catch((e) => setErr(humanizeFetchError(e)))
       .finally(() => setLoading(false));
   };
 
@@ -146,7 +146,7 @@ export default function NationalTeamLightPage({
         return r.json() as Promise<NtLightPayload>;
       })
       .then(setData)
-      .catch((e) => setErr(e instanceof Error ? e.message : "오류"))
+      .catch((e) => setErr(humanizeFetchError(e)))
       .finally(() => setLoading(false));
   }, [apiPath]);
 

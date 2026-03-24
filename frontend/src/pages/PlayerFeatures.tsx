@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { apiUrl } from "../api/client";
+import { apiUrl, humanizeFetchError } from "../api/client";
 import FormationPitch from "../components/FormationPitch";
 import PlayerAiStep1Panel from "../components/PlayerAiStep1Panel";
 import { FORMATIONS } from "../formationLayouts";
@@ -80,7 +80,7 @@ export default function PlayerFeatures() {
         return r.json() as Promise<PlayerFeaturesResponse>;
       })
       .then(setData)
-      .catch((e) => setErr(e instanceof Error ? e.message : "오류"))
+      .catch((e) => setErr(humanizeFetchError(e)))
       .finally(() => setLoading(false));
   }, []);
 
@@ -136,7 +136,7 @@ export default function PlayerFeatures() {
       setBestXi(b as BestXiResponse);
     } catch (e) {
       setBestXi(null);
-      setBestXiErr(e instanceof Error ? e.message : "요청 실패");
+      setBestXiErr(humanizeFetchError(e));
     } finally {
       setBestXiLoading(false);
     }
@@ -149,7 +149,9 @@ export default function PlayerFeatures() {
         <h1 className="page-title">한국 대표팀 데이터</h1>
         <p className="text-error">{err}</p>
         <p className="muted">
-          <code>backend/.env</code>에 <code>API_FOOTBALL_KEY</code>와 백엔드 실행을 확인하세요.
+          <strong>로컬</strong> — <code>backend/.env</code>의 <code>API_FOOTBALL_KEY</code>와 백엔드 실행 여부를 확인하세요.{" "}
+          <strong>배포 사이트</strong> — 정적 호스팅에 올린 빌드는 <code>VITE_API_BASE_URL</code>이 공개 백엔드 HTTPS URL로
+          박혀 있어야 합니다. <code>localhost</code>로 빌드된 채 업로드하면 위와 같이 연결에 실패합니다.
         </p>
       </main>
     );

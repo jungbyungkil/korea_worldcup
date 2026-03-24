@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { humanizeFetchError } from "../api/client";
 import { getKoreaFixtures, getKoreaOverview, type Fixture, type KoreaFixtures, type KoreaOverview } from "../api/worldcup2026";
 import FirstGroupMatchSpotlight from "../components/FirstGroupMatchSpotlight";
 import MexicoMatchSpotlight from "../components/MexicoMatchSpotlight";
@@ -35,7 +36,7 @@ export default function WorldCup2026Korea() {
         setOverview(o);
         setFixtures(f);
       })
-      .catch((e) => setError(e instanceof Error ? e.message : "오류 발생"))
+      .catch((e) => setError(humanizeFetchError(e)))
       .finally(() => setLoading(false));
   }, []);
 
