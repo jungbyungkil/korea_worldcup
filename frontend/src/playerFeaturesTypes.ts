@@ -54,11 +54,19 @@ export interface BestXiPlayer {
   player_name: string;
 }
 
+export interface BestXiSlotReason {
+  slot: string;
+  player_id?: number;
+  player_name?: string;
+  reason_ko: string;
+}
+
 export interface BestXiResponse {
   formation: string;
   formation_hint_ko: string;
   slots: string[];
   xi: BestXiPlayer[];
+  slot_reasons_ko?: BestXiSlotReason[];
   notes_ko: string;
   rationale_ko: string;
 }

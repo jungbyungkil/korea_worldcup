@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import GroupStageMatchSpotlight from "./GroupStageMatchSpotlight";
 import { FIRST_MATCH_HOOKS_KO, GROUP_A_FALLBACK_KICKOFF_UTC, NAMU_WIKI_2026 } from "../data/korea2026NamuContext";
 
@@ -45,23 +44,13 @@ export default function FirstGroupMatchSpotlight({
       ariaTitleId="first-match-spotlight-title"
       actions={
         <>
-          <Link className="btn btn-primary group-match-spotlight__btn" to="/2026/playoff-d">
-            플레이오프 D 상대 정보
-          </Link>
-          <a className="btn btn-secondary group-match-spotlight__btn" href={NAMU_WIKI_2026.groupA} target="_blank" rel="noreferrer">
+          <a className="btn btn-primary group-match-spotlight__btn" href={NAMU_WIKI_2026.groupA} target="_blank" rel="noreferrer">
             나무위키 · A조
           </a>
           <a className="btn btn-secondary group-match-spotlight__btn" href={NAMU_WIKI_2026.hong2026Hub} target="_blank" rel="noreferrer">
             나무위키 · 홍명보호 2026 허브
           </a>
         </>
-      }
-      footer={
-        <div className="group-match-spotlight__footer-note" role="note">
-          <p className="group-match-spotlight__footer-note-p">
-            <strong>상대 국가</strong>는 UEFA 플레이오프 D 통과 팀으로, 본선 직전 확정됩니다. 확정되면 제목·Elo 시뮬 등을 붙일 수 있습니다.
-          </p>
-        </div>
       }
     />
   );

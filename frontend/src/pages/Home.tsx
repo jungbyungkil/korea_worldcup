@@ -1,17 +1,6 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAiFunStep7HomeDaily, type AiFunStep7HomeDaily } from "../api/worldcup2026";
 
 export default function Home() {
-  const [daily, setDaily] = useState<AiFunStep7HomeDaily | null>(null);
-  const [dailyErr, setDailyErr] = useState<string | null>(null);
-
-  useEffect(() => {
-    void getAiFunStep7HomeDaily()
-      .then(setDaily)
-      .catch((e) => setDailyErr(e instanceof Error ? e.message : "오류"));
-  }, []);
-
   return (
     <div className="page">
       <section className="hero">
@@ -21,20 +10,6 @@ export default function Home() {
           API-Football 등 외부 소스와 연동됩니다.
         </p>
       </section>
-
-      {daily || dailyErr ? (
-        <aside className="home-daily-ai ai-seven-panel" aria-label="오늘의 한 줄 AI">
-          <div className="home-daily-ai__head">
-            <span className="home-daily-ai__badge">⑦ 홈 · AI 한 줄</span>
-            {daily?.headline_ko ? <h2 className="home-daily-ai__title">{daily.headline_ko}</h2> : null}
-          </div>
-          {dailyErr ? <p className="text-error">{dailyErr}</p> : null}
-          {daily?.line_ko ? <p className="home-daily-ai__body">{daily.line_ko}</p> : null}
-          {daily?.disclaimer_ko ? <p className="muted ai-seven-disclaimer">{daily.disclaimer_ko}</p> : null}
-        </aside>
-      ) : (
-        <p className="muted home-daily-ai home-daily-ai--loading">⑦ 홈 카드 불러오는 중…</p>
-      )}
 
       <div className="feature-grid">
         <Link to="/history/worldcup" className="feature-card">
@@ -53,34 +28,28 @@ export default function Home() {
           <div className="feature-card__icon">🎯</div>
           <h2 className="feature-card__title">2026 한국 대시보드</h2>
           <p className="feature-card__desc">
-            A조 하이라이트(1·2·3차전)·Elo 승률 스트립·킥오프 시각. 1차전 상대(UEFA 플레이오프 D) 전용 페이지로도
-            이어집니다.
-          </p>
-        </Link>
-        <Link to="/2026/playoff-d" className="feature-card">
-          <div className="feature-card__icon">🏴</div>
-          <h2 className="feature-card__title">A조 1차전 · 플레이오프 D</h2>
-          <p className="feature-card__desc">
-            UEFA 플레이오프 D 승자(미확정) 브리핑. 상대 확정 후 `.env` 설정으로 스쿼드·예시 11인을 채울 수 있습니다.
+            A조 하이라이트(1·2·3차전)·Elo 승률 스트립·킥오프 시각 등 한국 조별리그 일정 중심 화면입니다.
           </p>
         </Link>
         <Link to="/2026/korea/players" className="feature-card">
           <div className="feature-card__icon">👤</div>
           <h2 className="feature-card__title">한국 대표팀 데이터</h2>
-          <p className="feature-card__desc">스쿼드·부상·클럽 시즌 통계 등 API-Football 기반 feature JSON.</p>
+          <p className="feature-card__desc">
+            예시 23인 명단·감독 AI 포메이션(4-3-3·4-1-4-1 등)과 슬롯별 선정 이유.
+          </p>
         </Link>
         <Link to="/2026/mexico" className="feature-card">
           <div className="feature-card__icon">🇲🇽</div>
           <h2 className="feature-card__title">멕시코 대표팀</h2>
           <p className="feature-card__desc">
-            나무위키 요약 소개 + API 기반 예시 베스트 11(4-3-3). 2026 공동 개최국 El Tri.
+            예시 23인·감독 AI 포메이션(4-3-3·4-1-4-1 등) + 나무위키 요약. API 연동 시 부상·요약이 추가됩니다.
           </p>
         </Link>
         <Link to="/2026/south-africa" className="feature-card">
           <div className="feature-card__icon">🇿🇦</div>
           <h2 className="feature-card__title">남아공 대표팀</h2>
           <p className="feature-card__desc">
-            나무위키 요약 + Bafana Bafana 소개. API 기반 예시 베스트 11(4-3-3).
+            예시 23인·감독 AI 포메이션·슬롯별 코멘트 + Bafana Bafana 나무위키 요약. API 연동 시 부가 정보가 붙습니다.
           </p>
         </Link>
       </div>

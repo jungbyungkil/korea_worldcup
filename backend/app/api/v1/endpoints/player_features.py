@@ -2,16 +2,15 @@
 
 from __future__ import annotations
 
-import asyncio
 import os
 import time
 from typing import Any
 
-import httpx
 from fastapi import APIRouter, HTTPException
 
 from app.services.ai_best_xi import generate_best_xi
-from app.services.ai_opponent_briefing import generate_opponent_briefing
+from app.services.ai_core_formations import recommend_formations_for_core_squad
+from app.services.static_core_squads import load_core_squad
 from app.services.korea_player_features import build_korea_player_features_payload
 from app.services.mexico_player_features import build_mexico_player_features_payload
 from app.services.playoff_d_opponent_features import build_playoff_d_opponent_payload
@@ -181,88 +180,43 @@ async def invalidate_playoff_d_player_features_cache() -> dict[str, str]:
     return {"status": "ok"}
 
 
-def _normalize_opponent_briefing_key(raw: str) -> str | None:
-    k = raw.strip().lower().replace("-", "_")
-    if k in ("mexico", "méxico"):
-        return "mexico"
-    if k in ("south_africa", "southafrica", "sa", "남아공"):
-        return "south_africa"
-    if k in ("playoff_d", "playoffd", "first_match", "group_a_first", "1차전", "플레이오프"):
-        return "playoff_d"
-    return None
+@router.get("/core-squad/{team_key}")
+async def get_core_squad_23(team_key: str) -> dict[str, Any]:
+    """한국·멕시코·남아공 예시 23인(정적 JSON).
 
-
-@router.post("/korea/opponent-briefing")
-async def korea_opponent_briefing(body: dict[str, Any]) -> dict[str, Any]:
-    """한국 스쿼드·부상 + 상대(멕시코/남아공/플레이오프 D) 요약을 넣어 AI 전술·스쿼드 브리핑(JSON).
-
-    Body: ``{ "opponent": "mexico" | "south_africa" | "playoff_d" }``
+    ``team_key``: ``korea`` | ``mexico`` | ``south-africa`` | ``south_africa``
     """
-    opp_key = _normalize_opponent_briefing_key(str(body.get("opponent") or ""))
-    if not opp_key:
-        raise HTTPException(
-            status_code=400,
-            detail="opponent는 mexico, south_africa, playoff_d 중 하나여야 합니다.",
-        )
+    try:
+        return load_core_squad(team_key)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=f"스쿼드 파일 없음: {e}") from e
 
-    labels_ko = {
-        "mexico": "멕시코",
-        "south_africa": "남아프리카 공화국",
-        "playoff_d": "A조 1차전 (UEFA 플레이오프 D 승자)",
-    }
-    label = labels_ko[opp_key]
 
-    now = time.time()
-    ttl = _opponent_briefing_cache_ttl_seconds()
-    bucket = _BRIEFING_CACHE["by_opponent"]
-    cached = bucket.get(opp_key)
-    if isinstance(cached, dict) and float(cached.get("expires_at") or 0) > now:
-        return cached["value"]
+@router.post("/core-squad/ai-formations")
+async def post_core_squad_ai_formations(body: dict[str, Any]) -> dict[str, Any]:
+    """정적 23인을 기준으로 4-3-3·4-1-4-1 등 포메이션별 베스트 11을 AI가 채움.
+
+    Body: ``{ "team": "korea"|"mexico"|"south_africa", "formations": ["4-3-3","4-1-4-1"] }`` — formations 생략 시 전부.
+    """
+    team = str(body.get("team") or "").strip()
+    raw_f = body.get("formations")
+    formations: list[str] | None = None
+    if isinstance(raw_f, list) and raw_f:
+        formations = [str(x).strip() for x in raw_f if str(x).strip()]
 
     try:
-        if opp_key == "mexico":
-            korea_p, opp_p = await asyncio.gather(
-                build_korea_player_features_payload(),
-                build_mexico_player_features_payload(),
-            )
-        elif opp_key == "south_africa":
-            korea_p, opp_p = await asyncio.gather(
-                build_korea_player_features_payload(),
-                build_south_africa_player_features_payload(),
-            )
-        else:
-            korea_p, opp_p = await asyncio.gather(
-                build_korea_player_features_payload(),
-                build_playoff_d_opponent_payload(),
-            )
-    except RuntimeError as e:
-        raise HTTPException(status_code=501, detail=str(e)) from e
-    except Exception as e:
-        raise HTTPException(status_code=502, detail=f"선수 데이터 조회 실패: {e!s}") from e
-
-    if korea_p.get("error") == "korea_team_not_found":
-        raise HTTPException(status_code=502, detail="한국 대표팀 스쿼드를 찾지 못했습니다.")
-
-    try:
-        result = await generate_opponent_briefing(
-            opp_key,
-            korea_payload=korea_p,
-            opponent_payload=opp_p,
-            opponent_label_ko=label,
-        )
+        return await recommend_formations_for_core_squad(team, formations)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
     except RuntimeError as e:
         msg = str(e)
         if "OPENAI_API_KEY" in msg:
             raise HTTPException(status_code=501, detail=msg) from e
-        if msg == "OPENAI_HTTP_ERROR":
-            raise HTTPException(status_code=502, detail="AI 서버와 통신하지 못했습니다.") from e
         raise HTTPException(status_code=502, detail=msg) from e
-    except httpx.HTTPError as e:
-        raise HTTPException(status_code=502, detail=f"AI HTTP 오류: {e}") from e
-
-    bucket[opp_key] = {"expires_at": now + ttl, "value": result}
-    _BRIEFING_CACHE["by_opponent"] = bucket
-    return result
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"AI 포메이션 추천 실패: {e!s}") from e
 
 
 @router.post("/korea/best-xi")

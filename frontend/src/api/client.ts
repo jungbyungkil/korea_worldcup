@@ -1,13 +1,33 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";
+/**
+ * - 미설정: 로컬 개발 기본값 `http://localhost:8000`
+ * - 빈 문자열 ``: 현재 페이지와 동일 출처로 요청 → 배포 시 호스트에서 `/api`를 백엔드로 프록시할 때 사용
+ */
+const envBase = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim();
+const API_BASE =
+  envBase === ""
+    ? ""
+    : (envBase ?? "http://localhost:8000").replace(/\/$/, "");
 
 export function apiUrl(path: string): string {
   const p = path.startsWith("/") ? path : `/${path}`;
-  return `${API_BASE.replace(/\/$/, "")}${p}`;
+  if (API_BASE === "") {
+    return p;
+  }
+  return `${API_BASE}${p}`;
 }
 
 /** 빌드 시 박힌 API 베이스(비밀 아님) — 연결 실패 시 사용자 안내용 */
 export function getConfiguredApiBase(): string {
-  return API_BASE.replace(/\/$/, "");
+  if (API_BASE === "") {
+    return `${typeof window !== "undefined" ? window.location.origin : ""}(동일 출처 /api)`;
+  }
+  return API_BASE;
+}
+
+function _isHttpsPageCallingLocalhostApi(): boolean {
+  if (typeof window === "undefined") return false;
+  if (window.location.protocol !== "https:") return false;
+  return API_BASE.startsWith("http://localhost") || API_BASE.startsWith("http://127.0.0.1");
 }
 
 /**
@@ -27,12 +47,17 @@ export function humanizeFetchError(error: unknown): string {
     m.includes("network request failed")
   ) {
     const base = getConfiguredApiBase();
+    const mixed = _isHttpsPageCallingLocalhostApi();
+    const head = mixed
+      ? "지금 HTTPS 사이트인데 API가 http://localhost 로 박혀 있습니다. 브라우저가 막거나(Mixed content) 사용자 PC의 로컬 서버를 찾으려 해 연결이 실패합니다."
+      : "서버에 연결할 수 없습니다.";
     return [
-      "서버에 연결할 수 없습니다.",
-      `현재 이 앱이 호출하는 API 주소: ${base}`,
-      "배포된 사이트(HTTPS)에서 볼 때는 프론트를 빌드할 때 VITE_API_BASE_URL을 실제 백엔드 HTTPS 주소(예: Render의 https://○○.onrender.com, 끝에 / 없이)로 넣었는지 확인하세요.",
-      "https 페이지에서 http://localhost 또는 http API만 쓰면 브라우저가 요청을 막을 수 있습니다(Mixed content).",
-      "백엔드가 꺼져 있거나(Render 무료는 미사용 시 슬립) 주소가 틀린 경우에도 같은 메시지가 납니다.",
+      head,
+      `현재 이 앱이 호출하는 API: ${base}`,
+      mixed
+        ? "해결: 프론트를 다시 빌드할 때 .env.production 등에 VITE_API_BASE_URL=https://(백엔드 HTTPS 주소) 를 넣으세요. 끝에 / 없음. 그다음 정적 호스팅에 새 dist를 올립니다."
+        : "배포(HTTPS)에서는 빌드 시 VITE_API_BASE_URL을 공개 백엔드 HTTPS 주소(예: https://○○.onrender.com)로 넣거나, 호스트에서 /api 를 백엔드로 넘기고 빌드 시 VITE_API_BASE_URL=(빈 값)으로 두는 방식을 쓸 수 있습니다.",
+      "로컬 개발이면 백엔드(uvicorn)가 8000에서 떠 있는지, 방화벽·VPN을 확인하세요. Render 무료는 미사용 시 슬립되면 첫 요청이 느리거나 실패할 수 있습니다.",
     ].join(" ");
   }
   return raw;

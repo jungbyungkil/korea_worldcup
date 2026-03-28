@@ -54,9 +54,10 @@ def _normalize_squad_entry(raw: Any) -> dict[str, Any] | None:
             pass
     if raw.get("number") is not None:
         out["number"] = raw.get("number")
-    for k in ("club", "appearances", "goals", "minutes", "rating"):
+    for k in ("club", "appearances", "goals", "minutes", "rating", "photo"):
         if raw.get(k) is not None:
-            out[k] = raw.get(k)
+            v = raw.get(k)
+            out[k] = str(v).strip()[:800] if k == "photo" else v
     return out
 
 
@@ -103,10 +104,40 @@ def _validate_xi(
     return out
 
 
+def _normalize_slot_reasons_ko(
+    raw: Any,
+    xi_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """슬롯별 감독 코멘트(한국어). AI가 빠뜨리면 reason_ko 는 빈 문자열."""
+    by_slot: dict[str, str] = {}
+    if isinstance(raw, list):
+        for item in raw:
+            if not isinstance(item, dict):
+                continue
+            s = str(item.get("slot") or "").strip()
+            r = str(item.get("reason_ko") or "").strip()
+            if s and r:
+                by_slot[s] = r[:500]
+    out: list[dict[str, Any]] = []
+    for row in xi_rows:
+        slot = str(row.get("slot") or "")
+        out.append(
+            {
+                "slot": slot,
+                "player_id": row.get("player_id"),
+                "player_name": row.get("player_name"),
+                "reason_ko": by_slot.get(slot, ""),
+            }
+        )
+    return out
+
+
 async def generate_best_xi(
     formation: str,
     squad: list[Any],
     injured_player_ids: list[int] | None = None,
+    *,
+    coach_blurb: str | None = None,
 ) -> dict[str, Any]:
     key = os.getenv("OPENAI_API_KEY")
     if not key or not key.strip():
@@ -135,15 +166,19 @@ async def generate_best_xi(
     if len(eligible) < 11:
         raise ValueError("부상 제외 후 스쿼드가 11명 미만입니다.")
 
+    coach = (coach_blurb or "Korea Republic national football team").strip()
     system = (
-        "You are the head coach of Korea Republic national football team. "
+        f"You are the head coach of {coach}. "
         "Pick the best starting 11 from the given squad for the specified formation. "
         "Use ONLY player ids from the squad list. "
         "Respect typical positional roles (GK must be a goalkeeper; do not put outfield players in GK). "
         "Consider club form (appearances, goals, minutes) when available. "
         "Return ONLY valid JSON with keys: "
         "xi (array of exactly 11 objects, each with slot, player_id, player_name), "
-        "notes_ko (one short line), rationale_ko (2-4 sentences in Korean explaining choices)."
+        "slot_reasons_ko (array of exactly 11 objects, same order as slots_in_order: "
+        "each {slot, reason_ko} with one Korean sentence why that player fits that slot in this formation), "
+        "notes_ko (one short line), rationale_ko (2-4 sentences in Korean explaining overall lineup choices). "
+        "slot_reasons_ko.reason_ko and rationale_ko must be in Korean (한국어), even for non-Korean player names."
     )
 
     user_payload = {
@@ -156,7 +191,8 @@ async def generate_best_xi(
 
     user_text = (
         "아래 JSON을 읽고, slots_in_order의 각 슬롯에 정확히 한 명씩 배정하세요. "
-        "xi 배열의 길이는 11이고, slot 값은 slots_in_order와 동일한 철자여야 합니다.\n\n"
+        "xi 배열의 길이는 11이고, slot 값은 slots_in_order와 동일한 철자여야 합니다. "
+        "slot_reasons_ko는 slots_in_order와 동일한 순서로 11개, 각 슬롯에 배정한 선수를 감독 입장에서 한 문장으로 설명하세요.\n\n"
         + json.dumps(user_payload, ensure_ascii=False, default=str)[:28000]
     )
 
@@ -195,11 +231,14 @@ async def generate_best_xi(
     for row in xi_validated:
         row["player_name"] = id_to_name.get(row["player_id"], row["player_name"])
 
+    slot_reasons = _normalize_slot_reasons_ko(parsed.get("slot_reasons_ko"), xi_validated)
+
     return {
         "formation": formation,
         "formation_hint_ko": hint,
         "slots": slots,
         "xi": xi_validated,
+        "slot_reasons_ko": slot_reasons,
         "notes_ko": str(parsed.get("notes_ko") or ""),
         "rationale_ko": str(parsed.get("rationale_ko") or ""),
     }

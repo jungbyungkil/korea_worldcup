@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import GroupStageMatchSpotlight from "./GroupStageMatchSpotlight";
 import KoreaOpponentEloStrip from "./KoreaOpponentEloStrip";
-import GroupStageAiFunPanel from "./GroupStageAiFunPanel";
 import { GROUP_A_FALLBACK_KICKOFF_UTC, MEXICO_MATCH_HOOKS_KO, NAMU_WIKI_2026 } from "../data/korea2026NamuContext";
 
 type Props = {
@@ -41,21 +40,12 @@ export default function MexicoMatchSpotlight({ officialKickoffIso, officialVenue
         </>
       }
       footer={
-        <>
-          <GroupStageAiFunPanel
-            opponent="mexico"
-            panelTitle="멕시코전 · AI 재미 패널"
-            opponentFlag="🇲🇽"
-            opponentShortLabel="멕시코"
-            theme="mexico"
-          />
-          <KoreaOpponentEloStrip
-            opponentQuery="Mexico"
-            opponentFlag="🇲🇽"
-            opponentNameKo="멕시코"
-            visualVariant="mexico"
-          />
-        </>
+        <KoreaOpponentEloStrip
+          opponentQuery="Mexico"
+          opponentFlag="🇲🇽"
+          opponentNameKo="멕시코"
+          visualVariant="mexico"
+        />
       }
     />
   );

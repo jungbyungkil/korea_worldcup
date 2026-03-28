@@ -1,4 +1,12 @@
-/** Must match backend ai_best_xi.FORMATION_SLOTS slot ids */
+/** Must match backend ai_best_xi.FORMATION_SLOTS slot ids (순서 = AI 놀이터 슬롯 선택 UI) */
+
+export const FORMATION_SLOT_ORDER: Record<string, string[]> = {
+  "4-1-4-1": ["GK", "RB", "RCB", "LCB", "LB", "CDM", "RM", "RCM", "LCM", "LM", "ST"],
+  "4-4-2": ["GK", "RB", "RCB", "LCB", "LB", "RM", "RCM", "LCM", "LM", "ST_L", "ST_R"],
+  "4-3-3": ["GK", "RB", "RCB", "LCB", "LB", "RCM", "CM", "LCM", "RW", "ST", "LW"],
+  "3-5-2": ["GK", "RCB", "CB", "LCB", "RWB", "RCM", "CM", "LCM", "LWB", "ST_L", "ST_R"],
+  "5-3-2": ["GK", "LWB", "LCB", "CB", "RCB", "RWB", "CM_L", "CM", "CM_R", "ST_L", "ST_R"],
+};
 
 export const FORMATIONS: { id: string; label: string; desc: string }[] = [
   {
@@ -100,6 +108,11 @@ const COORDS: Record<string, Record<string, { left: number; top: number }>> = {
 
 export function getSlotCoords(formation: string, slot: string): { left: number; top: number } {
   return COORDS[formation]?.[slot] ?? { left: 50, top: 45 };
+}
+
+/** 백엔드 ``FORMATION_SLOTS`` 와 동일한 슬롯 배열 */
+export function slotsForFormation(formationId: string): string[] {
+  return FORMATION_SLOT_ORDER[formationId] ?? [];
 }
 
 export const SLOT_LABEL_KO: Record<string, string> = {

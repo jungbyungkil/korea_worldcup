@@ -11,14 +11,15 @@ export default function MexicoTeam() {
       heading="멕시코 국가대표 · El Tri"
       lead={
         <>
-          2026 북중미 월드컵 공동 개최국 중 하나인 멕시코 대표팀 소개와, API 기반 <strong>예시 베스트 11</strong>
-          (4-3-3 배치)입니다.
+          2026 북중미 월드컵 공동 개최국 <strong>El Tri</strong> — 아래 <strong>예시 23인</strong>·
+          <strong>감독 AI 포메이션</strong>은 앱에 포함된 데이터입니다. API-Football이 되면 부상·스쿼드 요약이 아래에
+          이어집니다.
         </>
       }
       namuUrl={MEXICO_NAMU_WIKI_URL}
       namuArticleTitle="멕시코 축구 국가대표팀"
       introSections={mexicoIntroSections}
-      aiFanLinesTeamKey="mexico"
+      coreSquadTeamKey="mexico"
     />
   );
 }

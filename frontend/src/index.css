@@ -187,6 +187,7 @@ code {
 
 .app-main {
   flex: 1;
+  min-width: 0;
 }
 
 .page {
@@ -756,61 +757,38 @@ code {
   margin-bottom: 1rem;
 }
 
-.formation-picker {
-  display: grid;
-  gap: 0.5rem;
-  margin: 1rem 0;
-}
-
-@media (min-width: 640px) {
-  .formation-picker {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-.formation-option {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.5rem 0.65rem;
-  align-items: flex-start;
-  padding: 0.65rem 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: #f8fafc;
-  cursor: pointer;
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-}
-
-.formation-option:hover {
-  border-color: #c7d2fe;
-}
-
-.formation-option--on {
-  border-color: var(--color-primary);
-  background: var(--color-primary-soft);
-  box-shadow: 0 0 0 1px rgba(29, 78, 216, 0.12);
-}
-
-.formation-option input {
-  margin-top: 0.35rem;
-  accent-color: var(--color-primary);
-  cursor: pointer;
-}
-
-.formation-option__main {
+.formation-select-wrap {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.35rem;
+  margin-top: 0.65rem;
 }
 
-.formation-option__main strong {
+.formation-select-wrap label {
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.formation-select {
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.55rem 0.75rem;
   font-size: 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
 }
 
-.formation-option__desc {
-  font-size: 0.78rem;
-  color: var(--color-muted);
-  line-height: 1.45;
+.formation-select:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.formation-select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
 }
 
 .best-xi-actions {
@@ -915,7 +893,7 @@ code {
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid rgba(15, 23, 42, 0.12);
   border-radius: 10px;
-  padding: 0.3rem 0.35rem 0.4rem;
+  padding: 0.35rem 0.4rem 0.42rem;
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
   text-align: center;
   backdrop-filter: blur(6px);
@@ -923,35 +901,16 @@ code {
   box-sizing: border-box;
 }
 
-.formation-mark__photo {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 0.2rem;
-  display: block;
-  background: #e2e8f0;
-}
-
-.formation-mark__photo--ph {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.1rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .formation-mark__slot {
   font-size: 0.62rem;
   font-weight: 700;
   color: var(--color-primary);
   letter-spacing: 0.02em;
-  margin-bottom: 0.08rem;
+  margin-bottom: 0.12rem;
 }
 
 .formation-mark__name {
-  font-size: 0.6rem;
+  font-size: 0.64rem;
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-text);
@@ -1584,154 +1543,6 @@ code {
   }
 }
 
-/* 상대별 AI 전술·스쿼드 브리핑 (2026 한국 대시보드) */
-.opponent-briefing {
-  margin-bottom: 1.5rem;
-}
-
-.opponent-briefing__lead {
-  margin: 0 0 0.75rem;
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
-.opponent-briefing__btns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.opponent-briefing__btn {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.1rem;
-  text-align: left;
-}
-
-.opponent-briefing__btn-sub {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 400;
-  opacity: 0.82;
-}
-
-.opponent-briefing__err {
-  margin: 0.35rem 0 0.5rem;
-  font-size: 0.88rem;
-}
-
-.opponent-briefing__out {
-  margin-top: 0.85rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.opponent-briefing__head {
-  margin-bottom: 0.85rem;
-}
-
-.opponent-briefing__h3 {
-  margin: 0 0 0.35rem;
-  font-size: 1.05rem;
-}
-
-.opponent-briefing__one {
-  margin: 0 0 0.35rem;
-  font-weight: 600;
-  line-height: 1.45;
-}
-
-.opponent-briefing__meta {
-  margin: 0;
-  font-size: 0.82rem;
-}
-
-.opponent-briefing__grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-@media (max-width: 720px) {
-  .opponent-briefing__grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.opponent-briefing__card {
-  background: #f8fafc;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  padding: 0.75rem 0.85rem;
-}
-
-.opponent-briefing__h4 {
-  margin: 0 0 0.5rem;
-  font-size: 0.88rem;
-  color: var(--color-primary);
-}
-
-.opponent-briefing__block {
-  margin-bottom: 0.65rem;
-  font-size: 0.84rem;
-  line-height: 1.55;
-}
-
-.opponent-briefing__block:last-child {
-  margin-bottom: 0;
-}
-
-.opponent-briefing__block p {
-  margin: 0.25rem 0 0;
-}
-
-.opponent-briefing__k {
-  display: block;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--color-muted);
-}
-
-.opponent-briefing__watch {
-  margin: 0.5rem 0 0;
-  padding-left: 1.1rem;
-  font-size: 0.82rem;
-  line-height: 1.5;
-}
-
-.opponent-briefing__tag {
-  display: inline-block;
-  font-size: 0.65rem;
-  font-weight: 700;
-  padding: 0.08rem 0.35rem;
-  border-radius: 4px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-}
-
-.opponent-briefing__duels {
-  margin-top: 0.85rem;
-  padding: 0.65rem 0.75rem;
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  border-radius: var(--radius-sm);
-  font-size: 0.84rem;
-}
-
-.opponent-briefing__duels ul {
-  margin: 0.35rem 0 0;
-  padding-left: 1.1rem;
-}
-
-.opponent-briefing__disc {
-  margin: 0.75rem 0 0;
-  font-size: 0.76rem;
-  line-height: 1.45;
-}
-
 /* 7-step AI fun (공통) */
 .ai-seven-panel {
   margin-bottom: 1.25rem;
@@ -1748,6 +1559,12 @@ code {
   gap: 0.65rem 1rem;
 }
 
+.ai-seven-row > .ai-seven-label {
+  flex: 1 1 13rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .ai-seven-label {
   display: flex;
   flex-direction: column;
@@ -1759,12 +1576,15 @@ code {
 
 .ai-seven-select,
 .ai-seven-input {
-  min-width: 12rem;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
   padding: 0.35rem 0.5rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   font: inherit;
   font-size: 0.88rem;
+  box-sizing: border-box;
 }
 
 .ai-seven-btn-row {
@@ -1836,47 +1656,184 @@ code {
   font-size: 0.88rem;
 }
 
+/* AI 놀이터 */
+.ai-playground-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  padding-bottom: 0.2rem;
+  scrollbar-width: thin;
+}
+
+.ai-playground-tab {
+  flex-shrink: 0;
+  white-space: nowrap;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ai-playground-tab--on {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: rgba(29, 78, 216, 0.08);
+}
+
+.ai-playground-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: 0.75rem;
+  align-items: flex-end;
+}
+
+.ai-playground-row > .ai-seven-label {
+  flex: 1 1 10rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ai-playground-slot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 11rem), 1fr));
+  gap: 0.55rem 0.65rem;
+  margin-top: 0.85rem;
+}
+
+.ai-playground-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.ai-playground-slot__lbl {
+  color: var(--color-primary);
+}
+
+.ai-playground-slot .ai-seven-select {
+  min-width: 0;
+  width: 100%;
+}
+
+.ai-playground-result {
+  margin-top: 1rem;
+  padding: 0.75rem 0.85rem;
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.ai-playground-spirit {
+  font-size: 1.05rem;
+  margin: 0 0 0.5rem;
+}
+
+.ai-playground-oneliner {
+  font-weight: 700;
+  font-size: 0.98rem;
+  margin: 0 0 0.65rem;
+  line-height: 1.45;
+}
+
+.ai-playground-easter {
+  margin: 0.85rem 0 0;
+  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-sm);
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.ai-playground-radar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.ai-playground-radar-h {
+  margin: 0 0 0.5rem;
+  font-size: 0.92rem;
+}
+
+.ai-playground-bar {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr 2rem;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.76rem;
+  margin-bottom: 0.28rem;
+}
+
+.ai-playground-bar__track {
+  height: 6px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.ai-playground-bar__fill {
+  height: 100%;
+  border-radius: 999px;
+}
+
+.ai-playground-bar__fill--kr {
+  background: linear-gradient(90deg, #1d4ed8, #3b82f6);
+}
+
+.ai-playground-bar__fill--opp {
+  background: linear-gradient(90deg, #b45309, #f59e0b);
+}
+
+.ai-playground-bar__n {
+  text-align: right;
+  font-weight: 700;
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+
+.ai-playground-textarea {
+  width: 100%;
+  margin-top: 0.25rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.ai-playground-commentary {
+  margin: 0.85rem 0 0;
+  padding-left: 1.1rem;
+  line-height: 1.65;
+  font-size: 0.9rem;
+}
+
 .wc-tournament-modal__ai {
   margin: 1rem 0;
   padding: 0.75rem;
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   background: #f8fafc;
-}
-
-.home-daily-ai {
-  margin: 0 0 1.25rem;
-  padding: 1rem 1.15rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-  background: linear-gradient(120deg, #eff6ff 0%, #f0fdf4 100%);
-}
-
-.home-daily-ai--loading {
-  text-align: center;
-  font-size: 0.88rem;
-  padding: 0.65rem;
-}
-
-.home-daily-ai__badge {
-  display: inline-block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-  color: var(--color-primary);
-  margin-bottom: 0.35rem;
-}
-
-.home-daily-ai__title {
-  margin: 0 0 0.35rem;
-  font-size: 1.15rem;
-  line-height: 1.35;
-}
-
-.home-daily-ai__body {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.6;
 }
 
 /* 한국 월드컵 이력 — 개최국 클릭 → 상세·YouTube */
@@ -2226,6 +2183,21 @@ code {
     min-height: 44px;
     padding: 0.5rem 1rem;
   }
+
+  .ai-playground-tab {
+    min-height: 44px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* iOS: 포커스 시 자동 확대 방지 */
+  .input,
+  .textarea,
+  .ai-seven-select,
+  .ai-seven-input,
+  .ai-playground-textarea {
+    font-size: max(16px, 0.88rem);
+  }
 }
 
 @media (min-width: 900px) {
@@ -2251,5 +2223,111 @@ code {
 
   .hero h1 {
     font-size: clamp(1.35rem, 6vw, 1.85rem);
+  }
+
+  .page {
+    padding-left: calc(0.9rem + env(safe-area-inset-left, 0px));
+    padding-right: calc(0.9rem + env(safe-area-inset-right, 0px));
+    padding-top: 1.15rem;
+  }
+
+  .page-lead {
+    font-size: 0.9rem;
+  }
+
+  .panel {
+    padding: 0.9rem 0.85rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .hero {
+    padding: 1.35rem 1.1rem;
+    margin-bottom: 1.35rem;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .group-match-spotlight {
+    padding: 1rem 0.95rem 1.15rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .group-match-spotlight__grid {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.55rem 0.55rem;
+    font-size: 0.82rem;
+  }
+
+  .ai-playground-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ai-playground-row > .ai-seven-label {
+    flex: none;
+    width: 100%;
+    max-width: none;
+  }
+
+  .ai-playground-spirit {
+    font-size: 0.98rem;
+  }
+
+  .ai-playground-bar {
+    grid-template-columns: 3.5rem 1fr 1.75rem;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+  }
+
+  .ai-playground-radar-h {
+    font-size: 0.86rem;
+    overflow-wrap: anywhere;
+  }
+
+  .ai-seven-panel {
+    padding: 0.9rem 0.85rem;
+  }
+
+  .wiki-guide .wiki-source-banner {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.84rem;
+    overflow-wrap: anywhere;
+  }
+
+  .wc-tournament-modal__backdrop {
+    padding: 0.5rem;
+  }
+
+  .wc-tournament-modal__panel {
+    margin: 0 auto;
+    max-height: calc(100dvh - 1rem);
+    padding: 0.9rem 0.85rem 1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-header a.site-brand {
+    font-size: 0.92rem;
+    line-height: 1.25;
+  }
+
+  .formation-mark__slot {
+    font-size: 0.55rem;
+  }
+
+  .formation-mark__name {
+    font-size: 0.58rem;
   }
 }

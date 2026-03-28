@@ -161,123 +161,6 @@ export async function postWinProbability(payload: { opponent: string }): Promise
   return res.json();
 }
 
-export type GroupMatchAiFunMode = "probabilities" | "headline" | "wildcard";
-
-/** 백엔드 opponent 파라미터 */
-export type GroupMatchAiOpponent = "mexico" | "south_africa";
-
-export type GroupMatchAiFunProbabilities = {
-  mode: "probabilities";
-  opponent?: string;
-  korea_win_pct: number;
-  draw_pct: number;
-  opponent_win_pct: number;
-  tagline_ko: string;
-  disclaimer_ko: string;
-};
-
-export type GroupMatchAiFunHeadline = {
-  mode: "headline";
-  opponent?: string;
-  title_ko: string;
-  subtitle_ko: string;
-  flair_emoji: string;
-};
-
-export type GroupMatchAiFunWildcard = {
-  mode: "wildcard";
-  opponent?: string;
-  card_title_ko: string;
-  bullets_ko: string[];
-  twist_ko: string;
-};
-
-export type GroupMatchAiFunResponse =
-  | GroupMatchAiFunProbabilities
-  | GroupMatchAiFunHeadline
-  | GroupMatchAiFunWildcard;
-
-function groupMatchAiErrorMessage(res: Response, detail: unknown): string {
-  const d = typeof detail === "string" && detail.trim() ? detail : "";
-  if (d) return d;
-  if (res.status === 501) return "AI 카드를 지금은 사용할 수 없습니다. 서버 설정을 확인하세요.";
-  return "AI 카드를 불러오지 못했습니다.";
-}
-
-export type KoreaOpponentBriefingKey = "mexico" | "south_africa" | "playoff_d";
-
-export interface KoreaOpponentBriefingTactics {
-  how_they_play_ko?: string;
-  weaknesses_to_target_ko?: string;
-  our_approach_ko?: string;
-}
-
-export interface KoreaOpponentBriefingPlayerWatch {
-  team?: string;
-  name?: string;
-  note_ko?: string;
-}
-
-export interface KoreaOpponentBriefingSquad {
-  korea_strengths_ko?: string;
-  opponent_strengths_ko?: string;
-  injury_notes_ko?: string;
-  players_to_watch?: KoreaOpponentBriefingPlayerWatch[];
-}
-
-export interface KoreaOpponentBriefingResponse {
-  opponent: string;
-  opponent_label_ko?: string;
-  title_ko: string;
-  one_liner_ko: string;
-  tactics: KoreaOpponentBriefingTactics;
-  squad: KoreaOpponentBriefingSquad;
-  key_duels_ko: string[];
-  disclaimer_ko: string;
-}
-
-export async function postKoreaOpponentBriefing(
-  opponent: KoreaOpponentBriefingKey,
-): Promise<KoreaOpponentBriefingResponse> {
-  const res = await fetch(apiUrl("/api/v1/worldcup2026/korea/opponent-briefing"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ opponent }),
-  });
-  if (!res.ok) {
-    const body = (await res.json().catch(() => ({}))) as { detail?: string };
-    const d = typeof body.detail === "string" && body.detail.trim() ? body.detail : "";
-    throw new Error(
-      d ||
-        (res.status === 501 ? "AI 브리핑을 지금은 사용할 수 없습니다. 서버 설정을 확인하세요." : "상대 브리핑을 불러오지 못했습니다."),
-    );
-  }
-  return res.json();
-}
-
-export async function postGroupMatchAiFun(
-  mode: GroupMatchAiFunMode,
-  opponent: GroupMatchAiOpponent,
-): Promise<GroupMatchAiFunResponse> {
-  const res = await fetch(apiUrl("/api/v1/worldcup2026/group-match/ai-fun"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mode, opponent }),
-  });
-  if (!res.ok) {
-    const body = (await res.json().catch(() => ({}))) as { detail?: string };
-    throw new Error(groupMatchAiErrorMessage(res, body.detail));
-  }
-  return res.json();
-}
-
-/** @deprecated postGroupMatchAiFun(mode, "mexico") 사용 */
-export type MexicoAiFunMode = GroupMatchAiFunMode;
-export type MexicoAiFunResponse = GroupMatchAiFunResponse;
-export async function postMexicoMatchAiFun(mode: GroupMatchAiFunMode): Promise<GroupMatchAiFunResponse> {
-  return postGroupMatchAiFun(mode, "mexico");
-}
-
 /* -------- 7-step AI fun (순차 엔터 카드) -------- */
 
 const AI_FUN_SEVEN = "/api/v1/worldcup2026/ai-fun-seven";
@@ -412,40 +295,184 @@ export async function postAiFunStep5ProbabilityStory(opponent: string): Promise<
   return res.json();
 }
 
-export type AiFunStep6FanLines = {
-  team: string;
-  opponent_fan_line_ko: string;
-  korea_fan_line_ko: string;
-  disclaimer_ko: string;
+/** 정적 23인 + AI 포메이션 추천 */
+const WC_BASE = "/api/v1/worldcup2026";
+
+export type CoreSquadPlayer = {
+  id: number;
+  name: string;
+  position: string;
+  number?: number;
+  age?: number;
+  /** 소속 클럽(한글 표기, 예시 데이터) */
+  club_ko?: string;
 };
 
-export type AiFunTeamFanKey = "mexico" | "south_africa" | "playoff_d";
+export type CoreSquadBundle = {
+  team_key: string;
+  display_ko: string;
+  display_en: string;
+  note_ko?: string;
+  players: CoreSquadPlayer[];
+};
 
-export async function postAiFunStep6TeamFanLines(team: AiFunTeamFanKey): Promise<AiFunStep6FanLines> {
-  const res = await fetch(apiUrl(`${AI_FUN_SEVEN}/step6-team-fan-lines`), {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ team }),
-  });
+export type CoreFormationXiRow = {
+  slot: string;
+  player_id: number;
+  player_name: string;
+};
+
+export type CoreSlotReasonKo = {
+  slot: string;
+  player_id?: number;
+  player_name?: string;
+  reason_ko: string;
+};
+
+export type CoreFormationRecommendation = {
+  formation: string;
+  formation_hint_ko: string;
+  slots: string[];
+  xi: CoreFormationXiRow[];
+  slot_reasons_ko?: CoreSlotReasonKo[];
+  notes_ko: string;
+  rationale_ko: string;
+};
+
+export type CoreAiFormationsResponse = {
+  team_key: string;
+  display_ko?: string;
+  display_en?: string;
+  note_ko?: string;
+  squad_size: number;
+  formations_requested: string[];
+  recommendations: CoreFormationRecommendation[];
+};
+
+export type CoreSquadTabKey = "korea" | "mexico" | "south_africa";
+
+export function coreSquadPathForTab(tab: CoreSquadTabKey): string {
+  if (tab === "south_africa") return "south-africa";
+  return tab;
+}
+
+export async function getCoreSquad(tab: CoreSquadTabKey): Promise<CoreSquadBundle> {
+  const pathSeg = coreSquadPathForTab(tab);
+  const res = await fetch(apiUrl(`${WC_BASE}/core-squad/${pathSeg}`));
   if (!res.ok) {
-    const b = await res.json().catch(() => ({}));
-    throw new Error(aiSevenErr(res, b));
+    const b = await res.json().catch(() => ({})) as { detail?: string };
+    throw new Error(typeof b.detail === "string" ? b.detail : res.statusText);
   }
   return res.json();
 }
 
-export type AiFunStep7HomeDaily = {
-  headline_ko: string;
-  line_ko: string;
+export async function postCoreSquadAiFormations(
+  team: CoreSquadTabKey,
+  formations?: string[],
+): Promise<CoreAiFormationsResponse> {
+  const res = await fetch(apiUrl(`${WC_BASE}/core-squad/ai-formations`), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      team,
+      ...(formations?.length ? { formations } : {}),
+    }),
+  });
+  if (!res.ok) {
+    const b = await res.json().catch(() => ({})) as { detail?: string };
+    throw new Error(typeof b.detail === "string" ? b.detail : res.statusText);
+  }
+  return res.json();
+}
+
+/* -------- AI 놀이터 (한국 A조 재미용) -------- */
+
+const AI_PLAYGROUND = `${WC_BASE}/ai-playground`;
+
+export type PlaygroundCoachLineupRow = { slot: string; player_id: number };
+
+export type PlaygroundCoachResult = {
+  formation: string;
+  opponent: string;
+  lineup: Array<{
+    slot: string;
+    id?: number;
+    name?: string;
+    position?: string;
+    age?: number;
+    club_ko?: string;
+  }>;
+  win_spirit_percent: number;
+  one_liner_ko: string;
+  paragraph_ko: string;
+  coach_mode_ko: string;
   disclaimer_ko: string;
-  fixture_hint?: unknown;
 };
 
-export async function getAiFunStep7HomeDaily(): Promise<AiFunStep7HomeDaily> {
-  const res = await fetch(apiUrl(`${AI_FUN_SEVEN}/step7-home-daily`));
+export async function postPlaygroundCoachLineup(body: {
+  formation: string;
+  opponent: string;
+  xi: PlaygroundCoachLineupRow[];
+}): Promise<PlaygroundCoachResult> {
+  const res = await fetch(apiUrl(`${AI_PLAYGROUND}/coach-lineup`), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
   if (!res.ok) {
-    const b = await res.json().catch(() => ({}));
-    throw new Error(aiSevenErr(res, b));
+    const b = (await res.json().catch(() => ({}))) as { detail?: string };
+    throw new Error(typeof b.detail === "string" ? b.detail : res.statusText);
+  }
+  return res.json();
+}
+
+export type PlaygroundAceResult = {
+  korea_player: { id?: number; name?: string; position?: string };
+  opponent: string;
+  opponent_ace_name: string;
+  opponent_ace_ai_picked?: boolean;
+  radar_korea: Record<string, number>;
+  radar_opponent: Record<string, number>;
+  story_ko: string;
+  disclaimer_ko: string;
+};
+
+export async function postPlaygroundAceMatchup(body: {
+  korea_player_id: number;
+  opponent: string;
+  opponent_ace_name?: string;
+}): Promise<PlaygroundAceResult> {
+  const res = await fetch(apiUrl(`${AI_PLAYGROUND}/ace-matchup`), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const b = (await res.json().catch(() => ({}))) as { detail?: string };
+    throw new Error(typeof b.detail === "string" ? b.detail : res.statusText);
+  }
+  return res.json();
+}
+
+export type PlaygroundCommentaryResult = {
+  persona: string;
+  situation_ko: string;
+  lines_ko: string[];
+  disclaimer_ko: string;
+};
+
+export async function postPlaygroundBiasedCommentary(body: {
+  situation_ko: string;
+  persona: "national_hype" | "cold_facts" | "hype";
+}): Promise<PlaygroundCommentaryResult> {
+  const res = await fetch(apiUrl(`${AI_PLAYGROUND}/biased-commentary`), {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const b = (await res.json().catch(() => ({}))) as { detail?: string };
+    throw new Error(typeof b.detail === "string" ? b.detail : res.statusText);
   }
   return res.json();
 }

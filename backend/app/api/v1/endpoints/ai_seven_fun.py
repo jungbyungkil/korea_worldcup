@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import time
-from datetime import date
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
@@ -14,12 +12,6 @@ from app.services.korea_player_features import build_korea_player_features_paylo
 
 router = APIRouter(prefix="/worldcup2026/ai-fun-seven", tags=["ai-fun-seven"])
 
-_HOME_DAILY_CACHE: dict[str, Any] = {"key": "", "expires_at": 0.0, "value": None}
-
-
-def _home_daily_ttl() -> float:
-    return 300.0
-
 
 def _handle_ai_error(e: Exception) -> HTTPException:
     msg = str(e)
@@ -28,21 +20,6 @@ def _handle_ai_error(e: Exception) -> HTTPException:
     if msg == "OPENAI_HTTP_ERROR":
         return HTTPException(status_code=502, detail="AI 서버와 통신하지 못했습니다.")
     return HTTPException(status_code=502, detail=msg)
-
-
-def _pick_home_fixture(fixtures: list[dict[str, Any]]) -> dict[str, Any] | None:
-    today = date.today().isoformat()
-    done = {"FT", "AET", "PEN"}
-    for f in fixtures:
-        d = str(f.get("date") or "")[:10]
-        st = str(f.get("status") or "")
-        if d >= today and st not in done:
-            return f
-    for f in reversed(fixtures):
-        st = str(f.get("status") or "")
-        if st in done:
-            return f
-    return fixtures[0] if fixtures else None
 
 
 def _player_blob_from_payload(payload: dict[str, Any], player_id: int) -> tuple[dict[str, Any], list[dict[str, Any]] | None]:
@@ -195,55 +172,3 @@ async def ai_fun_step5_probability_story(body: dict[str, Any]) -> dict[str, Any]
     except RuntimeError as e:
         raise _handle_ai_error(e) from e
     return {"probability_bundle": bundle, **story}
-
-
-@router.post("/step6-team-fan-lines")
-async def ai_fun_step6_team_fan_lines(body: dict[str, Any]) -> dict[str, Any]:
-    team = str(body.get("team") or "").strip()
-    try:
-        return await s7.step6_team_fan_lines(team)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
-    except RuntimeError as e:
-        raise _handle_ai_error(e) from e
-
-
-@router.get("/step7-home-daily")
-async def ai_fun_step7_home_daily() -> dict[str, Any]:
-    now = time.time()
-    cache_key = date.today().isoformat()
-    if (
-        _HOME_DAILY_CACHE.get("value") is not None
-        and _HOME_DAILY_CACHE.get("key") == cache_key
-        and float(_HOME_DAILY_CACHE.get("expires_at") or 0) > now
-    ):
-        return _HOME_DAILY_CACHE["value"]
-
-    fixture_blob: dict[str, Any] | None = None
-    try:
-        fp = await wc.korea_fixtures()
-        fx = fp.get("fixtures") or []
-        if isinstance(fx, list):
-            f0 = _pick_home_fixture([x for x in fx if isinstance(x, dict)])
-            if f0:
-                fixture_blob = {
-                    "date": f0.get("date"),
-                    "opponent": f0.get("opponent"),
-                    "league": f0.get("league"),
-                    "status": f0.get("status"),
-                    "score": f0.get("score"),
-                    "venue": f0.get("venue"),
-                }
-    except Exception:
-        fixture_blob = None
-
-    try:
-        value = await s7.step7_home_daily(fixture_blob)
-    except RuntimeError as e:
-        raise _handle_ai_error(e) from e
-
-    out = {**value, "fixture_hint": fixture_blob}
-    _HOME_DAILY_CACHE["key"] = cache_key
-    _HOME_DAILY_CACHE["expires_at"] = now + _home_daily_ttl()
-    _HOME_DAILY_CACHE["value"] = out
-    return out

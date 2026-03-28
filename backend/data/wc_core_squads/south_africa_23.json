@@ -1,0 +1,31 @@
+{
+  "team_key": "south_africa",
+  "display_ko": "남아프리카 공화국",
+  "display_en": "South Africa",
+  "note_ko": "Bafana Bafana 예시 23인(비공식·앱용). 나이·소속은 참고용이며 실제 명단·이적과 다를 수 있습니다.",
+  "players": [
+    { "id": 3101, "name": "Ronwen Williams", "position": "GK", "number": 1, "age": 33, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3102, "name": "Veli Mothwa", "position": "GK", "number": 16, "age": 33, "club_ko": "아마줄루 FC" },
+    { "id": 3103, "name": "Ricardo Goss", "position": "GK", "number": 23, "age": 31, "club_ko": "수퍼스포트 유나이티드" },
+    { "id": 3104, "name": "Khuliso Mudau", "position": "DF", "number": 2, "age": 30, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3105, "name": "Mothobi Mvala", "position": "DF", "number": 5, "age": 31, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3106, "name": "Siyanda Xulu", "position": "DF", "number": 4, "age": 34, "club_ko": "수퍼스포트 유나이티드" },
+    { "id": 3107, "name": "Njabulo Ngcobo", "position": "DF", "number": 15, "age": 31, "club_ko": "카이저 치프스 FC" },
+    { "id": 3108, "name": "Aubrey Modiba", "position": "DF", "number": 3, "age": 30, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3109, "name": "Terrence Mashego", "position": "DF", "number": 14, "age": 29, "club_ko": "케이프 타운 시티 FC" },
+    { "id": 3110, "name": "Siyabonga Ngezana", "position": "DF", "number": 6, "age": 27, "club_ko": "스파르타 프라하" },
+    { "id": 3111, "name": "Grant Kekana", "position": "DF", "number": 20, "age": 33, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3112, "name": "Teboho Mokoena", "position": "MF", "number": 24, "age": 29, "club_ko": "사우샘프턴 FC" },
+    { "id": 3113, "name": "Sphephelo Sithole", "position": "MF", "number": 17, "age": 26, "club_ko": "폴로콰네 시티 FC" },
+    { "id": 3114, "name": "Jayden Adams", "position": "MF", "number": 8, "age": 22, "club_ko": "스텔렌보스 FC" },
+    { "id": 3115, "name": "Thapelo Maseko", "position": "MF", "number": 11, "age": 21, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3116, "name": "Themba Zwane", "position": "MF", "number": 10, "age": 36, "club_ko": "마멜로디 선다운스 FC" },
+    { "id": 3117, "name": "Oswin Appollis", "position": "MF", "number": 13, "age": 24, "club_ko": "폴로콰네 시티 FC" },
+    { "id": 3118, "name": "Mihlali Mayambela", "position": "FW", "number": 7, "age": 30, "club_ko": "아리스 리마솔" },
+    { "id": 3119, "name": "Evidence Makgopa", "position": "FW", "number": 9, "age": 25, "club_ko": "올랜도 파이어츠 FC" },
+    { "id": 3120, "name": "Lyle Foster", "position": "FW", "number": 12, "age": 25, "club_ko": "번리 FC" },
+    { "id": 3121, "name": "Zakhele Lepasa", "position": "FW", "number": 19, "age": 28, "club_ko": "수퍼스포트 유나이티드" },
+    { "id": 3122, "name": "Percy Tau", "position": "FW", "number": 18, "age": 31, "club_ko": "알 카하라바흐 FK" },
+    { "id": 3123, "name": "Thapelo Morena", "position": "FW", "number": 21, "age": 32, "club_ko": "마멜로디 선다운스 FC" }
+  ]
+}

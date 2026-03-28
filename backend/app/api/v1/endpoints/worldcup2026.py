@@ -9,7 +9,6 @@ from typing import Any
 
 from fastapi import APIRouter, HTTPException
 
-from app.services.ai_mexico_fun import group_match_ai_fun as group_match_ai_fun_service
 from app.services.api_football import api_get, api_get_all_pages
 
 
@@ -576,32 +575,3 @@ async def win_probability(payload: dict[str, Any]) -> dict[str, Any]:
         raise HTTPException(status_code=502, detail="최근 경기 데이터를 불러오지 못했습니다.") from e
 
     return build_win_probability_from_fixtures(opponent, fixtures_payload)
-
-
-async def _group_match_ai_fun_handler(payload: dict[str, Any]) -> dict[str, Any]:
-    mode = str(payload.get("mode") or "").strip().lower()
-    opponent = str(payload.get("opponent") or "mexico").strip()
-    try:
-        return await group_match_ai_fun_service(opponent, mode)
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
-    except RuntimeError as e:
-        msg = str(e)
-        if "OPENAI_API_KEY" in msg:
-            raise HTTPException(status_code=501, detail=msg) from e
-        if msg == "OPENAI_HTTP_ERROR":
-            raise HTTPException(status_code=502, detail="AI 서버와 통신하지 못했습니다.") from e
-        raise HTTPException(status_code=503, detail=msg) from e
-
-
-@router.post("/group-match/ai-fun")
-async def group_match_ai_fun_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
-    """조별리그 한국전 — 클릭형 재미용 AI 카드. body: mode, opponent (mexico | south_africa)."""
-    return await _group_match_ai_fun_handler(payload)
-
-
-@router.post("/mexico-match/ai-fun")
-async def mexico_match_ai_fun_endpoint(payload: dict[str, Any]) -> dict[str, Any]:
-    """하위 호환: 멕시코전 전용 URL — opponent=mexico 로 처리."""
-    merged = {**payload, "opponent": "mexico"}
-    return await _group_match_ai_fun_handler(merged)

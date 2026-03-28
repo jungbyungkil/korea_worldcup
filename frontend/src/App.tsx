@@ -50,8 +50,8 @@ export default function App() {
       <NavLink to="/2026/korea/players" className={navClass}>
         한국 대표팀 데이터
       </NavLink>
-      <NavLink to="/2026/playoff-d" className={navClass}>
-        A조 1차전 상대
+      <NavLink to="/2026/korea/playground" className={navClass}>
+        AI 놀이터
       </NavLink>
       <NavLink to="/2026/mexico" className={navClass}>
         멕시코 대표팀

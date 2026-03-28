@@ -1,11 +1,8 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { apiUrl, humanizeFetchError } from "../api/client";
-import {
-  postAiFunStep6TeamFanLines,
-  type AiFunStep6FanLines,
-  type AiFunTeamFanKey,
-} from "../api/worldcup2026";
+import type { CoreSquadTabKey } from "../api/worldcup2026";
+import CoreSquadSection from "../components/CoreSquadSection";
 import FormationPitch from "../components/FormationPitch";
 
 export type IntroSection = { title: string; paragraphs: string[] };
@@ -17,7 +14,6 @@ export interface NtStartingPlayer {
   number?: number | null;
   position?: string;
   age?: number;
-  photo?: string;
   club_stats_latest?: {
     club_name?: string;
     appearances?: number | string | null;
@@ -55,49 +51,9 @@ export type NationalTeamLightPageProps = {
   introSections: IntroSection[];
   /** 팀 미발견 시 추가 안내 */
   teamNotFoundHint?: ReactNode;
-  /** 팬 시점 한 줄 (멕시코/남아공/플레이오프 D) */
-  aiFanLinesTeamKey?: AiFunTeamFanKey;
+  /** 설정 시 예시 23인·AI 포메이션을 상단에 표시 (API 실패해도 본문은 유지) */
+  coreSquadTeamKey?: CoreSquadTabKey;
 };
-
-function TeamFanLinesPanel({ team }: { team: AiFunTeamFanKey }) {
-  const [loading, setLoading] = useState(false);
-  const [err, setErr] = useState<string | null>(null);
-  const [out, setOut] = useState<AiFunStep6FanLines | null>(null);
-
-  const run = () => {
-    setLoading(true);
-    setErr(null);
-    setOut(null);
-    void postAiFunStep6TeamFanLines(team)
-      .then(setOut)
-      .catch((e) => setErr(humanizeFetchError(e)))
-      .finally(() => setLoading(false));
-  };
-
-  return (
-    <section className="panel ai-seven-panel">
-      <h2 className="panel-title">팬 시점 한 줄</h2>
-      <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem" }}>
-        멕시코팬·남아공팬·A조 1차전 상대 팬 vs 한국 팬 톤으로 짧은 한 줄씩. 놀이용입니다.
-      </p>
-      <button type="button" className="btn btn-primary" disabled={loading} onClick={run}>
-        {loading ? "생성 중…" : "한 줄씩 생성"}
-      </button>
-      {err ? <p className="text-error">{err}</p> : null}
-      {out ? (
-        <div className="ai-seven-result" style={{ marginTop: "0.65rem" }}>
-          <p>
-            <strong>상대 팬:</strong> {out.opponent_fan_line_ko}
-          </p>
-          <p>
-            <strong>한국 팬:</strong> {out.korea_fan_line_ko}
-          </p>
-          <p className="muted ai-seven-disclaimer">{out.disclaimer_ko}</p>
-        </div>
-      ) : null}
-    </section>
-  );
-}
 
 function renderParagraph(para: string) {
   return para.split(/(\*\*[^*]+\*\*)/g).map((chunk, j) => {
@@ -122,7 +78,7 @@ export default function NationalTeamLightPage({
   namuArticleTitle,
   introSections,
   teamNotFoundHint,
-  aiFanLinesTeamKey,
+  coreSquadTeamKey,
 }: NationalTeamLightPageProps) {
   const [data, setData] = useState<NtLightPayload | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -159,17 +115,9 @@ export default function NationalTeamLightPage({
     }));
   }, [data?.starting_xi]);
 
-  const photoById = useMemo(() => {
-    const m = new Map<number, string | undefined>();
-    for (const p of data?.starting_xi ?? []) {
-      m.set(p.player_id, p.photo);
-    }
-    return m;
-  }, [data?.starting_xi]);
+  if (!coreSquadTeamKey && loading) return <div className="loading-screen">{loadingLabel}</div>;
 
-  if (loading) return <div className="loading-screen">{loadingLabel}</div>;
-
-  if (err)
+  if (!coreSquadTeamKey && err)
     return (
       <main className="page">
         <h1 className="page-title">{faultTitle}</h1>
@@ -185,7 +133,7 @@ export default function NationalTeamLightPage({
       </main>
     );
 
-  if (!data || data.error === notFoundError)
+  if (!coreSquadTeamKey && (!data || data.error === notFoundError))
     return (
       <main className="page">
         <h1 className="page-title">{faultTitle}</h1>
@@ -194,13 +142,31 @@ export default function NationalTeamLightPage({
       </main>
     );
 
-  const xi = data.starting_xi ?? [];
-  const pageTitle = resolveHeading?.(data) ?? heading;
+  const xi = data?.starting_xi ?? [];
+  const pageTitle = data && resolveHeading ? resolveHeading(data) : heading;
 
   return (
     <main className="page wiki-guide">
       <h1 className="page-title">{pageTitle}</h1>
       <p className="page-lead">{lead}</p>
+
+      {coreSquadTeamKey ? <CoreSquadSection teamKey={coreSquadTeamKey} headingPrefix={heading} /> : null}
+
+      {coreSquadTeamKey && loading ? (
+        <p className="muted" style={{ marginBottom: "1rem" }}>
+          API-Football 부가 정보를 불러오는 중…
+        </p>
+      ) : null}
+      {coreSquadTeamKey && err ? (
+        <p className="text-error" style={{ marginBottom: "1rem" }}>
+          API 연동 실패: {err} (위 예시 23인·AI는 그대로 이용할 수 있습니다.)
+        </p>
+      ) : null}
+      {coreSquadTeamKey && data?.error === notFoundError ? (
+        <p className="muted" style={{ marginBottom: "1rem" }}>
+          API-Football에서는 이 팀을 찾지 못했습니다. 스쿼드·선발은 위 예시 데이터를 사용하세요.
+        </p>
+      ) : null}
 
       <aside className="wiki-source-banner" role="note">
         <strong>참고</strong> — 상단 설명은{" "}
@@ -221,8 +187,7 @@ export default function NationalTeamLightPage({
         </section>
       ))}
 
-      {aiFanLinesTeamKey ? <TeamFanLinesPanel team={aiFanLinesTeamKey} /> : null}
-
+      {data && data.error !== notFoundError ? (
       <div className="panel">
         <h2 className="panel-title">API 요약</h2>
         <div className="player-summary-grid">
@@ -257,11 +222,12 @@ export default function NationalTeamLightPage({
           </p>
         ) : null}
       </div>
+      ) : null}
 
-      {xi.length > 0 ? (
+      {!coreSquadTeamKey && xi.length > 0 ? (
         <div className="panel best-xi-result" style={{ marginTop: "1rem" }}>
           <h2 className="panel-title">베스트 11 (4-3-3 예시)</h2>
-          <FormationPitch formation="4-3-3" xi={pitchXi} photoById={photoById} />
+          <FormationPitch formation="4-3-3" xi={pitchXi} />
           <div className="table-wrap" style={{ marginTop: "1.25rem" }}>
             <table className="data-table">
               <thead>
@@ -294,11 +260,11 @@ export default function NationalTeamLightPage({
             </table>
           </div>
         </div>
-      ) : (
+      ) : !coreSquadTeamKey && xi.length === 0 ? (
         <p className="text-error">선발 11명을 구성할 수 없습니다.</p>
-      )}
+      ) : null}
 
-      {data.injuries && data.injuries.length > 0 ? (
+      {data?.injuries && data.injuries.length > 0 ? (
         <div className="panel" style={{ marginTop: "1rem" }}>
           <h2 className="panel-title">부상·결장 (API)</h2>
           <div className="table-wrap">
@@ -332,8 +298,6 @@ export default function NationalTeamLightPage({
         <Link to="/2026/mexico">멕시코 대표</Link>
         {" · "}
         <Link to="/2026/south-africa">남아공 대표</Link>
-        {" · "}
-        <Link to="/2026/playoff-d">A조 1차전 상대(플레이오프 D)</Link>
       </p>
     </main>
   );
