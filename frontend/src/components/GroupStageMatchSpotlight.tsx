@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { countdownParts, dualTimeRowsForVenue } from "../lib/matchTimeZones";
 
-export type GroupMatchSpotlightVariant = "first-match" | "mexico" | "south-africa";
+export type GroupMatchSpotlightVariant = "czech" | "mexico" | "south-africa";
 
 type Props = {
   variant: GroupMatchSpotlightVariant;
   badge: string;
+  /** 배지 왼쪽 장식 이모지(접근성: 장식만) */
+  badgeEmoji?: string;
   title: string;
   subtitle: string;
   officialKickoffIso?: string | null;
@@ -36,6 +38,7 @@ function renderHookLine(line: string) {
 export default function GroupStageMatchSpotlight({
   variant,
   badge,
+  badgeEmoji,
   title,
   subtitle,
   officialKickoffIso,
@@ -75,7 +78,14 @@ export default function GroupStageMatchSpotlight({
   return (
     <section className={rootClass} aria-labelledby={ariaTitleId}>
       <div className="group-match-spotlight__header">
-        <span className="group-match-spotlight__badge">{badge}</span>
+        <span className="group-match-spotlight__badge">
+          {badgeEmoji ? (
+            <span className="group-match-spotlight__badge-emoji" aria-hidden>
+              {badgeEmoji}
+            </span>
+          ) : null}
+          {badge}
+        </span>
         <h2 id={ariaTitleId} className="group-match-spotlight__title">
           {title}
         </h2>

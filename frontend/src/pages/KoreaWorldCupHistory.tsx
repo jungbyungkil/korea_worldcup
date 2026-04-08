@@ -7,6 +7,7 @@ import {
   type KoreaWcVideoLink,
   type WcTournamentTsdbHighlight,
 } from "../api/history";
+import HistoryYearAiPanel from "../components/HistoryYearAiPanel";
 import { postAiFunStep2History, type AiFunStep2Scenario, type AiFunStep2Summary } from "../api/worldcup2026";
 
 export default function KoreaWorldCupHistory() {
@@ -89,6 +90,8 @@ export default function KoreaWorldCupHistory() {
         </strong>
       </p>
       {summary.notes ? <div className="callout" style={{ marginBottom: "1.25rem" }}>{summary.notes}</div> : null}
+
+      <HistoryYearAiPanel tournaments={tournaments} />
 
       <p className="muted wc-history-hint" style={{ marginBottom: "0.65rem", fontSize: "0.88rem" }}>
         💡 <strong>맨 오른쪽 열</strong>에 경기별 스코어 요약이 한 줄(한 행)에 모여 있습니다.{" "}

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { humanizeFetchError } from "../api/client";
+import { postAiPlaygroundWarmup } from "../api/aiInsights";
+import AiInsightPanel from "../components/AiInsightPanel";
 import {
   getCoreSquad,
   postPlaygroundAceMatchup,
@@ -17,15 +19,15 @@ import { FORMATIONS, SLOT_LABEL_KO, slotsForFormation } from "../formationLayout
 type TabKey = "coach" | "ace" | "commentary";
 
 const OPP_OPTIONS = [
-  { value: "group_first", label: "A조 1차전 (플레이오프 D 승자)" },
+  { value: "czech_republic", label: "A조 1차전 · 체코" },
   { value: "mexico", label: "A조 2차전 · 멕시코" },
   { value: "south_africa", label: "A조 3차전 · 남아공" },
 ] as const;
 
 const ACE_DEFAULTS: Record<string, string> = {
+  czech_republic: "Patrik Schick",
   mexico: "Santiago Giménez",
   south_africa: "Percy Tau",
-  group_first: "상대 플레이메이커 (가상)",
 };
 
 const RADAR_KEYS = ["pace", "shoot", "pass", "dribble", "defend", "hype"] as const;
@@ -71,6 +73,8 @@ function balancedDefaultLineup(squad: CoreSquadPlayer[], formation: string): Rec
 }
 
 export default function KoreaAiPlayground() {
+  const fetchWarmup = useCallback(() => postAiPlaygroundWarmup(), []);
+
   const [tab, setTab] = useState<TabKey>("coach");
   const [bundle, setBundle] = useState<CoreSquadBundle | null>(null);
   const [loadErr, setLoadErr] = useState<string | null>(null);
@@ -197,6 +201,12 @@ export default function KoreaAiPlayground() {
         조별리그 맥락에서 <strong>재미·상상</strong>을 돕는 LLM 놀이입니다. 전술·승률·스탯은{" "}
         <strong>공식 분석·베팅·실제 예측이 아닙니다.</strong>
       </p>
+
+      <AiInsightPanel
+        title="AI · 놀이터 오프닝"
+        description="아래 탭들로 들어가기 전에 오늘 분위기로 한 번 워밍업합니다."
+        fetchInsight={fetchWarmup}
+      />
 
       <div className="ai-playground-tabs" role="tablist" aria-label="AI 놀이터 메뉴">
         <button

@@ -19,6 +19,7 @@ export default function SouthAfricaTeam() {
       namuArticleTitle="남아프리카 공화국 축구 국가대표팀"
       introSections={southAfricaIntroSections}
       coreSquadTeamKey="south_africa"
+      aiOpponentSpot="south_africa"
     />
   );
 }

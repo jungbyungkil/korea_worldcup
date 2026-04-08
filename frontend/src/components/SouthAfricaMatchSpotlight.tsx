@@ -14,6 +14,7 @@ export default function SouthAfricaMatchSpotlight({ officialKickoffIso, official
     <GroupStageMatchSpotlight
       variant="south-africa"
       badge="A조 하이라이트 · 3차전"
+      badgeEmoji="🌅"
       title="🇰🇷 대한민국 vs 🇿🇦 남아프리카 공화국"
       subtitle="조별리그 최종전 · 몬테레이"
       officialKickoffIso={officialKickoffIso}

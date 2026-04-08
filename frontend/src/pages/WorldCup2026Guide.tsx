@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
+import { postAiWc2026Snack } from "../api/aiInsights";
+import AiInsightPanel from "../components/AiInsightPanel";
 import { postAiFunStep3Guide, type AiFunStep3AGroup } from "../api/worldcup2026";
 
 const NAMU_WIKI_URL =
@@ -57,6 +59,8 @@ function GuideAiStep3Panel() {
 }
 
 export default function WorldCup2026Guide() {
+  const fetchSnack = useCallback(() => postAiWc2026Snack(), []);
+
   return (
     <main className="page wiki-guide">
       <h1 className="page-title">2026 FIFA 월드컵 북중미 개최 요약</h1>
@@ -76,6 +80,12 @@ export default function WorldCup2026Guide() {
         </a>
         등 공개 자료를 바탕으로 앱용으로 요약한 것이며, 편집·일정은 언제든 바뀔 수 있습니다.
       </aside>
+
+      <AiInsightPanel
+        title="AI · 2026 대회 스낵 지식"
+        description="48개국·3개국 개최 등 이번 대회를 한 입 크기로 풀어줍니다."
+        fetchInsight={fetchSnack}
+      />
 
       <section className="panel wiki-hero-stats" aria-label="대회 한눈에">
         <h2 className="panel-title">대회 한눈에</h2>

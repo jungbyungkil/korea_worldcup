@@ -1,4 +1,6 @@
 import { type ReactNode, useEffect, useMemo, useState } from "react";
+import AiInsightPanel from "../components/AiInsightPanel";
+import { postAiSpotlightTeaser } from "../api/aiInsights";
 import { Link } from "react-router-dom";
 import { apiUrl, humanizeFetchError } from "../api/client";
 import type { CoreSquadTabKey } from "../api/worldcup2026";
@@ -14,6 +16,7 @@ export interface NtStartingPlayer {
   number?: number | null;
   position?: string;
   age?: number;
+  photo?: string | null;
   club_stats_latest?: {
     club_name?: string;
     appearances?: number | string | null;
@@ -26,7 +29,7 @@ export interface NtLightPayload {
   team?: string;
   team_id: number | null;
   error?: string;
-  /** UEFA 플레이오프 D 등 — 미확정/확정 */
+  /** 과거 플레이오프 TBD 등 — 대부분 confirmed */
   opponent_status?: "tbd" | "confirmed";
   playoff_slot?: string;
   team_display_ko?: string;
@@ -53,6 +56,8 @@ export type NationalTeamLightPageProps = {
   teamNotFoundHint?: ReactNode;
   /** 설정 시 예시 23인·AI 포메이션을 상단에 표시 (API 실패해도 본문은 유지) */
   coreSquadTeamKey?: CoreSquadTabKey;
+  /** A조 상대 팀 페이지 — 한국 팬 관점 짧은 LLM 카드 */
+  aiOpponentSpot?: "czech_republic" | "mexico" | "south_africa";
 };
 
 function renderParagraph(para: string) {
@@ -79,6 +84,7 @@ export default function NationalTeamLightPage({
   introSections,
   teamNotFoundHint,
   coreSquadTeamKey,
+  aiOpponentSpot,
 }: NationalTeamLightPageProps) {
   const [data, setData] = useState<NtLightPayload | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -95,7 +101,7 @@ export default function NationalTeamLightPage({
           let msg = `[HTTP ${r.status}] ${detail}`;
           if (r.status === 404) {
             msg +=
-              " — API 경로가 없습니다. 백엔드를 최신 코드로 저장한 뒤 backend 폴더에서 uvicorn을 다시 실행하세요. http://localhost:8000/docs 에 south-africa / mexico 가 보여야 합니다.";
+              " — API 경로가 없습니다. 백엔드를 최신 코드로 저장한 뒤 backend 폴더에서 uvicorn을 다시 실행하세요. http://localhost:8000/docs 에 czech-republic / mexico / south-africa 가 보여야 합니다.";
           }
           throw new Error(msg);
         }
@@ -114,6 +120,14 @@ export default function NationalTeamLightPage({
       player_name: p.player_name ?? String(p.player_id),
     }));
   }, [data?.starting_xi]);
+
+  const spotlightFetcher = useMemo(() => {
+    if (!aiOpponentSpot) {
+      return () => Promise.reject(new Error("spot 없음"));
+    }
+    const spot = aiOpponentSpot;
+    return () => postAiSpotlightTeaser(spot);
+  }, [aiOpponentSpot]);
 
   if (!coreSquadTeamKey && loading) return <div className="loading-screen">{loadingLabel}</div>;
 
@@ -175,6 +189,15 @@ export default function NationalTeamLightPage({
         </a>
         를 바탕으로 요약했습니다. 세부 전적·인명·랭킹은 위키 및 공식 발표를 확인하세요.
       </aside>
+
+      {aiOpponentSpot ? (
+        <AiInsightPanel
+          title="AI · 한국 팬 관전 포인트"
+          description="이 상대와의 A조 경기를 앞두고 짚어볼 만한 가벼운 각도입니다. (공식 분석·전술 조언 아님)"
+          fetchInsight={spotlightFetcher}
+          className="wiki-guide"
+        />
+      ) : null}
 
       {introSections.map((sec) => (
         <section key={sec.title} className="panel" style={{ marginBottom: "1rem" }}>
@@ -294,6 +317,8 @@ export default function NationalTeamLightPage({
         <Link to="/2026/korea">2026 한국 대시보드</Link>
         {" · "}
         <Link to="/2026/korea/players">한국 대표팀 데이터</Link>
+        {" · "}
+        <Link to="/2026/czech-republic">체코 대표</Link>
         {" · "}
         <Link to="/2026/mexico">멕시코 대표</Link>
         {" · "}

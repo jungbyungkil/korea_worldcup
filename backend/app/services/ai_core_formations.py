@@ -11,6 +11,7 @@ _COACH_BLURB: dict[str, str] = {
     "korea": "Korea Republic national football team",
     "mexico": "Mexico national football team (El Tri)",
     "south_africa": "South Africa national football team (Bafana Bafana)",
+    "czech_republic": "Czech Republic national football team",
 }
 
 _DEFAULT_FORMATIONS: tuple[str, ...] = tuple(sorted(FORMATION_SLOTS.keys()))
@@ -22,7 +23,7 @@ async def recommend_formations_for_core_squad(
 ) -> dict[str, Any]:
     k = normalize_team_key(team_key)
     if k not in _COACH_BLURB:
-        raise ValueError("team은 korea, mexico, south_africa 중 하나여야 합니다.")
+        raise ValueError("team은 korea, mexico, south_africa, czech_republic 중 하나여야 합니다.")
 
     bundle = load_core_squad(k)
     players = bundle.get("players") or []

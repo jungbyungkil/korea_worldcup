@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { postWinProbability, type WinProbabilityResponse } from "../api/worldcup2026";
 
-export type EloStripVisualVariant = "mexico" | "south-africa";
+export type EloStripVisualVariant = "czech" | "mexico" | "south-africa";
 
 type Props = {
   /** `postWinProbability`에 넘기는 상대 이름 (백엔드 Elo 키와 맞출 것) */
@@ -34,8 +34,16 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
     }
   }, [opponentQuery]);
 
+  /** 첫 페인트·스쿼드 이미지 요청 뒤로 미뤄 메인 콘텐츠가 먼저 그려지게 함 */
   useEffect(() => {
-    void fetchPred();
+    let cancelled = false;
+    const t = window.setTimeout(() => {
+      if (!cancelled) void fetchPred();
+    }, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(t);
+    };
   }, [fetchPred]);
 
   const winPct = prediction ? Math.round(prediction.probability.win * 1000) / 10 : 0;

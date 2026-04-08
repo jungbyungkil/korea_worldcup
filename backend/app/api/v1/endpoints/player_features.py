@@ -1,4 +1,4 @@
-"""한국·멕시코·남아공 대표팀 선수 feature API (스쿼드·부상·클럽 통계·옵션 라인업)."""
+"""한국·체코·멕시코·남아공 대표팀 선수 feature API (스쿼드·부상·클럽 통계·옵션 라인업)."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from app.services.ai_core_formations import recommend_formations_for_core_squad
 from app.services.static_core_squads import load_core_squad
 from app.services.korea_player_features import build_korea_player_features_payload
 from app.services.mexico_player_features import build_mexico_player_features_payload
-from app.services.playoff_d_opponent_features import build_playoff_d_opponent_payload
+from app.services.czech_player_features import build_czech_player_features_payload
 from app.services.south_africa_player_features import build_south_africa_player_features_payload
 
 router = APIRouter(prefix="/worldcup2026", tags=["worldcup2026"])
@@ -21,7 +21,7 @@ router = APIRouter(prefix="/worldcup2026", tags=["worldcup2026"])
 _AGG_CACHE: dict[str, Any] = {"expires_at": 0.0, "value": None}
 _MEXICO_AGG_CACHE: dict[str, Any] = {"expires_at": 0.0, "value": None}
 _SA_AGG_CACHE: dict[str, Any] = {"expires_at": 0.0, "value": None}
-_PLAYOFF_D_AGG_CACHE: dict[str, Any] = {"expires_at": 0.0, "value": None}
+_CZECH_AGG_CACHE: dict[str, Any] = {"expires_at": 0.0, "value": None}
 
 _BRIEFING_CACHE: dict[str, Any] = {"expires_at": 0.0, "by_opponent": {}}
 
@@ -52,6 +52,32 @@ def _south_africa_cache_ttl_seconds() -> int:
         return max(30, int(os.getenv("API_FOOTBALL_SOUTH_AFRICA_FEATURES_CACHE_SEC", "300")))
     except ValueError:
         return 300
+
+
+def _czech_cache_ttl_seconds() -> int:
+    try:
+        return max(30, int(os.getenv("API_FOOTBALL_CZECH_REPUBLIC_FEATURES_CACHE_SEC", "300")))
+    except ValueError:
+        return 300
+
+
+async def _czech_player_features_cached() -> dict[str, Any]:
+    now = time.time()
+    ttl = _czech_cache_ttl_seconds()
+    cached = _CZECH_AGG_CACHE.get("value")
+    if cached is not None and float(_CZECH_AGG_CACHE.get("expires_at") or 0) > now:
+        return cached
+
+    try:
+        payload = await build_czech_player_features_payload()
+    except RuntimeError as e:
+        raise HTTPException(status_code=501, detail=str(e)) from e
+    except Exception as e:
+        raise HTTPException(status_code=502, detail=f"체코 선수 데이터 조회 실패: {e!s}") from e
+
+    _CZECH_AGG_CACHE["value"] = payload
+    _CZECH_AGG_CACHE["expires_at"] = now + ttl
+    return payload
 
 
 @router.get("/korea/player-features")
@@ -148,43 +174,35 @@ async def invalidate_south_africa_player_features_cache() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@router.get("/czech-republic/player-features")
+async def czech_republic_player_features() -> dict[str, Any]:
+    """체코 대표팀 — A조 1차전 상대(UEFA 플레이오프 D 통과). 멕시코·남아공과 동일 형태의 경량 페이로드."""
+    return await _czech_player_features_cached()
+
+
+@router.post("/czech-republic/player-features/invalidate-cache")
+async def invalidate_czech_republic_player_features_cache() -> dict[str, str]:
+    _CZECH_AGG_CACHE["value"] = None
+    _CZECH_AGG_CACHE["expires_at"] = 0.0
+    return {"status": "ok"}
+
+
 @router.get("/group-a-playoff-d/player-features")
 async def group_a_playoff_d_player_features() -> dict[str, Any]:
-    """A조 1차전 상대(UEFA 플레이오프 D 승자).
-
-    - ``GROUP_A_PLAYOFF_D_TEAM_SEARCH`` 가 비어 있으면 ``opponent_status: tbd`` 와 메타만 반환.
-    - 값이 있으면 해당 팀을 API-Football로 검색해 멕시코·남아공과 동일 형태의 경량 페이로드.
-    """
-    now = time.time()
-    ttl = _playoff_d_cache_ttl_seconds()
-    cached = _PLAYOFF_D_AGG_CACHE.get("value")
-    if cached is not None and float(_PLAYOFF_D_AGG_CACHE.get("expires_at") or 0) > now:
-        return cached
-
-    try:
-        payload = await build_playoff_d_opponent_payload()
-    except RuntimeError as e:
-        raise HTTPException(status_code=501, detail=str(e)) from e
-    except Exception as e:
-        raise HTTPException(status_code=502, detail=f"플레이오프 D 상대 데이터 조회 실패: {e!s}") from e
-
-    _PLAYOFF_D_AGG_CACHE["value"] = payload
-    _PLAYOFF_D_AGG_CACHE["expires_at"] = now + ttl
-    return payload
+    """레거시 URL: A조 1차전 상대는 체코로 확정 — ``/czech-republic/player-features`` 와 동일 캐시·페이로드."""
+    return await _czech_player_features_cached()
 
 
 @router.post("/group-a-playoff-d/player-features/invalidate-cache")
 async def invalidate_playoff_d_player_features_cache() -> dict[str, str]:
-    _PLAYOFF_D_AGG_CACHE["value"] = None
-    _PLAYOFF_D_AGG_CACHE["expires_at"] = 0.0
-    return {"status": "ok"}
+    return await invalidate_czech_republic_player_features_cache()
 
 
 @router.get("/core-squad/{team_key}")
 async def get_core_squad_23(team_key: str) -> dict[str, Any]:
-    """한국·멕시코·남아공 예시 23인(정적 JSON).
+    """한국·체코·멕시코·남아공 예시 23인(정적 JSON).
 
-    ``team_key``: ``korea`` | ``mexico`` | ``south-africa`` | ``south_africa``
+    ``team_key``: ``korea`` | ``czech-republic`` | ``czech_republic`` | ``mexico`` | ``south-africa`` | ``south_africa``
     """
     try:
         return load_core_squad(team_key)
@@ -198,7 +216,7 @@ async def get_core_squad_23(team_key: str) -> dict[str, Any]:
 async def post_core_squad_ai_formations(body: dict[str, Any]) -> dict[str, Any]:
     """정적 23인을 기준으로 4-3-3·4-1-4-1 등 포메이션별 베스트 11을 AI가 채움.
 
-    Body: ``{ "team": "korea"|"mexico"|"south_africa", "formations": ["4-3-3","4-1-4-1"] }`` — formations 생략 시 전부.
+    Body: ``{ "team": "korea"|"czech_republic"|"mexico"|"south_africa", "formations": ["4-3-3","4-1-4-1"] }`` — formations 생략 시 전부.
     """
     team = str(body.get("team") or "").strip()
     raw_f = body.get("formations")

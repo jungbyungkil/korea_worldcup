@@ -36,27 +36,57 @@ export default function App() {
   const links = (
     <>
       <NavLink to="/" className={navClass} end>
+        <span className="nav-link__emoji" aria-hidden>
+          🏠
+        </span>
         홈
       </NavLink>
       <NavLink to="/history/worldcup" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          📜
+        </span>
         한국 월드컵 이력
       </NavLink>
       <NavLink to="/2026/worldcup" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          🌎
+        </span>
         2026 월드컵 개요
       </NavLink>
       <NavLink to="/2026/korea" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          🎯
+        </span>
         2026 한국 대시보드
       </NavLink>
       <NavLink to="/2026/korea/players" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          👤
+        </span>
         한국 대표팀 데이터
       </NavLink>
       <NavLink to="/2026/korea/playground" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          🤖
+        </span>
         AI 놀이터
       </NavLink>
+      <NavLink to="/2026/czech-republic" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          🇨🇿
+        </span>
+        체코 대표팀
+      </NavLink>
       <NavLink to="/2026/mexico" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          🇲🇽
+        </span>
         멕시코 대표팀
       </NavLink>
       <NavLink to="/2026/south-africa" className={navClass}>
+        <span className="nav-link__emoji" aria-hidden>
+          🇿🇦
+        </span>
         남아공 대표팀
       </NavLink>
     </>
@@ -68,7 +98,10 @@ export default function App() {
         <div className="site-header__inner">
           <div className="site-header__bar">
             <NavLink to="/" className="site-brand" end>
-              ⚽ 2026 북중미 월드컵
+              <span className="site-brand__mark" aria-hidden>
+                ⚽
+              </span>
+              <span>2026 북중미 월드컵</span>
             </NavLink>
             <button
               type="button"

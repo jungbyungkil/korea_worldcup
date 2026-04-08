@@ -306,6 +306,8 @@ export type CoreSquadPlayer = {
   age?: number;
   /** 소속 클럽(한글 표기, 예시 데이터) */
   club_ko?: string;
+  /** (선택) API JSON 호환용 — UI에서는 사용하지 않음 */
+  photo?: string | null;
 };
 
 export type CoreSquadBundle = {
@@ -320,6 +322,7 @@ export type CoreFormationXiRow = {
   slot: string;
   player_id: number;
   player_name: string;
+  player_photo?: string | null;
 };
 
 export type CoreSlotReasonKo = {
@@ -349,10 +352,11 @@ export type CoreAiFormationsResponse = {
   recommendations: CoreFormationRecommendation[];
 };
 
-export type CoreSquadTabKey = "korea" | "mexico" | "south_africa";
+export type CoreSquadTabKey = "korea" | "czech_republic" | "mexico" | "south_africa";
 
 export function coreSquadPathForTab(tab: CoreSquadTabKey): string {
   if (tab === "south_africa") return "south-africa";
+  if (tab === "czech_republic") return "czech-republic";
   return tab;
 }
 

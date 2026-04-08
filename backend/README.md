@@ -15,7 +15,8 @@ uvicorn app.main:app --reload --host 0.0.0.0
 - 한국 월드컵 본선 이력: http://localhost:8000/api/v1/korea/world-cup-history  
 - 대회 연도별 상세·TheSportsDB 하이라이트: http://localhost:8000/api/v1/korea/world-cup-tournament/2022  
 - 한국 대표팀 선수 feature: http://localhost:8000/api/v1/worldcup2026/korea/player-features  
-- A조 1차전 상대(UEFA 플레이오프 D): http://localhost:8000/api/v1/worldcup2026/group-a-playoff-d/player-features  
+- 체코 대표팀(A조 1차전): http://localhost:8000/api/v1/worldcup2026/czech-republic/player-features  
+- (별칭) group-a-playoff-d: 동일 응답  
 
 ## 한국 대표팀 선수·부상·클럽 스탯 API
 

@@ -20,6 +20,7 @@ export default function MexicoTeam() {
       namuArticleTitle="멕시코 축구 국가대표팀"
       introSections={mexicoIntroSections}
       coreSquadTeamKey="mexico"
+      aiOpponentSpot="mexico"
     />
   );
 }

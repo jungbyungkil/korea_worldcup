@@ -75,7 +75,7 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
         <h2 className="panel-title">{bundle ? sectionTitle : "예시 23인 & 감독 AI 포메이션"}</h2>
         <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem", lineHeight: 1.55 }}>
           앱에 포함된 <strong>예시 23인</strong>과, OpenAI가 감독 관점에서 뽑는 <strong>포메이션별 베스트 11</strong>·
-          <strong>슬롯별 선정 이유</strong>입니다. 실제 본선 명단과 다를 수 있습니다.
+          <strong>슬롯별 선정 이유</strong>입니다.
         </p>
       </section>
 
@@ -178,6 +178,16 @@ function FormationBlock({ rec }: { rec: CoreFormationRecommendation }) {
     return m;
   }, [reasons]);
 
+  const xiForPitch = useMemo(
+    () =>
+      rec.xi.map((row) => ({
+        slot: row.slot,
+        player_id: row.player_id,
+        player_name: row.player_name,
+      })),
+    [rec.xi],
+  );
+
   return (
     <section className="panel best-xi-result" style={{ marginBottom: "1.25rem" }}>
       <h3 className="panel-title" style={{ fontSize: "1.05rem" }}>
@@ -187,7 +197,7 @@ function FormationBlock({ rec }: { rec: CoreFormationRecommendation }) {
         </span>
       </h3>
       {rec.notes_ko ? <p className="muted">{rec.notes_ko}</p> : null}
-      <FormationPitch formation={rec.formation} xi={rec.xi} />
+      <FormationPitch formation={rec.formation} xi={xiForPitch} />
       {rec.rationale_ko ? (
         <div className="best-xi-rationale" style={{ marginTop: "0.75rem" }}>
           <h4 className="best-xi-rationale__title">전체 전술 요약 (감독)</h4>
@@ -204,7 +214,7 @@ function FormationBlock({ rec }: { rec: CoreFormationRecommendation }) {
             </tr>
           </thead>
           <tbody>
-            {rec.xi.map((row) => (
+            {xiForPitch.map((row) => (
               <tr key={row.slot}>
                 <td>
                   <strong>{row.slot}</strong>

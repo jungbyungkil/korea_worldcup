@@ -50,9 +50,9 @@ async def _chat_json(system: str, user: str, temperature: float = 0.85) -> dict[
 
 
 _OPP_BLURB: dict[str, str] = {
+    "czech_republic": "A조 1차전 상대 체코(UEFA 플레이오프 D 통과). 유럽 조직력·세트피스·전방 결정력.",
     "mexico": "A조 2차전 상대 멕시코(El Tri). 공동 개최국, 측면·전방 위협이 큼.",
     "south_africa": "A조 3차전 상대 남아프리카 공화국(Bafana Bafana). 역습·체력·압박.",
-    "group_first": "A조 1차전 — UEFA 플레이오프 D 승자(상대 미확정). 정보 부족, 역습·세트피스 일반론으로만.",
 }
 
 
@@ -110,7 +110,7 @@ async def coach_lineup_review(
     validated = _validate_user_xi(formation, xi_rows, allowed)
     opp = _OPP_BLURB.get((opponent_key or "").strip().lower())
     if not opp:
-        raise ValueError("opponent는 mexico, south_africa, group_first 중 하나여야 합니다.")
+        raise ValueError("opponent는 czech_republic, mexico, south_africa 중 하나여야 합니다.")
 
     lineup = []
     for row in validated:
@@ -183,7 +183,7 @@ def _opponent_player_candidates(opponent_key: str) -> list[dict[str, Any]]:
 
 def _fallback_ace_name(candidates: list[dict[str, Any]]) -> str:
     if not candidates:
-        return "플레이오프 D 에이스 (가상)"
+        return "유럽 에이스 (가상)"
     for pos in ("FW", "MF"):
         for c in candidates:
             if c.get("position") == pos:
@@ -230,7 +230,7 @@ async def ace_matchup(
     ok = (opponent_key or "").strip().lower()
     opp = _OPP_BLURB.get(ok)
     if not opp:
-        raise ValueError("opponent는 mexico, south_africa, group_first 중 하나여야 합니다.")
+        raise ValueError("opponent는 czech_republic, mexico, south_africa 중 하나여야 합니다.")
 
     user_ace = (opponent_ace_name or "").strip()
     candidates = _opponent_player_candidates(ok)
@@ -273,7 +273,7 @@ async def ace_matchup(
         ace_resolved = ""  # filled after AI
     else:
         system = (
-            "Korean fan app: fictional 1v1 matchup; opponent national team not in dataset (playoff path). "
+            "Korean fan app: fictional 1v1 matchup; opponent ace not from fixed candidate list. "
             "Return ONLY JSON: "
             "opponent_ace_name (one short plausible European NT-style player name, may be fictional), "
             "radar_korea, radar_opponent (same 6 keys 1-99), story_ko, disclaimer_ko (Korean)."

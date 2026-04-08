@@ -58,6 +58,7 @@ export function humanizeFetchError(error: unknown): string {
         ? "해결: 프론트를 다시 빌드할 때 .env.production 등에 VITE_API_BASE_URL=https://(백엔드 HTTPS 주소) 를 넣으세요. 끝에 / 없음. 그다음 정적 호스팅에 새 dist를 올립니다."
         : "배포(HTTPS)에서는 빌드 시 VITE_API_BASE_URL을 공개 백엔드 HTTPS 주소(예: https://○○.onrender.com)로 넣거나, 호스트에서 /api 를 백엔드로 넘기고 빌드 시 VITE_API_BASE_URL=(빈 값)으로 두는 방식을 쓸 수 있습니다.",
       "로컬 개발이면 백엔드(uvicorn)가 8000에서 떠 있는지, 방화벽·VPN을 확인하세요. Render 무료는 미사용 시 슬립되면 첫 요청이 느리거나 실패할 수 있습니다.",
+      "휴대폰에서 같은 Wi-Fi로 테스트할 때는 빌드 시 VITE_API_BASE_URL을 PC의 사설 IP(http://192.168.x.x:8000)로 두고, uvicorn은 --host 0.0.0.0 으로 실행하세요.",
     ].join(" ");
   }
   return raw;

@@ -166,7 +166,7 @@ async def step3_guide(kind: str, term: str) -> dict[str, Any]:
             "Return ONLY JSON: pairs (array of exactly 4 objects, each {q: string, a: string} in Korean), "
             "disclaimer_ko (schedule/teams can change)."
         )
-        user = "한국, 멕시코, 남아공, UEFA 플레이오프 D 승자 등 A조 입문용 Q&A."
+        user = "한국, 체코(A조 1차전), 멕시코, 남아공 등 A조 입문용 Q&A."
         p = await _chat_json(system, user, 0.78)
         pairs = p.get("pairs")
         out: list[dict[str, str]] = []

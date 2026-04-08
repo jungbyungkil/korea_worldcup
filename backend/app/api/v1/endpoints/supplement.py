@@ -17,6 +17,7 @@ router = APIRouter(prefix="/worldcup2026/supplement", tags=["supplement"])
 
 A_GROUP_TEAMS: dict[str, str] = {
     "korea": "South Korea",
+    "czech_republic": "Czech Republic",
     "mexico": "Mexico",
     "south_africa": "South Africa",
 }
@@ -118,7 +119,7 @@ async def fd_world_cup_matches(
 
 @router.get("/thesportsdb/team-media")
 async def tsdb_team_media(
-    team: str = Query("korea", description="korea | mexico | south_africa 또는 임의 검색어"),
+    team: str = Query("korea", description="korea | czech_republic | mexico | south_africa 또는 임의 검색어"),
 ) -> dict[str, Any]:
     q = A_GROUP_TEAMS.get(team.lower().replace(" ", "_"), team)
     row = await thesportsdb.search_team_first(q)
@@ -129,7 +130,7 @@ async def tsdb_team_media(
 
 @router.get("/thesportsdb/a-group-media")
 async def tsdb_a_group_media() -> dict[str, Any]:
-    """A조 3개 상대 + 대한민국 배지(TheSportsDB) — 캐시로 호출 최소화."""
+    """A조 상대국(체코·멕시코·남아공) + 대한민국 배지(TheSportsDB) — 캐시로 호출 최소화."""
     out: dict[str, Any] = {}
     try:
         for slug, name in A_GROUP_TEAMS.items():

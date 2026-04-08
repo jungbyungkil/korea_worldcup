@@ -11,8 +11,10 @@
 | `POST` | `/api/v1/worldcup2026/mexico/player-features/invalidate-cache` | 멕시코 집계 캐시 무효화 |
 | `GET` | `/api/v1/worldcup2026/south-africa/player-features` | 남아공 대표팀 — 휴리스틱 베스트 11(4-3-3) + (옵션) 클럽 통계 |
 | `POST` | `/api/v1/worldcup2026/south-africa/player-features/invalidate-cache` | 남아공 집계 캐시 무효화 |
-| `GET` | `/api/v1/worldcup2026/group-a-playoff-d/player-features` | A조 1차전 상대(UEFA 플레이오프 D) — 미확정 시 메타만, 확정 시 경량 페이로드 |
-| `POST` | `/api/v1/worldcup2026/group-a-playoff-d/player-features/invalidate-cache` | 플레이오프 D 집계 캐시 무효화 |
+| `GET` | `/api/v1/worldcup2026/czech-republic/player-features` | 체코 대표팀 — A조 1차전 상대(UEFA 플레이오프 D 통과), 멕시코·남아공과 동일 형태 |
+| `POST` | `/api/v1/worldcup2026/czech-republic/player-features/invalidate-cache` | 체코 집계 캐시 무효화 |
+| `GET` | `/api/v1/worldcup2026/group-a-playoff-d/player-features` | 레거시 URL — 위 체코 엔드포인트와 동일 캐시·페이로드 |
+| `POST` | `/api/v1/worldcup2026/group-a-playoff-d/player-features/invalidate-cache` | 체코 캐시 무효화(별칭) |
 
 ## 캐시
 
@@ -30,7 +32,7 @@
 - `API_FOOTBALL_PLAYER_INCLUDE_LINEUPS` — 켜면 `fixtures` + `fixtures/lineups` 추가 호출
 - `API_FOOTBALL_LINEUP_FIXTURES` — 라인업 가져올 최근 경기 수
 - `OPENAI_API_KEY` / `OPENAI_MODEL` — 베스트 11 생성 시 사용 (`ai_best_xi.py`)
-- **플레이오프 D (A조 1차전 상대)** — `GROUP_A_PLAYOFF_D_TEAM_SEARCH` 비우면 TBD JSON; 확정 후 검색어·`GROUP_A_PLAYOFF_D_DISPLAY_NAME_KO`·(선택) `GROUP_A_PLAYOFF_D_TEAMS_COUNTRY` 등 → `backend/.env.example` 참고
+- **체코 (A조 1차전)** — `API_FOOTBALL_TEAM_ID_CZECH_REPUBLIC`(선택)·`API_FOOTBALL_CZECH_REPUBLIC_INCLUDE_CLUB_STATS` 등 → `backend/.env.example` 참고
 
 `POST .../korea/best-xi` 요청 본문 예: `{ "formation": "4-3-3", "squad": [ { "id", "name", "position", ... } ], "injured_player_ids": [] }`  
 지원 포메이션: `4-1-4-1`, `4-4-2`, `4-3-3`, `3-5-2`, `5-3-2`.

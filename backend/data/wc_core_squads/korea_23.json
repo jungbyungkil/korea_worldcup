@@ -2,30 +2,191 @@
   "team_key": "korea",
   "display_ko": "대한민국",
   "display_en": "Korea Republic",
-  "note_ko": "2026 북중미 월드컵을 염두에 둔 예시 23인(비공식·앱용). 나이·소속은 참고용이며 실제 본선 명단·이적과 다를 수 있습니다.",
+  "note_ko": "2026 북중미 월드컵을 염두에 둔 예시 23인(비공식·앱용). 선수 초상은 frontend/public/player-faces/korea/{id}.webp 등 로컬 파일로 넣을 수 있습니다. 나이·소속은 참고용입니다.",
   "players": [
-    { "id": 1101, "name": "조현우", "position": "GK", "number": 21, "age": 34, "club_ko": "울산 HD FC" },
-    { "id": 1102, "name": "송범근", "position": "GK", "number": 12, "age": 28, "club_ko": "FC 서울" },
-    { "id": 1103, "name": "김승규", "position": "GK", "number": 18, "age": 35, "club_ko": "비셀 고베" },
-    { "id": 1104, "name": "김민재", "position": "DF", "number": 4, "age": 28, "club_ko": "FC 바이에른 뮌헨" },
-    { "id": 1105, "name": "김영권", "position": "DF", "number": 19, "age": 35, "club_ko": "울산 HD FC" },
-    { "id": 1106, "name": "정승현", "position": "DF", "number": 15, "age": 31, "club_ko": "알 사드 SC" },
-    { "id": 1107, "name": "권경원", "position": "DF", "number": 3, "age": 33, "club_ko": "밀월 FC" },
-    { "id": 1108, "name": "박진섭", "position": "DF", "number": 2, "age": 27, "club_ko": "포항 스틸러스" },
-    { "id": 1109, "name": "황재원", "position": "DF", "number": 14, "age": 23, "club_ko": "FC 서울" },
-    { "id": 1110, "name": "설영우", "position": "DF", "number": 22, "age": 26, "club_ko": "수원 FC" },
-    { "id": 1111, "name": "이한범", "position": "DF", "number": 20, "age": 23, "club_ko": "수원 FC" },
-    { "id": 1112, "name": "황인범", "position": "MF", "number": 6, "age": 28, "club_ko": "TSG 1899 호펜하임" },
-    { "id": 1113, "name": "이강인", "position": "MF", "number": 5, "age": 24, "club_ko": "파리 생제르맹 FC" },
-    { "id": 1114, "name": "손흥민", "position": "FW", "number": 7, "age": 32, "club_ko": "LA FC" },
-    { "id": 1115, "name": "이재성", "position": "MF", "number": 10, "age": 32, "club_ko": "전북 현대 모터스" },
-    { "id": 1116, "name": "황희찬", "position": "MF", "number": 11, "age": 29, "club_ko": "울버햄튼 원더러스 FC" },
-    { "id": 1117, "name": "백승호", "position": "MF", "number": 17, "age": 28, "club_ko": "버밍엄 시티 FC" },
-    { "id": 1118, "name": "문선민", "position": "MF", "number": 13, "age": 32, "club_ko": "FC 안양" },
-    { "id": 1119, "name": "조규성", "position": "FW", "number": 9, "age": 27, "club_ko": "미네소타 유나이티드 FC" },
-    { "id": 1120, "name": "황의조", "position": "FW", "number": 16, "age": 32, "club_ko": "FC 안양" },
-    { "id": 1121, "name": "오현규", "position": "FW", "number": 26, "age": 24, "club_ko": "셀틱 FC" },
-    { "id": 1122, "name": "양민혁", "position": "FW", "number": 8, "age": 19, "club_ko": "토트넘 홋스퍼 FC" },
-    { "id": 1123, "name": "주민규", "position": "FW", "number": 25, "age": 26, "club_ko": "LA FC" }
+    {
+      "id": 1101,
+      "name": "조현우",
+      "position": "GK",
+      "number": 21,
+      "age": 34,
+      "club_ko": "울산 HD FC"
+    },
+    {
+      "id": 1102,
+      "name": "송범근",
+      "position": "GK",
+      "number": 12,
+      "age": 28,
+      "club_ko": "FC 서울"
+    },
+    {
+      "id": 1103,
+      "name": "김승규",
+      "position": "GK",
+      "number": 18,
+      "age": 35,
+      "club_ko": "비셀 고베"
+    },
+    {
+      "id": 1104,
+      "name": "김민재",
+      "position": "DF",
+      "number": 4,
+      "age": 28,
+      "club_ko": "FC 바이에른 뮌헨"
+    },
+    {
+      "id": 1105,
+      "name": "김영권",
+      "position": "DF",
+      "number": 19,
+      "age": 35,
+      "club_ko": "울산 HD FC"
+    },
+    {
+      "id": 1106,
+      "name": "정승현",
+      "position": "DF",
+      "number": 15,
+      "age": 31,
+      "club_ko": "알 사드 SC"
+    },
+    {
+      "id": 1107,
+      "name": "권경원",
+      "position": "DF",
+      "number": 3,
+      "age": 33,
+      "club_ko": "밀월 FC"
+    },
+    {
+      "id": 1108,
+      "name": "박진섭",
+      "position": "DF",
+      "number": 2,
+      "age": 27,
+      "club_ko": "포항 스틸러스"
+    },
+    {
+      "id": 1109,
+      "name": "황재원",
+      "position": "DF",
+      "number": 14,
+      "age": 23,
+      "club_ko": "FC 서울"
+    },
+    {
+      "id": 1110,
+      "name": "설영우",
+      "position": "DF",
+      "number": 22,
+      "age": 26,
+      "club_ko": "수원 FC"
+    },
+    {
+      "id": 1111,
+      "name": "이한범",
+      "position": "DF",
+      "number": 20,
+      "age": 23,
+      "club_ko": "수원 FC"
+    },
+    {
+      "id": 1112,
+      "name": "황인범",
+      "position": "MF",
+      "number": 6,
+      "age": 28,
+      "club_ko": "TSG 1899 호펜하임"
+    },
+    {
+      "id": 1113,
+      "name": "이강인",
+      "position": "MF",
+      "number": 5,
+      "age": 24,
+      "club_ko": "파리 생제르맹 FC"
+    },
+    {
+      "id": 1114,
+      "name": "손흥민",
+      "position": "FW",
+      "number": 7,
+      "age": 32,
+      "club_ko": "LA FC"
+    },
+    {
+      "id": 1115,
+      "name": "이재성",
+      "position": "MF",
+      "number": 10,
+      "age": 32,
+      "club_ko": "전북 현대 모터스"
+    },
+    {
+      "id": 1116,
+      "name": "황희찬",
+      "position": "MF",
+      "number": 11,
+      "age": 29,
+      "club_ko": "울버햄튼 원더러스 FC"
+    },
+    {
+      "id": 1117,
+      "name": "백승호",
+      "position": "MF",
+      "number": 17,
+      "age": 28,
+      "club_ko": "버밍엄 시티 FC"
+    },
+    {
+      "id": 1118,
+      "name": "문선민",
+      "position": "MF",
+      "number": 13,
+      "age": 32,
+      "club_ko": "FC 안양"
+    },
+    {
+      "id": 1119,
+      "name": "조규성",
+      "position": "FW",
+      "number": 9,
+      "age": 27,
+      "club_ko": "미네소타 유나이티드 FC"
+    },
+    {
+      "id": 1120,
+      "name": "황의조",
+      "position": "FW",
+      "number": 16,
+      "age": 32,
+      "club_ko": "FC 안양"
+    },
+    {
+      "id": 1121,
+      "name": "오현규",
+      "position": "FW",
+      "number": 26,
+      "age": 24,
+      "club_ko": "셀틱 FC"
+    },
+    {
+      "id": 1122,
+      "name": "양민혁",
+      "position": "FW",
+      "number": 8,
+      "age": 19,
+      "club_ko": "토트넘 홋스퍼 FC"
+    },
+    {
+      "id": 1123,
+      "name": "주민규",
+      "position": "FW",
+      "number": 25,
+      "age": 26,
+      "club_ko": "LA FC"
+    }
   ]
 }
