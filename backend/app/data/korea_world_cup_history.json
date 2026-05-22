@@ -3,7 +3,7 @@
   "fifa_code": "KOR",
   "summary": {
     "first_appearance": 1954,
-    "total_finals": 11,
+    "total_finals": 12,
     "best_finish": "4위",
     "best_finish_year": 2002,
     "notes": "1950년 출전은 정치적 이유로 기권. 아래는 본선 출전 대회만 포함합니다."
@@ -179,6 +179,42 @@
           "url": "https://www.youtube.com/watch?v=c0-ZhEkEFtA"
         }
       ]
+    },
+    {
+      "year": 2026,
+      "host": "북중미 (미국·캐나다·멕시코 공동 개최)",
+      "stage": "진행 예정",
+      "result_label": "진행 예정",
+      "group": "A조",
+      "group_opponents": ["체코", "멕시코", "남아공"],
+      "fixtures": [
+        {
+          "match": 1,
+          "opponent": "체코",
+          "date_utc": "2026-06-12T02:00:00.000Z",
+          "venue": "에스타디오 아크론, 사포판"
+        },
+        {
+          "match": 2,
+          "opponent": "멕시코",
+          "date_utc": "2026-06-19T01:00:00.000Z",
+          "venue": "에스타디오 아크론, 사포판"
+        },
+        {
+          "match": 3,
+          "opponent": "남아공",
+          "date_utc": "2026-06-25T01:00:00.000Z",
+          "venue": "에스타디오 BBVA, 과달루페"
+        }
+      ],
+      "matches_played": 0,
+      "wins": 0,
+      "draws": 0,
+      "losses": 0,
+      "goals_for": 0,
+      "goals_against": 0,
+      "highlights": "12번째 월드컵 본선 진출. A조에서 체코·멕시코(홈)·남아공과 격돌. 손흥민(LA FC)·김승규 4회 연속 출전 기록.",
+      "video_links": []
     }
   ],
   "disclaimer": "승무패·득실·스코어는 일반적으로 알려진 본선 기록이며, 공식 통계는 FIFA 기준으로 별도 확인하세요. video_links의 영상 URL은 저작권·지역에 따라 재생이 제한될 수 있으며, 사이트 내 임베드는 제공하지 않습니다."

@@ -14,12 +14,13 @@ export const NAMU_WIKI_2026 = {
     "https://namu.wiki/w/%ED%99%8D%EB%AA%85%EB%B3%B4%ED%98%B8(%EC%84%B1%EC%9D%B8%202%EA%B8%B0)/2026%20FIFA%20%EC%9B%94%EB%93%9C%EC%BB%B5/%EB%82%A8%EC%95%84%ED%94%84%EB%A6%AC%EC%B9%B4%20%EA%B3%B5%ED%99%94%EA%B5%AD%EC%A0%84",
 } as const;
 
-/** API 일정이 없을 때만 쓰는 추정 킥오프(UTC). FIFA에 맞춰 수정 권장. */
+/** API 일정이 없을 때 쓰는 폴백 킥오프(UTC) — FIFA 확정값 (2026-05 기준). */
 export const GROUP_A_FALLBACK_KICKOFF_UTC = {
-  /** 1차전 vs 체코 — 미국 동부 6/11 22:00 ET(EDT) ≈ 6/12 02:00 UTC (FOX·FIFA 스케줄 계열) */
+  /** 1차전 vs 체코 — FIFA 확정: 6/11 20:00 UTC-6 (에스타디오 아크론, 사포판) → 6/12 02:00 UTC */
   czechRepublic: "2026-06-12T02:00:00.000Z",
-  /** 2차전 vs 멕시코: FIFA 확정 — 6/18 과달라하라(에스타디오 아크론) 현지 19:00 (America/Mexico_City, UTC−6) → 6/19 01:00 UTC */
+  /** 2차전 vs 멕시코 — FIFA 확정: 6/18 19:00 UTC-6 (에스타디오 아크론, 사포판) → 6/19 01:00 UTC */
   mexico: "2026-06-19T01:00:00.000Z",
+  /** 3차전 vs 남아공 — FIFA 확정: 6/24 19:00 UTC-6 (에스타디오 BBVA, 과달루페) → 6/25 01:00 UTC */
   southAfrica: "2026-06-25T01:00:00.000Z",
 } as const;
 
@@ -37,6 +38,6 @@ export const MEXICO_MATCH_HOOKS_KO = [
 
 export const SOUTH_AFRICA_MATCH_HOOKS_KO = [
   "A조 **3차전·조별리그 마지막 경기**로, 나무위키 등에서는 **32강(와일드카드) 향방**과 맞물린 분수령으로 자주 다뤄집니다.",
-  "양국 **첫 A매치**이며, 브리핑상 **몬테레이 BBVA** 일대에서 치러질 것으로 정리되는 경우가 많습니다. (최종은 FIFA·API)",
+  "양국 **첫 A매치**이며, **에스타디오 BBVA(과달루페, 누에보레온 주)**에서 개최됩니다. (FIFA 확정 2026-05 기준)",
   "남아공전 직전 일정이 멕시코·미국 이동 등으로 이어져 **체력·컨디션 관리**가 변수가 될 수 있다는 분석이 있습니다. (위키·언론 브리핑 참고)",
 ] as const;

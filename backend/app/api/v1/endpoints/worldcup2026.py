@@ -18,22 +18,23 @@ KOREA_QUERY = "Korea"
 _DERIVED_FIXTURES_CACHE: dict[str, Any] = {"expires_at": 0.0, "value": None}
 
 _ELO_BASELINE = 1500
+# ELO 레이팅 참고값 — eloratings.net 기준 추정치 (2026-05 기준)
 _ELO_TABLE: dict[str, int] = {
-    "south korea": 1760,
-    "korea republic": 1760,
-    "mexico": 1720,
-    "south africa": 1595,
-    "czech republic": 1645,
-    "czechia": 1645,
-    "czech": 1645,
-    "japan": 1810,
-    "iran": 1785,
-    "australia": 1775,
-    "saudi arabia": 1710,
-    "iraq": 1660,
-    "uzbekistan": 1700,
-    "qatar": 1690,
-    "uae": 1660,
+    "south korea": 1820,
+    "korea republic": 1820,
+    "mexico": 1775,
+    "south africa": 1620,
+    "czech republic": 1670,
+    "czechia": 1670,
+    "czech": 1670,
+    "japan": 1850,
+    "iran": 1790,
+    "australia": 1790,
+    "saudi arabia": 1720,
+    "iraq": 1670,
+    "uzbekistan": 1710,
+    "qatar": 1695,
+    "uae": 1665,
 }
 
 
@@ -45,7 +46,10 @@ def _iso(d: date) -> str:
     return d.isoformat()
 
 
-# FIFA 공식: 2026-06-18 과달라하라(에스타디오 아크론) 대한민국 vs 멕시코(A조) 현지 19:00 → UTC 2026-06-19 01:00
+# FIFA 확정 A조 대한민국 킥오프(UTC) — 경기장 현지 UTC-6 기준
+# 1차전 vs 체코  : 2026-06-11 20:00 UTC-6 (에스타디오 아크론, 사포판) → UTC 2026-06-12 02:00
+# 2차전 vs 멕시코: 2026-06-18 19:00 UTC-6 (에스타디오 아크론, 사포판) → UTC 2026-06-19 01:00
+# 3차전 vs 남아공: 2026-06-24 19:00 UTC-6 (에스타디오 BBVA, 과달루페) → UTC 2026-06-25 01:00
 _FIFA_KR_VS_MEXICO_GROUP_A_UTC = "2026-06-19T01:00:00.000Z"
 
 
