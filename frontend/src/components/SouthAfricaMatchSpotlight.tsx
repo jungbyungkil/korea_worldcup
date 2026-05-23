@@ -16,14 +16,14 @@ export default function SouthAfricaMatchSpotlight({ officialKickoffIso, official
       badge="A조 하이라이트 · 3차전"
       badgeEmoji="🌅"
       title="🇰🇷 대한민국 vs 🇿🇦 남아프리카 공화국"
-      subtitle="조별리그 최종전 · 몬테레이"
+      subtitle="조별리그 최종전 · 과달루페(누에보레온)"
       officialKickoffIso={officialKickoffIso}
       fallbackKickoffIso={GROUP_A_FALLBACK_KICKOFF_UTC.southAfrica}
       officialVenue={officialVenue}
       officialCity={officialCity}
-      defaultPlaceLine="에스타디오 BBVA · 몬테레이(브리핑·나무위키 기준)"
+      defaultPlaceLine="에스타디오 BBVA · 과달루페(FIFA 확정 2026-05)"
       localTimeZone="America/Monterrey"
-      localTimeLabel="몬테레이 현지"
+      localTimeLabel="과달루페·몬테레이(중부) 현지"
       hooksTitle="3차전이 왜 중요한가"
       hooks={SOUTH_AFRICA_MATCH_HOOKS_KO}
       ariaTitleId="south-africa-spotlight-title"

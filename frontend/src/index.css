@@ -2710,6 +2710,26 @@ iframe {
   }
 }
 
+@media (max-width: 520px) {
+  /* history stats 2열 */
+  .history-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
+  }
+  /* pred-game 카드 1열 */
+  .pred-game__cards {
+    grid-template-columns: 1fr;
+  }
+  /* hero chip 줄바꿈 허용 */
+  .hero-chips {
+    gap: 0.3rem;
+  }
+  .hero-chip {
+    font-size: 0.72rem;
+    padding: 0.18em 0.55em;
+  }
+}
+
 /* ─── 선수 아바타 ────────────────────────────────────────── */
 .player-avatar {
   border-radius: 50%;
