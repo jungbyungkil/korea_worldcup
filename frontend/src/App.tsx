@@ -53,7 +53,7 @@ export default function App() {
         </span>
         2026 월드컵 개요
       </NavLink>
-      <NavLink to="/2026/korea" className={navClass}>
+      <NavLink to="/2026/korea" className={({ isActive }) => "nav-link nav-link--korea-dashboard" + (isActive ? " nav-link--active" : "")}>
         <span className="nav-link__emoji" aria-hidden>
           🎯
         </span>

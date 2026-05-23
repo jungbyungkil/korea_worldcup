@@ -33,6 +33,7 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
   const [bundle, setBundle] = useState<CoreSquadBundle | null>(null);
   const [loadErr, setLoadErr] = useState<string | null>(null);
   const [loadingSquad, setLoadingSquad] = useState(true);
+  const [viewMode, setViewMode] = useState<"table" | "cards">("table");
 
   const [aiOut, setAiOut] = useState<CoreAiFormationsResponse | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
@@ -86,49 +87,96 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
       {bundle ? (
         <>
           <section className="panel" style={{ marginTop: "0.75rem" }}>
-            <h3 className="panel-title" style={{ fontSize: "1.05rem" }}>
-              명단 <span className="muted">({bundle.display_en})</span>
-            </h3>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+              <h3 className="panel-title" style={{ fontSize: "1.05rem", margin: 0 }}>
+                명단 <span className="muted">({bundle.display_en})</span>
+              </h3>
+              <div className="squad-view-toggle" role="group" aria-label="명단 보기 방식">
+                <button
+                  type="button"
+                  className={"squad-view-btn" + (viewMode === "table" ? " squad-view-btn--on" : "")}
+                  onClick={() => setViewMode("table")}
+                >
+                  ☰ 표
+                </button>
+                <button
+                  type="button"
+                  className={"squad-view-btn" + (viewMode === "cards" ? " squad-view-btn--on" : "")}
+                  onClick={() => setViewMode("cards")}
+                >
+                  ⊞ 카드
+                </button>
+              </div>
+            </div>
             {bundle.note_ko ? (
-              <p className="muted" style={{ fontSize: "0.88rem", lineHeight: 1.6 }}>
+              <p className="muted" style={{ fontSize: "0.88rem", lineHeight: 1.6, marginTop: "0.5rem" }}>
                 {bundle.note_ko}
               </p>
             ) : null}
-            <div className="table-wrap" style={{ marginTop: "0.65rem" }}>
-              <table className="data-table core-squad-table">
-                <thead>
-                  <tr>
-                    <th className="avatar-cell"></th>
-                    <th>번호</th>
-                    <th>이름</th>
-                    <th>포지션</th>
-                    <th>나이</th>
-                    <th>소속(클럽)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bundle.players.map((p) => (
-                    <tr key={p.id}>
-                      <td className="avatar-cell">
-                        <PlayerAvatar playerId={p.id} playerName={p.name} size={38} />
-                      </td>
-                      <td>{p.number ?? "—"}</td>
-                      <td style={{ fontWeight: 600 }}>{p.name}</td>
-                      <td>
-                        <span title={p.position}>{positionLabelKo(p.position)}</span>
-                        <span className="muted" style={{ fontSize: "0.78rem", marginLeft: "0.35rem" }}>
-                          ({p.position})
-                        </span>
-                      </td>
-                      <td>{p.age != null ? `${p.age}` : "—"}</td>
-                      <td className="muted" style={{ fontSize: "0.88rem" }}>
-                        {p.club_ko?.trim() ? p.club_ko : "—"}
-                      </td>
+
+            {viewMode === "table" ? (
+              <div className="table-wrap" style={{ marginTop: "0.65rem" }}>
+                <table className="data-table core-squad-table">
+                  <thead>
+                    <tr>
+                      <th className="avatar-cell"></th>
+                      <th>번호</th>
+                      <th>이름</th>
+                      <th>포지션</th>
+                      <th>나이</th>
+                      <th>소속(클럽)</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {bundle.players.map((p) => (
+                      <tr key={p.id}>
+                        <td className="avatar-cell">
+                          <PlayerAvatar playerId={p.id} playerName={p.name} size={38} />
+                        </td>
+                        <td>{p.number ?? "—"}</td>
+                        <td style={{ fontWeight: 600 }}>{p.name}</td>
+                        <td>
+                          <span title={p.position}>{positionLabelKo(p.position)}</span>
+                          <span className="muted" style={{ fontSize: "0.78rem", marginLeft: "0.35rem" }}>
+                            ({p.position})
+                          </span>
+                        </td>
+                        <td>{p.age != null ? `${p.age}` : "—"}</td>
+                        <td className="muted" style={{ fontSize: "0.88rem" }}>
+                          {p.club_ko?.trim() ? p.club_ko : "—"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              /* 카드 보기 — 포지션별 그룹 */
+              <div className="squad-cards-view" style={{ marginTop: "0.75rem" }}>
+                {(["GK", "DF", "MF", "FW"] as const).map((pos) => {
+                  const players = bundle.players.filter((p) => p.position === pos);
+                  if (!players.length) return null;
+                  return (
+                    <div key={pos} className="squad-pos-group">
+                      <h4 className="squad-pos-label">{positionLabelKo(pos)} <span className="muted">({players.length})</span></h4>
+                      <div className="squad-pos-cards">
+                        {players.map((p) => (
+                          <div key={p.id} className="squad-player-card">
+                            <PlayerAvatar playerId={p.id} playerName={p.name} size={52} className="squad-player-card__photo" />
+                            <div className="squad-player-card__info">
+                              <span className="squad-player-card__num">#{p.number ?? "—"}</span>
+                              <span className="squad-player-card__name">{p.name}</span>
+                              <span className="squad-player-card__club muted">{p.club_ko || "—"}</span>
+                              {p.age != null ? <span className="squad-player-card__age muted">{p.age}세</span> : null}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </section>
 
           <section className="panel ai-seven-panel" style={{ marginTop: "1rem" }}>
