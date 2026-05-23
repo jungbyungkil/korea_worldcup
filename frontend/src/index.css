@@ -3225,3 +3225,408 @@ iframe {
   .group-a-schedule th:last-child,
   .group-a-schedule td:last-child { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   AI 놀이터 (Playground) — 전면 개선 스타일
+   ═══════════════════════════════════════════════════════════ */
+
+/* ─── 탭 ──────────────────────────────────────────────────── */
+.pg-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1.25rem 0 0;
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pg-tabs::-webkit-scrollbar { display: none; }
+
+.pg-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.55rem 1.1rem;
+  border: none;
+  background: transparent;
+  border-radius: 8px 8px 0 0;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.pg-tab:hover { background: var(--color-card); color: var(--color-text); }
+.pg-tab--on {
+  background: var(--color-primary, #3b82f6);
+  color: #fff;
+}
+.pg-tab__icon { font-size: 1.25rem; }
+.pg-tab__label { font-size: 0.82rem; }
+
+/* ─── 패널 ─────────────────────────────────────────────────── */
+.pg-panel {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.4rem 1.5rem;
+  margin-top: 1rem;
+}
+.pg-desc { margin: 0 0 1rem; font-size: 0.9rem; }
+
+/* ─── 컨트롤 공통 ──────────────────────────────────────────── */
+.pg-control-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1.1rem;
+}
+.pg-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--color-muted);
+  min-width: 160px;
+}
+.pg-label--block { display: block; width: 100%; }
+.pg-select {
+  padding: 0.42rem 0.6rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.pg-input, .pg-textarea {
+  padding: 0.42rem 0.6rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+}
+.pg-btn-row { margin: 1rem 0 0.5rem; }
+.pg-run-btn { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.97rem; }
+
+/* 로딩 스피너 */
+.pg-spinner {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: pgSpin 0.7s linear infinite;
+}
+@keyframes pgSpin { to { transform: rotate(360deg); } }
+
+/* ─── 감독 탭: 피치 + 슬롯 ──────────────────────────────────── */
+.pg-coach-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+  margin-bottom: 0.75rem;
+}
+.pg-coach-pitch { position: relative; }
+.pg-pitch-hint { font-size: 0.78rem; margin: 0 0 0.4rem; }
+
+.pg-slot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+.pg-slot-card {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.3rem 0.5rem;
+}
+.pg-slot-card__pos {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-muted);
+  width: 36px;
+  flex-shrink: 0;
+  text-align: center;
+}
+.pg-slot-card__avatar { flex-shrink: 0; }
+.pg-slot-card__avatar-ph {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--color-border);
+}
+.pg-slot-select {
+  flex: 1;
+  min-width: 0;
+  padding: 0.2rem 0.3rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+/* ─── 셀렉트 + 아바타 ─────────────────────────────────────── */
+.pg-select-with-avatar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.pg-select-avatar { flex-shrink: 0; }
+
+/* ─── 결과 카드 ────────────────────────────────────────────── */
+.pg-result-card {
+  margin-top: 1.25rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 1.25rem 1.4rem;
+}
+.pg-result-card--coach .pg-result-card__top {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.pg-result-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+.pg-disclaimer { font-size: 0.78rem; margin: 0; }
+.pg-share-btn  { font-size: 0.82rem; padding: 0.3rem 0.8rem; }
+
+.pg-one-liner {
+  font-size: 1.12rem;
+  font-weight: 700;
+  font-style: italic;
+  color: var(--color-primary, #3b82f6);
+  margin: 0 0 0.65rem;
+  line-height: 1.4;
+}
+.pg-paragraph { line-height: 1.7; margin: 0; font-size: 0.93rem; }
+
+.pg-easter {
+  margin-top: 0.9rem;
+  padding: 0.7rem 1rem;
+  background: rgba(251,191,36,0.12);
+  border-left: 3px solid #f59e0b;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #fbbf24;
+}
+
+/* ─── 원형 게이지 ───────────────────────────────────────────── */
+.win-gauge { flex-shrink: 0; }
+.win-gauge__ring {
+  width: 110px; height: 110px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+}
+.win-gauge__inner {
+  width: 100%; height: 100%;
+  background: var(--color-card);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.win-gauge__pct { font-size: 1.45rem; font-weight: 800; line-height: 1; }
+.win-gauge__lbl { font-size: 0.65rem; color: var(--color-muted); margin-top: 0.15rem; }
+
+/* ─── 에이스 매치업 결과 ─────────────────────────────────────── */
+.pg-ace-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.pg-ace-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 90px;
+}
+.pg-ace-avatar { border: 3px solid #1e88e5; border-radius: 50%; }
+.pg-ace-opp-avatar { font-size: 3.5rem; line-height: 1; }
+.pg-ace-name {
+  font-size: 0.96rem;
+  font-weight: 700;
+  text-align: center;
+  max-width: 110px;
+}
+.pg-ace-vs { font-size: 2rem; flex-shrink: 0; }
+.pg-ai-picked { font-size: 0.72rem; display: block; font-weight: 400; }
+
+.pg-ace-story {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  background: rgba(30,136,229,0.07);
+  border-left: 3px solid #1e88e5;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.93rem;
+  line-height: 1.75;
+}
+
+/* ─── 레이더 차트 ───────────────────────────────────────────── */
+.radar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.5rem 0;
+}
+.radar-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+.radar-legend__kr  { color: #1e88e5; }
+.radar-legend__kr::before  { content: "■ "; }
+.radar-legend__opp { color: #ef5350; }
+.radar-legend__opp::before { content: "■ "; }
+
+.radar-svg {
+  width: 100%;
+  max-width: 300px;
+  overflow: visible;
+}
+
+.radar-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.83rem;
+}
+.radar-stat-cell { display: flex; align-items: center; gap: 0.25rem; }
+.radar-stat-label { color: var(--color-muted); }
+.radar-stat-kr    { color: #1e88e5; font-weight: 700; }
+.radar-stat-sep   { color: var(--color-muted); }
+.radar-stat-opp   { color: #ef5350; font-weight: 700; }
+
+/* ─── 편파 중계 결과 ──────────────────────────────────────────── */
+.pg-commentary-mic { font-size: 2.5rem; text-align: center; margin-bottom: 0.75rem; }
+.pg-commentary-list {
+  list-style: none;
+  padding: 0; margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.pg-commentary-line {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  background: var(--color-card);
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  border-left: 3px solid var(--color-primary, #3b82f6);
+}
+.pg-commentary-n {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--color-primary, #3b82f6);
+  min-width: 18px;
+  padding-top: 0.15rem;
+}
+
+/* ─── 프리셋 버튼 ──────────────────────────────────────────── */
+.pg-presets {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+.pg-presets__label { font-size: 0.8rem; flex-shrink: 0; }
+.pg-preset-btn {
+  padding: 0.25rem 0.55rem;
+  font-size: 0.78rem;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.pg-preset-btn:hover { background: var(--color-card); color: var(--color-text); }
+.pg-preset-btn--on {
+  background: var(--color-primary, #3b82f6);
+  border-color: var(--color-primary, #3b82f6);
+  color: #fff;
+}
+
+/* ─── 페르소나 카드 ─────────────────────────────────────────── */
+.pg-persona-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.pg-persona-card {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.75rem 0.5rem;
+  background: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  color: var(--color-text);
+}
+.pg-persona-card:hover { border-color: var(--color-primary, #3b82f6); }
+.pg-persona-card--on {
+  border-color: var(--color-primary, #3b82f6);
+  background: rgba(59,130,246,0.1);
+}
+.pg-persona-emoji { font-size: 1.6rem; }
+.pg-persona-label { font-size: 0.8rem; font-weight: 600; text-align: center; }
+
+/* ─── 반응형 ───────────────────────────────────────────────── */
+@media (max-width: 680px) {
+  .pg-coach-layout { grid-template-columns: 1fr; }
+  .pg-slot-grid    { grid-template-columns: 1fr; }
+  .pg-ace-header   { gap: 0.75rem; }
+  .pg-ace-avatar   { width: 56px !important; height: 56px !important; }
+  .pg-ace-opp-avatar { font-size: 2.8rem; }
+  .win-gauge__ring { width: 90px; height: 90px; }
+  .win-gauge__pct  { font-size: 1.2rem; }
+  .radar-svg       { max-width: 260px; }
+  .pg-tabs         { gap: 0.25rem; }
+  .pg-tab          { padding: 0.45rem 0.7rem; }
+}
