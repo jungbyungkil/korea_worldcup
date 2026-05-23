@@ -78,6 +78,20 @@ export default function KoreaWorldCupHistory() {
   const { summary, tournaments } = data;
   const modalTitleId = "wc-tournament-modal-title";
 
+  // 역대 통산 성적 계산 (진행 예정 제외)
+  const historicalTournaments = tournaments.filter((t) => t.result_label !== "진행 예정");
+  const totalStats = historicalTournaments.reduce(
+    (acc, t) => ({
+      played: acc.played + (t.matches_played ?? 0),
+      wins: acc.wins + (t.wins ?? 0),
+      draws: acc.draws + (t.draws ?? 0),
+      losses: acc.losses + (t.losses ?? 0),
+      gf: acc.gf + (t.goals_for ?? 0),
+      ga: acc.ga + (t.goals_against ?? 0),
+    }),
+    { played: 0, wins: 0, draws: 0, losses: 0, gf: 0, ga: 0 }
+  );
+
   return (
     <main className="page">
       <h1 className="page-title">
@@ -99,6 +113,18 @@ export default function KoreaWorldCupHistory() {
         <div className="history-stat-chip history-stat-chip--next">
           <span className="history-stat-chip__label">다음 참가</span>
           <span className="history-stat-chip__value">2026 북중미</span>
+        </div>
+        <div className="history-stat-chip">
+          <span className="history-stat-chip__label">통산 경기</span>
+          <span className="history-stat-chip__value">{totalStats.played}경기</span>
+        </div>
+        <div className="history-stat-chip">
+          <span className="history-stat-chip__label">통산 승·무·패</span>
+          <span className="history-stat-chip__value">{totalStats.wins}·{totalStats.draws}·{totalStats.losses}</span>
+        </div>
+        <div className="history-stat-chip">
+          <span className="history-stat-chip__label">통산 득실</span>
+          <span className="history-stat-chip__value">{totalStats.gf}득 {totalStats.ga}실</span>
         </div>
       </div>
       {summary.notes ? <div className="callout" style={{ marginBottom: "1.25rem" }}>{summary.notes}</div> : null}
