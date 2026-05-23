@@ -2,7 +2,7 @@
   "team_key": "korea",
   "display_ko": "대한민국",
   "display_en": "Korea Republic",
-  "note_ko": "2026 북중미 월드컵 최종 확정 26인 (2026-05-16 홍명보 감독 공식 발표). 등번호·나이는 앱 표시용 참고값이며 FIFA 공식 번호와 다를 수 있습니다. 선수 초상은 frontend/public/player-faces/korea/{id}.webp 로 넣을 수 있습니다.",
+  "note_ko": "2026 북중미 월드컵 최종 확정 26인 (2026-05-16 홍명보 감독 공식 발표). 등번호·나이는 앱 표시용 참고값이며 FIFA 공식 번호와 다를 수 있습니다.",
   "players": [
     {
       "id": 1101,

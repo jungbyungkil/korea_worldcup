@@ -1775,6 +1775,17 @@ iframe {
   color: #fde047;
 }
 
+.spotlight-elo-strip__pct-draw {
+  color: #fde68a;
+  opacity: 0.85;
+}
+
+.spotlight-elo-strip__note {
+  font-size: 0.68rem;
+  margin: 0.2rem 0 0;
+  opacity: 0.7;
+}
+
 .spotlight-elo-strip__sep {
   opacity: 0.5;
   font-weight: 600;

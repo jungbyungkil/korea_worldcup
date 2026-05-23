@@ -48,6 +48,9 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
 
   const winPct = prediction ? Math.round(prediction.probability.win * 1000) / 10 : 0;
   const otherPct = prediction ? Math.round(prediction.probability.draw_or_loss * 1000) / 10 : 0;
+  // 무승부 ≈ 25% (단순 추정), 패 = 나머지
+  const drawPct = Math.min(25, Math.round(otherPct * 0.55));
+  const lossPct = Math.round(otherPct - drawPct);
   const krElo = prediction?.features.team_elo;
   const oppElo = prediction?.features.opponent_elo;
   const diff = prediction?.features.elo_diff;
@@ -85,11 +88,13 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
       <div className="spotlight-elo-strip__pct">
         {prediction ? (
           <>
-            <span className="spotlight-elo-strip__pct-kr">한국 승 {winPct}%</span>
+            <span className="spotlight-elo-strip__pct-kr">승 {winPct}%</span>
             <span className="spotlight-elo-strip__sep">·</span>
-            <span className="spotlight-elo-strip__pct-opp">무·패 {otherPct}%</span>
+            <span className="spotlight-elo-strip__pct-draw">무 ~{drawPct}%</span>
+            <span className="spotlight-elo-strip__sep">·</span>
+            <span className="spotlight-elo-strip__pct-opp">패 ~{lossPct}%</span>
             {diff != null ? (
-              <span className="spotlight-elo-strip__diff"> (Δ {diff > 0 ? `+${diff}` : diff})</span>
+              <span className="spotlight-elo-strip__diff"> (ELO Δ {diff > 0 ? `+${diff}` : diff})</span>
             ) : null}
           </>
         ) : loading ? (
@@ -98,6 +103,11 @@ export default function KoreaOpponentEloStrip({ opponentQuery, opponentFlag, opp
           <span className="spotlight-elo-strip__muted">—</span>
         )}
       </div>
+      {prediction ? (
+        <p className="spotlight-elo-strip__note muted">
+          * 무승부 추정치는 단순 배분값입니다. 공식 확률이 아닙니다.
+        </p>
+      ) : null}
       {error ? <p className="spotlight-elo-strip__err">{error}</p> : null}
     </div>
   );
