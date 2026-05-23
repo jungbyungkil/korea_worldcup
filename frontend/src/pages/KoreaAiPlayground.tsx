@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { humanizeFetchError } from "../api/client";
 import { postAiPlaygroundWarmup } from "../api/aiInsights";
 import AiInsightPanel from "../components/AiInsightPanel";
+import PlayerAvatar from "../components/PlayerAvatar";
 import {
   getCoreSquad,
   postPlaygroundAceMatchup,
@@ -379,14 +380,21 @@ export default function KoreaAiPlayground() {
           {aceErr ? <p className="text-error">{aceErr}</p> : null}
           {aceOut ? (
             <div className="ai-playground-result">
-              <p>
-                <strong>{aceOut.korea_player.name}</strong> vs <strong>{aceOut.opponent_ace_name}</strong>
-                {aceOut.opponent_ace_ai_picked ? (
-                  <span className="muted" style={{ fontSize: "0.82rem", marginLeft: "0.45rem" }}>
-                    (AI 추천)
+              <div className="ace-matchup-header">
+                <div className="ace-matchup-player">
+                  <PlayerAvatar playerId={aceOut.korea_player.id ?? 0} playerName={aceOut.korea_player.name ?? "선수"} size={56} />
+                  <span className="ace-matchup-name">🇰🇷 <strong>{aceOut.korea_player.name}</strong></span>
+                </div>
+                <span className="ace-matchup-vs">⚔️</span>
+                <div className="ace-matchup-player ace-matchup-player--opp">
+                  <span className="ace-matchup-name">
+                    <strong>{aceOut.opponent_ace_name}</strong>
+                    {aceOut.opponent_ace_ai_picked ? (
+                      <span className="muted" style={{ fontSize: "0.78rem", marginLeft: "0.3rem" }}>(AI 추천)</span>
+                    ) : null}
                   </span>
-                ) : null}
-              </p>
+                </div>
+              </div>
               <div className="ai-playground-radar-grid">
                 <div>
                   <h4 className="ai-playground-radar-h">🇰🇷 {aceOut.korea_player.name}</h4>

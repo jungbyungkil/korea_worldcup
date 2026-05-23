@@ -143,6 +143,16 @@ export default function ScorePredictionGame() {
     savePredictions(fresh);
   }
 
+  function handleCopy() {
+    const lines = MATCHES.map((m) => {
+      const pred = preds[m.key];
+      const res = resultLabel(pred.koreaScore, pred.oppScore);
+      return `${m.label}: 🇰🇷 한국 ${pred.koreaScore}:${pred.oppScore} ${m.opponentFlag}${m.opponent} (${res.text})`;
+    });
+    const text = ["[2026 월드컵 A조 내 예측]", ...lines, ""].join("\n");
+    navigator.clipboard?.writeText(text).then(() => setSaved(true)).catch(() => {});
+  }
+
   // 완료된 경기는 읽기전용(킥오프 이후) 처리
   const nowMs = Date.now();
 
@@ -204,6 +214,9 @@ export default function ScorePredictionGame() {
       <div className="pred-game__actions">
         <button type="button" className="btn btn-primary" onClick={handleSave}>
           {saved ? "✓ 저장 완료!" : "예측 저장"}
+        </button>
+        <button type="button" className="btn btn-secondary" onClick={handleCopy} title="예측 텍스트 클립보드 복사">
+          📋 복사
         </button>
         <button type="button" className="btn btn-secondary" onClick={handleReset}>
           초기화

@@ -83,12 +83,24 @@ export default function KoreaWorldCupHistory() {
       <h1 className="page-title">
         🇰🇷 {data.team} · FIFA 월드컵 본선 이력
       </h1>
-      <p className="page-lead">
-        첫 본선 <strong>{summary.first_appearance}</strong>년 · 총 <strong>{summary.total_finals}</strong>회 본선 · 역대 최고{" "}
-        <strong className="text-success">
-          {summary.best_finish} ({summary.best_finish_year})
-        </strong>
-      </p>
+      <div className="history-stats-row">
+        <div className="history-stat-chip">
+          <span className="history-stat-chip__label">첫 본선</span>
+          <span className="history-stat-chip__value">{summary.first_appearance}년</span>
+        </div>
+        <div className="history-stat-chip">
+          <span className="history-stat-chip__label">총 본선</span>
+          <span className="history-stat-chip__value">{summary.total_finals}회</span>
+        </div>
+        <div className="history-stat-chip history-stat-chip--best">
+          <span className="history-stat-chip__label">역대 최고</span>
+          <span className="history-stat-chip__value">{summary.best_finish} ({summary.best_finish_year})</span>
+        </div>
+        <div className="history-stat-chip history-stat-chip--next">
+          <span className="history-stat-chip__label">다음 참가</span>
+          <span className="history-stat-chip__value">2026 북중미</span>
+        </div>
+      </div>
       {summary.notes ? <div className="callout" style={{ marginBottom: "1.25rem" }}>{summary.notes}</div> : null}
 
       <HistoryYearAiPanel tournaments={tournaments} />
