@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getPlayerPhoto } from "../data/playerPhotos";
+import { getOpponentPhoto } from "../data/opponentPlayerPhotos";
 
 interface Props {
   playerId: number;
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export default function PlayerAvatar({ playerId, playerName, size = 48, className = "" }: Props) {
-  const photoUrl = getPlayerPhoto(playerId);
+  const photoUrl = getPlayerPhoto(playerId) ?? getOpponentPhoto(playerId);
   const [imgError, setImgError] = useState(false);
 
   const initials = playerName

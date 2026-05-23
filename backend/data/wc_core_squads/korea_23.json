@@ -10,7 +10,10 @@
       "position": "GK",
       "number": 1,
       "age": 34,
-      "club_ko": "울산 HD FC"
+      "club_ko": "울산 HD FC",
+      "height_cm": 189,
+      "weight_kg": 75,
+      "birth_date": "1991-09-25"
     },
     {
       "id": 1102,
@@ -18,7 +21,10 @@
       "position": "GK",
       "number": 12,
       "age": 29,
-      "club_ko": "전북 현대 모터스"
+      "club_ko": "전북 현대 모터스",
+      "height_cm": 194,
+      "weight_kg": 88,
+      "birth_date": "1997-10-15"
     },
     {
       "id": 1103,
@@ -26,7 +32,10 @@
       "position": "GK",
       "number": 18,
       "age": 36,
-      "club_ko": "FC 도쿄"
+      "club_ko": "FC 도쿄",
+      "height_cm": 187,
+      "weight_kg": 84,
+      "birth_date": "1990-09-30"
     },
     {
       "id": 1104,
@@ -34,7 +43,10 @@
       "position": "DF",
       "number": 4,
       "age": 29,
-      "club_ko": "FC 바이에른 뮌헨"
+      "club_ko": "FC 바이에른 뮌헨",
+      "height_cm": 190,
+      "weight_kg": 88,
+      "birth_date": "1996-11-15"
     },
     {
       "id": 1124,
@@ -42,7 +54,10 @@
       "position": "DF",
       "number": 3,
       "age": 27,
-      "club_ko": "샤르자 FC"
+      "club_ko": "샤르자 FC",
+      "height_cm": 182,
+      "weight_kg": 70,
+      "birth_date": "1996-11-17"
     },
     {
       "id": 1111,
@@ -50,7 +65,10 @@
       "position": "DF",
       "number": 20,
       "age": 24,
-      "club_ko": "FC 미드뷜란"
+      "club_ko": "FC 미트윌란",
+      "height_cm": 188,
+      "weight_kg": 72,
+      "birth_date": "2002-06-17"
     },
     {
       "id": 1125,
@@ -58,7 +76,10 @@
       "position": "DF",
       "number": 13,
       "age": 25,
-      "club_ko": "가시마 앤틀러스"
+      "club_ko": "가시마 앤틀러스",
+      "height_cm": 187,
+      "weight_kg": 69,
+      "birth_date": "2000-09-17"
     },
     {
       "id": 1108,
@@ -66,7 +87,10 @@
       "position": "DF",
       "number": 2,
       "age": 29,
-      "club_ko": "저장 FC"
+      "club_ko": "저장 FC",
+      "height_cm": 182,
+      "weight_kg": 75,
+      "birth_date": "1995-10-23"
     },
     {
       "id": 1126,
@@ -74,7 +98,10 @@
       "position": "DF",
       "number": 16,
       "age": 29,
-      "club_ko": "강원 FC"
+      "club_ko": "강원 FC",
+      "height_cm": 184,
+      "weight_kg": 72,
+      "birth_date": "2000-07-07"
     },
     {
       "id": 1127,
@@ -82,7 +109,10 @@
       "position": "DF",
       "number": 14,
       "age": 25,
-      "club_ko": "SK 아우스트리아 빈"
+      "club_ko": "FK 아우스트리아 빈",
+      "height_cm": 174,
+      "weight_kg": 61,
+      "birth_date": "2002-07-28"
     },
     {
       "id": 1110,
@@ -90,7 +120,10 @@
       "position": "DF",
       "number": 22,
       "age": 27,
-      "club_ko": "FK 츠르베나 즈베즈다"
+      "club_ko": "FK 츠르베나 즈베즈다",
+      "height_cm": 180,
+      "weight_kg": 72,
+      "birth_date": "1998-12-05"
     },
     {
       "id": 1128,
@@ -98,7 +131,8 @@
       "position": "DF",
       "number": 15,
       "age": 23,
-      "club_ko": "보루시아 묀헨글라트바흐"
+      "club_ko": "보루시아 묀헨글라트바흐",
+      "birth_date": "2003-07-29"
     },
     {
       "id": 1129,
@@ -106,7 +140,10 @@
       "position": "DF",
       "number": 19,
       "age": 31,
-      "club_ko": "대전하나 시티즌"
+      "club_ko": "대전 하나 시티즌",
+      "height_cm": 173,
+      "weight_kg": 64,
+      "birth_date": "1995-08-01"
     },
     {
       "id": 1112,
@@ -114,7 +151,10 @@
       "position": "MF",
       "number": 6,
       "age": 30,
-      "club_ko": "페예노르트"
+      "club_ko": "페예노르트 로테르담",
+      "height_cm": 177,
+      "weight_kg": 70,
+      "birth_date": "1996-09-20"
     },
     {
       "id": 1113,
@@ -122,7 +162,10 @@
       "position": "MF",
       "number": 5,
       "age": 25,
-      "club_ko": "파리 생제르맹 FC"
+      "club_ko": "파리 생제르맹 FC",
+      "height_cm": 174,
+      "weight_kg": 72,
+      "birth_date": "2001-02-19"
     },
     {
       "id": 1115,
@@ -130,7 +173,10 @@
       "position": "MF",
       "number": 10,
       "age": 33,
-      "club_ko": "1. FSV 마인츠 05"
+      "club_ko": "FSV 마인츠 05",
+      "height_cm": 180,
+      "weight_kg": 70,
+      "birth_date": "1992-08-10"
     },
     {
       "id": 1116,
@@ -138,7 +184,10 @@
       "position": "MF",
       "number": 11,
       "age": 30,
-      "club_ko": "울버햄튼 원더러스 FC"
+      "club_ko": "울버햄튼 원더러스 FC",
+      "height_cm": 177,
+      "weight_kg": 77,
+      "birth_date": "1996-01-26"
     },
     {
       "id": 1117,
@@ -146,7 +195,10 @@
       "position": "MF",
       "number": 17,
       "age": 29,
-      "club_ko": "버밍엄 시티 FC"
+      "club_ko": "버밍엄 시티 FC",
+      "height_cm": 182,
+      "weight_kg": 72,
+      "birth_date": "1997-03-17"
     },
     {
       "id": 1130,
@@ -154,7 +206,10 @@
       "position": "MF",
       "number": 8,
       "age": 24,
-      "club_ko": "셀틱 FC"
+      "club_ko": "셀틱 FC",
+      "height_cm": 179,
+      "weight_kg": 73,
+      "birth_date": "2002-05-25"
     },
     {
       "id": 1131,
@@ -162,7 +217,10 @@
       "position": "MF",
       "number": 23,
       "age": 27,
-      "club_ko": "전북 현대 모터스"
+      "club_ko": "전북 현대 모터스",
+      "height_cm": 177,
+      "weight_kg": 68,
+      "birth_date": "1997-02-24"
     },
     {
       "id": 1132,
@@ -170,7 +228,10 @@
       "position": "MF",
       "number": 24,
       "age": 23,
-      "club_ko": "스토크 시티 FC"
+      "club_ko": "스토크 시티 FC",
+      "height_cm": 180,
+      "weight_kg": 70,
+      "birth_date": "2003-08-21"
     },
     {
       "id": 1133,
@@ -178,7 +239,10 @@
       "position": "MF",
       "number": 25,
       "age": 27,
-      "club_ko": "스완지 시티 AFC"
+      "club_ko": "스완지 시티 AFC",
+      "height_cm": 177,
+      "weight_kg": 70,
+      "birth_date": "2002-05-09"
     },
     {
       "id": 1134,
@@ -186,7 +250,10 @@
       "position": "MF",
       "number": 21,
       "age": 29,
-      "club_ko": "울산 HD FC"
+      "club_ko": "울산 HD FC",
+      "height_cm": 175,
+      "weight_kg": 68,
+      "birth_date": "1997-09-20"
     },
     {
       "id": 1121,
@@ -194,7 +261,10 @@
       "position": "FW",
       "number": 26,
       "age": 25,
-      "club_ko": "베식타시 JK"
+      "club_ko": "베식타스 JK",
+      "height_cm": 183,
+      "weight_kg": 72,
+      "birth_date": "2001-04-12"
     },
     {
       "id": 1114,
@@ -202,7 +272,10 @@
       "position": "FW",
       "number": 7,
       "age": 33,
-      "club_ko": "LA FC"
+      "club_ko": "LA FC",
+      "height_cm": 183,
+      "weight_kg": 78,
+      "birth_date": "1992-07-08"
     },
     {
       "id": 1119,
@@ -210,7 +283,12 @@
       "position": "FW",
       "number": 9,
       "age": 27,
-      "club_ko": "FC 미드뷜란"
+      "club_ko": "FC 미트윌란",
+      "height_cm": 189,
+      "weight_kg": 82,
+      "birth_date": "1998-01-25"
     }
-  ]
+  ],
+  "updated_at": "2026-05-23",
+  "source": "KFA 공식 홈페이지 (kfa.or.kr) — 2026 북중미 월드컵 최종 소집 명단"
 }
