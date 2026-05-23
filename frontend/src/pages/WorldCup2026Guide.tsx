@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import { postAiWc2026Snack } from "../api/aiInsights";
 import AiInsightPanel from "../components/AiInsightPanel";
+import NextMatchBanner from "../components/NextMatchBanner";
 import { postAiFunStep3Guide, type AiFunStep3AGroup } from "../api/worldcup2026";
 
 const NAMU_WIKI_URL =
@@ -188,6 +189,16 @@ export default function WorldCup2026Guide() {
       </section>
 
       <GuideAiStep3Panel />
+
+      {/* 대한민국 A조 다음 경기 카운트다운 */}
+      <section className="panel">
+        <h2 className="panel-title">🇰🇷 대한민국 A조 다음 경기</h2>
+        <NextMatchBanner />
+        <p className="muted" style={{ fontSize: "0.84rem", marginTop: "0.5rem" }}>
+          A조 3경기 상세 일정·Elo 승률·킥오프 시각은{" "}
+          <Link to="/2026/korea">한국 대시보드</Link>에서 확인하세요.
+        </p>
+      </section>
 
       <section className="panel">
         <h2 className="panel-title">더 보기</h2>
