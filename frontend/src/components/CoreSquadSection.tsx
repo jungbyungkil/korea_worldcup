@@ -9,6 +9,7 @@ import {
 } from "../api/worldcup2026";
 import { humanizeFetchError } from "../api/client";
 import FormationPitch from "./FormationPitch";
+import PlayerAvatar from "./PlayerAvatar";
 import { FORMATIONS } from "../formationLayouts";
 
 const POS_LABEL_KO: Record<string, string> = {
@@ -97,6 +98,7 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
               <table className="data-table core-squad-table">
                 <thead>
                   <tr>
+                    <th className="avatar-cell"></th>
                     <th>번호</th>
                     <th>이름</th>
                     <th>포지션</th>
@@ -107,6 +109,9 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
                 <tbody>
                   {bundle.players.map((p) => (
                     <tr key={p.id}>
+                      <td className="avatar-cell">
+                        <PlayerAvatar playerId={p.id} playerName={p.name} size={38} />
+                      </td>
                       <td>{p.number ?? "—"}</td>
                       <td style={{ fontWeight: 600 }}>{p.name}</td>
                       <td>

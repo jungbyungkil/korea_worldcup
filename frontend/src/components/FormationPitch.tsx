@@ -1,4 +1,5 @@
 import { getSlotCoords, SLOT_LABEL_KO } from "../formationLayouts";
+import PlayerAvatar from "./PlayerAvatar";
 
 export interface XiPlayer {
   slot: string;
@@ -28,6 +29,12 @@ export default function FormationPitch({ formation, xi }: Props) {
               style={{ left: `${left}%`, top: `${top}%` }}
             >
               <div className="formation-mark__card">
+                <PlayerAvatar
+                  playerId={row.player_id}
+                  playerName={row.player_name}
+                  size={42}
+                  className="formation-mark__photo"
+                />
                 <div className="formation-mark__slot">{slotKo}</div>
                 <div className="formation-mark__name">{row.player_name}</div>
               </div>

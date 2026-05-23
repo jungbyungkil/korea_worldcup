@@ -2645,3 +2645,53 @@ iframe {
     line-height: 1.25;
   }
 }
+
+/* ─── 선수 아바타 ────────────────────────────────────────── */
+.player-avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: top center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 2px solid rgba(15, 23, 42, 0.12);
+  background: #e2e8f0;
+  overflow: hidden;
+}
+
+.player-avatar--photo {
+  background: #cbd5e1;
+}
+
+.player-avatar--fallback {
+  color: #475569;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+}
+
+/* 명단 테이블 아바타 셀 */
+.core-squad-table .avatar-cell {
+  width: 44px;
+  padding: 0.3rem 0.4rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* 포메이션 피치 - 선수 카드에 사진 */
+.formation-mark__photo {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 0.22rem;
+  display: block;
+  border: 2px solid rgba(255,255,255,0.9);
+  box-shadow: 0 2px 6px rgba(15,23,42,0.18);
+}
+
+@media (max-width: 520px) {
+  .formation-mark__photo {
+    width: 32px;
+    height: 32px;
+  }
+}
