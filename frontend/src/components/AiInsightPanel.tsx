@@ -40,11 +40,11 @@ export default function AiInsightPanel({ title, description, fetchInsight, class
     <section className={`panel ai-insight-panel ${className}`.trim()}>
       <div className="ai-insight-panel__head">
         <h2 className="panel-title ai-insight-panel__title">{title}</h2>
-        <span className="ai-insight-panel__badge" title="OpenAI API">
+        <span className="ai-insight-panel__badge" title="AI API 연동">
           <span className="ai-insight-panel__badge-ico" aria-hidden>
-            ✨
+            🤖
           </span>
-          GPT
+          AI
         </span>
       </div>
       {description ? (

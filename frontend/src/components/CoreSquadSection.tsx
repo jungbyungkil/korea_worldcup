@@ -67,15 +67,15 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
   }, [teamKey, pickedFormation]);
 
   const sectionTitle = headingPrefix
-    ? `${headingPrefix} · 예시 23인 & 감독 AI 포메이션`
-    : `${bundle?.display_ko ?? ""} · 예시 23인 & 감독 AI 포메이션`;
+    ? `${headingPrefix} · 확정 26인 & AI 포메이션`
+    : `${bundle?.display_ko ?? ""} · 확정 26인 & AI 포메이션`;
 
   return (
     <div className="core-squad-section">
       <section className="panel">
-        <h2 className="panel-title">{bundle ? sectionTitle : "예시 23인 & 감독 AI 포메이션"}</h2>
+        <h2 className="panel-title">{bundle ? sectionTitle : "확정 26인 & AI 포메이션"}</h2>
         <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem", lineHeight: 1.55 }}>
-          앱에 포함된 <strong>예시 23인</strong>과, OpenAI가 감독 관점에서 뽑는 <strong>포메이션별 베스트 11</strong>·
+          <strong>2026-05-16 확정 26인</strong>과, AI가 감독 관점에서 뽑는 <strong>포메이션별 베스트 11</strong>·
           <strong>슬롯별 선정 이유</strong>입니다.
         </p>
       </section>

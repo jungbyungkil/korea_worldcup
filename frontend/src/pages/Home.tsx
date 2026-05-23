@@ -1,6 +1,8 @@
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import AiInsightPanel from "../components/AiInsightPanel";
+import NextMatchBanner from "../components/NextMatchBanner";
+import ScorePredictionGame from "../components/ScorePredictionGame";
 import { postAiHomeWelcome } from "../api/aiInsights";
 
 export default function Home() {
@@ -22,10 +24,18 @@ export default function Home() {
           대한민국 축구 · 월드컵 허브
         </h1>
         <p>
-          과거 본선 이력부터 2026 북중미 대회 준비, 한국 대표팀 선수 스탯까지 한곳에서 확인하세요. 백엔드는 FastAPI, 데이터는
-          API-Football 등 외부 소스와 연동됩니다.
+          과거 본선 이력부터 2026 북중미 대회 준비, 한국 대표팀 선수 스탯까지 한곳에서 확인하세요.
         </p>
+        <div className="hero-chips">
+          <span className="hero-chip">📅 2026. 6. 12 ~ 7. 19</span>
+          <span className="hero-chip hero-chip--highlight">🇰🇷 ELO 1820위</span>
+          <span className="hero-chip">⚽ A조 · 3경기</span>
+          <span className="hero-chip">🌎 북중미 3개국 공동 개최</span>
+        </div>
       </section>
+
+      {/* 다음 경기 카운트다운 배너 */}
+      <NextMatchBanner />
 
       <AiInsightPanel
         title="AI · 오늘의 월드컵 허브 인사"
@@ -46,12 +56,13 @@ export default function Home() {
             북중미 3개국 개최, 48개국·104경기, 대회 형식·상징·시차 메모. 나무위키·FIFA 링크로 이어집니다.
           </p>
         </Link>
-        <Link to="/2026/korea" className="feature-card">
+        <Link to="/2026/korea" className="feature-card feature-card--korea">
           <div className="feature-card__icon">🎯</div>
           <h2 className="feature-card__title">2026 한국 대시보드</h2>
           <p className="feature-card__desc">
-            A조 하이라이트(1·2·3차전)·Elo 승률 스트립·킥오프 시각 등 한국 조별리그 일정 중심 화면입니다.
+            A조 순위표·3경기 카운트다운·Elo 승률·킥오프 시각 등 한국 조별리그 중심 화면입니다.
           </p>
+          <span className="feature-card__badge">⭐ 핵심</span>
         </Link>
         <Link to="/2026/korea/players" className="feature-card">
           <div className="feature-card__icon">👤</div>
@@ -89,6 +100,9 @@ export default function Home() {
           </p>
         </Link>
       </div>
+
+      {/* 팬 스코어 예측 게임 */}
+      <ScorePredictionGame />
 
       <div className="hint-card">
         <strong>로컬 실행</strong> — 백엔드 <code>http://localhost:8000</code> · API 문서{" "}

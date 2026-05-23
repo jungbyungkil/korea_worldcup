@@ -14,8 +14,8 @@ export default function PlayerFeatures() {
     <main className="page">
       <h1 className="page-title">한국 대표팀 데이터</h1>
       <p className="page-lead">
-        아래는 <strong>예시 23인 명단</strong>과 OpenAI 기반 <strong>포메이션별 베스트 11·슬롯별 선정 이유</strong>입니다.
-        실제 본선 명단·공식 발표와 다를 수 있으며 참고·놀이용입니다.
+        아래는 <strong>2026-05-16 홍명보 감독 발표 확정 26인 명단</strong>과 AI 기반 <strong>포메이션별 베스트 11·슬롯별 선정 이유</strong>입니다.
+        등번호·나이는 참고값이며, 공식 발표·경기 직전 최종 명단을 함께 확인하세요.
       </p>
 
       <AiInsightPanel

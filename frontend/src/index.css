@@ -335,6 +335,33 @@ iframe {
   max-width: 38rem;
 }
 
+/* 히어로 통계 칩 */
+.hero-chips {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 0.22em 0.7em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  white-space: nowrap;
+}
+.hero-chip--highlight {
+  background: rgba(253, 224, 71, 0.18);
+  border-color: rgba(253, 224, 71, 0.4);
+  color: #fde047;
+}
+
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -374,6 +401,32 @@ iframe {
 .feature-card--accent .feature-card__icon {
   background: linear-gradient(145deg, #ede9fe 0%, #dbeafe 100%);
   border-color: rgba(139, 92, 246, 0.25);
+}
+
+/* 한국 대시보드 카드 강조 */
+.feature-card--korea {
+  border-color: rgba(29, 78, 216, 0.35);
+  background: linear-gradient(160deg, #eff6ff 0%, #fff 50%);
+  position: relative;
+}
+.feature-card--korea:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 12px 36px rgba(29, 78, 216, 0.15);
+}
+.feature-card--korea .feature-card__icon {
+  background: linear-gradient(145deg, #dbeafe 0%, #e0e7ff 100%);
+  border-color: rgba(29, 78, 216, 0.3);
+}
+.feature-card__badge {
+  display: inline-block;
+  margin-top: 0.55rem;
+  background: #1d4ed8;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15em 0.55em;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
 }
 
 .feature-card__icon {
@@ -2694,4 +2747,291 @@ iframe {
     width: 32px;
     height: 32px;
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   다음 경기 카운트다운 배너 (NextMatchBanner)
+   ───────────────────────────────────────────────────────────── */
+.next-match-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  box-shadow: 0 4px 18px rgba(29, 78, 216, 0.28);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.next-match-banner:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(29, 78, 216, 0.38);
+  text-decoration: none;
+  color: #fff;
+}
+.next-match-banner--czech  { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+.next-match-banner--mexico { background: linear-gradient(135deg, #166534 0%, #16a34a 100%); box-shadow: 0 4px 18px rgba(22,163,74,0.28); }
+.next-match-banner--mexico:hover { box-shadow: 0 8px 28px rgba(22,163,74,0.38); }
+.next-match-banner--south-africa { background: linear-gradient(135deg, #7c2d12 0%, #dc2626 100%); box-shadow: 0 4px 18px rgba(220,38,38,0.28); }
+.next-match-banner--south-africa:hover { box-shadow: 0 8px 28px rgba(220,38,38,0.38); }
+.next-match-banner--done {
+  background: #475569;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius);
+  color: #fff;
+  margin: 1rem 0;
+  font-weight: 600;
+}
+
+.next-match-banner__inner { display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap; flex: 1; }
+.next-match-banner__label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+  white-space: nowrap;
+}
+.next-match-banner__matchup {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 1.35rem;
+}
+.next-match-banner__vs {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  font-weight: 500;
+}
+.next-match-banner__opp {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.next-match-banner__cd {
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+  flex-wrap: nowrap;
+}
+.next-match-banner__cd span {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.1em;
+}
+.next-match-banner__cd strong {
+  font-size: 1.65rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.next-match-banner__cd small {
+  font-size: 0.68rem;
+  font-weight: 600;
+  opacity: 0.75;
+}
+.next-match-banner__sep {
+  font-size: 1.2rem;
+  font-weight: 700;
+  opacity: 0.6;
+  line-height: 1;
+}
+.next-match-banner__time {
+  font-size: 0.82rem;
+  opacity: 0.75;
+  white-space: nowrap;
+}
+.next-match-banner__arrow {
+  font-size: 1.75rem;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .next-match-banner { flex-wrap: wrap; }
+  .next-match-banner__inner { gap: 0.75rem; }
+  .next-match-banner__cd strong { font-size: 1.3rem; }
+  .next-match-banner__time { display: none; }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   팬 스코어 예측 게임 (ScorePredictionGame)
+   ───────────────────────────────────────────────────────────── */
+.pred-game {
+  margin: 1.5rem 0;
+}
+.pred-game__title { margin-bottom: 0.25rem; }
+.pred-game__desc { margin: 0 0 1rem; font-size: 0.9rem; }
+
+.pred-game__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.pred-card {
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.pred-card--czech       { border-color: #93c5fd; }
+.pred-card--mexico      { border-color: #86efac; }
+.pred-card--south-africa { border-color: #fca5a5; }
+.pred-card:hover        { box-shadow: var(--shadow-md); }
+.pred-card--ended       { opacity: 0.65; }
+
+.pred-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pred-card__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.pred-card__date {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+.pred-card__matchup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.pred-card__team {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex: 1;
+}
+.pred-card__team--opp { text-align: right; }
+.pred-card__scores {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+.pred-card__colon {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-muted);
+  line-height: 1;
+}
+.pred-card__result {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.pred-result {
+  display: inline-block;
+  padding: 0.18em 0.55em;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.pred-result--win  { background: #dcfce7; color: #15803d; }
+.pred-result--draw { background: #fef9c3; color: #854d0e; }
+.pred-result--loss { background: #fee2e2; color: #b91c1c; }
+.pred-card__saved-at { font-size: 0.72rem; }
+.pred-card__ended-note { font-size: 0.75rem; margin: 0; }
+
+/* 점수 +/- 버튼 */
+.score-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+.score-selector__btn {
+  background: transparent;
+  border: none;
+  width: 28px;
+  height: 32px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-primary);
+  transition: background 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+.score-selector__btn:hover:not(:disabled) { background: var(--color-primary-soft); }
+.score-selector__btn:disabled { opacity: 0.35; cursor: not-allowed; }
+.score-selector__val {
+  min-width: 26px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-text);
+  padding: 0 0.1rem;
+}
+
+.pred-game__actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+.pred-game__hint { font-size: 0.82rem; margin: 0; }
+
+/* ─────────────────────────────────────────────────────────────
+   A조 순위표 & 일정 (GroupATable)
+   ───────────────────────────────────────────────────────────── */
+.group-a-section { margin: 1rem 0; }
+
+.group-a-table .group-a-table__row--highlight {
+  background: rgba(29, 78, 216, 0.06);
+}
+.group-a-table .group-a-table__row--highlight td {
+  font-weight: 600;
+}
+.group-a-table__team {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.group-a-schedule .group-a-schedule__row--korea {
+  background: rgba(29, 78, 216, 0.05);
+}
+.group-a-schedule .group-a-schedule__row--korea td {
+  font-weight: 600;
+}
+
+/* ELO 배지 */
+.elo-badge {
+  display: inline-block;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+@media (max-width: 640px) {
+  .group-a-schedule th:last-child,
+  .group-a-schedule td:last-child { display: none; }
 }

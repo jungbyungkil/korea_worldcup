@@ -2,6 +2,9 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { humanizeFetchError } from "../api/client";
 import { postAiAGroupLens } from "../api/aiInsights";
 import AiInsightPanel from "../components/AiInsightPanel";
+import GroupATable from "../components/GroupATable";
+import NextMatchBanner from "../components/NextMatchBanner";
+import ScorePredictionGame from "../components/ScorePredictionGame";
 import { getKoreaFixtures, getKoreaOverview, type Fixture, type KoreaFixtures, type KoreaOverview } from "../api/worldcup2026";
 import FirstGroupMatchSpotlight from "../components/FirstGroupMatchSpotlight";
 import MexicoMatchSpotlight from "../components/MexicoMatchSpotlight";
@@ -125,24 +128,27 @@ export default function WorldCup2026Korea() {
           <span className="text-error">{overviewErr}</span>
         ) : (
           <>
-            최신 업데이트: {overview?.last_updated ? new Date(overview.last_updated).toLocaleString() : "-"} · A조 (
-            {overview?.status.groups_confirmed ? "조편성 확정" : "조편성 미확정"}) · 감독{" "}
-            <strong>홍명보</strong> (홍명보호 성인 2기, 나무위키 등 커뮤니티 표기)
+            A조 · 감독 <strong>홍명보</strong> · ELO <strong>1820</strong>
           </>
         )}
         {!overviewLoading && fixturesLoading ? (
-          <span className="muted"> · 일정(경기 목록) 불러오는 중…</span>
+          <span className="muted"> · 일정 불러오는 중…</span>
         ) : null}
         {!overviewLoading && !fixturesLoading && fixturesErr ? (
           <span className="text-error"> · 일정: {fixturesErr}</span>
         ) : null}
       </p>
 
+      {/* 다음 경기 카운트다운 배너 */}
+      <NextMatchBanner />
+
       <AiInsightPanel
         title="AI · A조 관전 렌즈"
         description="체코·멕시코·남아공을 한국 팬 시각에서 짧게 짚어봅니다. (재미·참고용)"
         fetchInsight={fetchAGroup}
       />
+
+      <GroupATable />
 
       <FirstGroupMatchSpotlight
         officialKickoffIso={firstMatchKickoffIso}
@@ -162,6 +168,9 @@ export default function WorldCup2026Korea() {
         officialVenue={southAfricaFixture?.venue}
         officialCity={southAfricaFixture?.city}
       />
+
+      {/* 팬 스코어 예측 게임 */}
+      <ScorePredictionGame />
     </main>
   );
 }

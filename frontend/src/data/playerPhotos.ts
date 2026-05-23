@@ -23,6 +23,10 @@ export const KOREA_PLAYER_PHOTOS: Record<number, string> = {
   1131: "https://www.thesportsdb.com/images/media/player/thumb/xrn3va1778972321.jpg",  // 김진규
   1132: "https://www.thesportsdb.com/images/media/player/thumb/k9nwjc1778970284.jpg",  // 배준호
   1134: "https://www.thesportsdb.com/images/media/player/thumb/ezngq51778972832.jpg",  // 이동경
+  // 추가분 (2026-05-23)
+  1124: "https://www.thesportsdb.com/images/media/player/thumb/crbx981778974609.jpg",  // 조유민
+  1126: "https://www.thesportsdb.com/images/media/player/thumb/1n2klf1778970178.jpg",  // 이기혁
+  1133: "https://www.thesportsdb.com/images/media/player/thumb/pxo6q91778972932.jpg",  // 엄지성
 };
 
 export function getPlayerPhoto(id: number): string | null {
