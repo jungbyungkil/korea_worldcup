@@ -167,10 +167,16 @@ async def generate_best_xi(
         raise ValueError("부상 제외 후 스쿼드가 11명 미만입니다.")
 
     coach = (coach_blurb or "Korea Republic national football team").strip()
+
+    # 유효 ID 목록을 명시적으로 프롬프트에 포함 — AI 가 범위 밖 ID를 만들지 않도록
+    valid_id_list = sorted(allowed_ids - injured_set)
+    valid_ids_str = ", ".join(str(i) for i in valid_id_list)
+
     system = (
         f"You are the head coach of {coach}. "
         "Pick the best starting 11 from the given squad for the specified formation. "
-        "Use ONLY player ids from the squad list. "
+        f"CRITICAL: You MUST use ONLY player_id values from this exact list: [{valid_ids_str}]. "
+        "Do NOT invent or guess player_id numbers — copy them exactly from the squad data. "
         "Respect typical positional roles (GK must be a goalkeeper; do not put outfield players in GK). "
         "Consider club form (appearances, goals, minutes) when available. "
         "Return ONLY valid JSON with keys: "
@@ -185,6 +191,7 @@ async def generate_best_xi(
         "formation": formation,
         "formation_description_ko": hint,
         "slots_in_order": slots,
+        "valid_player_ids_only": valid_id_list,
         "injured_player_ids_to_exclude": sorted(injured_set),
         "squad": normalized,
     }
@@ -192,6 +199,7 @@ async def generate_best_xi(
     user_text = (
         "아래 JSON을 읽고, slots_in_order의 각 슬롯에 정확히 한 명씩 배정하세요. "
         "xi 배열의 길이는 11이고, slot 값은 slots_in_order와 동일한 철자여야 합니다. "
+        "player_id는 반드시 valid_player_ids_only 목록에 있는 값만 사용하세요. 목록에 없는 숫자는 절대 사용하지 마세요. "
         "slot_reasons_ko는 slots_in_order와 동일한 순서로 11개, 각 슬롯에 배정한 선수를 감독 입장에서 한 문장으로 설명하세요.\n\n"
         + json.dumps(user_payload, ensure_ascii=False, default=str)[:28000]
     )
@@ -221,8 +229,34 @@ async def generate_best_xi(
         raise RuntimeError(f"AI 응답 파싱 실패: {e}") from e
 
     xi_raw = parsed.get("xi")
+    # 이름→id 역방향 맵 (AI가 잘못된 ID를 반환할 때 이름으로 보정)
+    name_to_id: dict[str, int] = {}
+    for p in normalized:
+        name_to_id[p["name"].strip().lower()] = p["id"]
+
+    def _fix_invalid_ids(xi_list: list[Any]) -> list[Any]:
+        """잘못된 player_id를 player_name으로 매칭해 수정한다."""
+        fixed = []
+        for row in xi_list:
+            if not isinstance(row, dict):
+                fixed.append(row)
+                continue
+            try:
+                pid = int(row.get("player_id"))
+            except (TypeError, ValueError):
+                fixed.append(row)
+                continue
+            if pid not in allowed_ids:
+                pname = str(row.get("player_name") or "").strip().lower()
+                corrected = name_to_id.get(pname)
+                if corrected and corrected not in injured_set:
+                    row = {**row, "player_id": corrected}
+            fixed.append(row)
+        return fixed
+
+    xi_raw_fixed = _fix_invalid_ids(xi_raw) if isinstance(xi_raw, list) else xi_raw
     try:
-        xi_validated = _validate_xi(xi_raw, slots, allowed_ids, injured_set)
+        xi_validated = _validate_xi(xi_raw_fixed, slots, allowed_ids, injured_set)
     except ValueError as e:
         raise RuntimeError(f"AI 포메이션 검증 실패: {e}") from e
 
