@@ -103,19 +103,19 @@ export default function GroupStageMatchSpotlight({
               <p className="group-match-spotlight__countdown-label">킥오프까지 (대시보드 시계 기준)</p>
               <div className="group-match-spotlight__countdown-digits" role="timer" aria-live="polite">
                 <span>
-                  <strong>{cd.days}</strong>
+                  <strong key={`d-${cd.days}`} className="cd-num-flip">{cd.days}</strong>
                   <small>일</small>
                 </span>
                 <span>
-                  <strong>{String(cd.hours).padStart(2, "0")}</strong>
+                  <strong key={`h-${cd.hours}`} className="cd-num-flip">{String(cd.hours).padStart(2, "0")}</strong>
                   <small>시</small>
                 </span>
                 <span>
-                  <strong>{String(cd.mins).padStart(2, "0")}</strong>
+                  <strong key={`m-${cd.mins}`} className="cd-num-flip">{String(cd.mins).padStart(2, "0")}</strong>
                   <small>분</small>
                 </span>
                 <span>
-                  <strong>{String(cd.secs).padStart(2, "0")}</strong>
+                  <strong key={`s-${cd.secs}`} className="cd-num-flip">{String(cd.secs).padStart(2, "0")}</strong>
                   <small>초</small>
                 </span>
               </div>

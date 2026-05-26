@@ -4,9 +4,17 @@ import AiInsightPanel from "../components/AiInsightPanel";
 import NextMatchBanner from "../components/NextMatchBanner";
 import ScorePredictionGame from "../components/ScorePredictionGame";
 import { postAiHomeWelcome } from "../api/aiInsights";
+import { useScrollReveal } from "../hooks/useScrollReveal";
 
 export default function Home() {
   const fetchHomeWelcome = useCallback(() => postAiHomeWelcome(), []);
+
+  // 스크롤 진입 애니메이션 refs
+  const bannerRef = useScrollReveal<HTMLDivElement>();
+  const aiRef     = useScrollReveal<HTMLDivElement>();
+  const gridRef   = useScrollReveal<HTMLDivElement>();
+  const predRef   = useScrollReveal<HTMLDivElement>();
+  const hintRef   = useScrollReveal<HTMLDivElement>();
 
   return (
     <div className="page">
@@ -35,15 +43,19 @@ export default function Home() {
       </section>
 
       {/* 다음 경기 카운트다운 배너 */}
-      <NextMatchBanner />
+      <div ref={bannerRef} className="scroll-reveal">
+        <NextMatchBanner />
+      </div>
 
-      <AiInsightPanel
-        title="AI · 오늘의 월드컵 허브 인사"
-        description="OpenAI로 짧은 환영 멘트를 만듭니다. 버튼을 누를 때마다 새로 생성됩니다."
-        fetchInsight={fetchHomeWelcome}
-      />
+      <div ref={aiRef} className="scroll-reveal scroll-reveal--d1">
+        <AiInsightPanel
+          title="AI · 오늘의 월드컵 허브 인사"
+          description="OpenAI로 짧은 환영 멘트를 만듭니다. 버튼을 누를 때마다 새로 생성됩니다."
+          fetchInsight={fetchHomeWelcome}
+        />
+      </div>
 
-      <div className="feature-grid">
+      <div ref={gridRef} className="scroll-reveal feature-grid">
         <Link to="/history/worldcup" className="feature-card">
           <div className="feature-card__icon">📜</div>
           <h2 className="feature-card__title">한국 월드컵 이력</h2>
@@ -102,9 +114,11 @@ export default function Home() {
       </div>
 
       {/* 팬 스코어 예측 게임 */}
-      <ScorePredictionGame />
+      <div ref={predRef} className="scroll-reveal scroll-reveal--d1">
+        <ScorePredictionGame />
+      </div>
 
-      <div className="hint-card">
+      <div ref={hintRef} className="scroll-reveal scroll-reveal--d2 hint-card">
         <strong>로컬 실행</strong> — 백엔드 <code>http://localhost:8000</code> · API 문서{" "}
         <a href="http://localhost:8000/docs" target="_blank" rel="noreferrer">
           /docs
