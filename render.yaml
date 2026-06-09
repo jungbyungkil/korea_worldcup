@@ -51,9 +51,6 @@ services:
     staticPublishPath: ./dist
     plan: free
     envVars:
-      # 빌드 시 백엔드 URL을 주입 — 백엔드 서비스의 RENDER_EXTERNAL_URL(https://...onrender.com)을 복사
+      # 백엔드 실제 배포 URL (https://korea-worldcup.onrender.com)
       - key: VITE_API_BASE_URL
-        fromService:
-          name: korea-worldcup-api
-          type: web
-          envVarKey: RENDER_EXTERNAL_URL
+        value: https://korea-worldcup.onrender.com
