@@ -1156,7 +1156,7 @@ iframe {
 }
 
 .formation-mark__slot {
-  font-size: clamp(0.62rem, 2.4vw, 0.72rem);
+  font-size: clamp(0.65rem, 2.4vw, 0.72rem);
   font-weight: 700;
   color: var(--color-primary);
   letter-spacing: 0.02em;
@@ -1164,7 +1164,7 @@ iframe {
 }
 
 .formation-mark__name {
-  font-size: clamp(0.62rem, 2.6vw, 0.72rem);
+  font-size: clamp(0.65rem, 2.6vw, 0.72rem);
   font-weight: 700;
   line-height: 1.2;
   color: var(--color-text);
@@ -2598,8 +2598,32 @@ iframe {
   .textarea,
   .ai-seven-select,
   .ai-seven-input,
-  .ai-playground-textarea {
+  .ai-playground-textarea,
+  .pg-select,
+  .pg-input,
+  .pg-textarea,
+  .pg-slot-select {
     font-size: max(16px, 0.88rem);
+  }
+
+  /* 모바일 공통 터치 타깃 최소 보장 */
+  .squad-view-btn {
+    min-height: 44px;
+    padding: 0.45rem 1rem;
+  }
+  .score-selector__btn {
+    width: 36px;
+    height: 44px;
+  }
+
+  /* pg 탭 touch 영역 */
+  .pg-tab {
+    min-height: 48px;
+  }
+
+  /* 드로어 열린 상태에서 바디 overflow 방지 보조 */
+  .site-nav--drawer-open ~ .app-main {
+    pointer-events: none;
   }
 }
 
@@ -2722,12 +2746,90 @@ iframe {
     max-height: calc(100dvh - 1rem);
     padding: 0.9rem 0.85rem 1rem;
   }
+
+  /* 점수 예측 +/- 버튼 터치 타깃 확대 */
+  .score-selector__btn {
+    width: 36px;
+    height: 44px;
+  }
+  .score-selector__val {
+    min-width: 28px;
+    font-size: 1rem;
+  }
+
+  /* 명단 보기 전환 버튼 터치 타깃 */
+  .squad-view-btn {
+    min-height: 44px;
+    padding: 0.45rem 1rem;
+    font-size: 0.88rem;
+  }
+
+  /* AI 놀이터 패널 여백 축소 */
+  .pg-panel {
+    padding: 1rem 0.9rem;
+  }
+  .pg-result-card {
+    padding: 1rem 0.9rem;
+  }
+
+  /* 카운트다운 숫자 크기 축소 */
+  .group-match-spotlight__countdown-digits span {
+    min-width: 2.8rem;
+  }
+  .group-match-spotlight__countdown-digits strong {
+    font-size: 1.35rem;
+  }
 }
 
 @media (max-width: 420px) {
   .site-header a.site-brand {
     font-size: 0.92rem;
     line-height: 1.25;
+  }
+
+  /* 페이지 좌우 여백 추가 축소 */
+  .page {
+    padding-left: calc(0.75rem + env(safe-area-inset-left, 0px));
+    padding-right: calc(0.75rem + env(safe-area-inset-right, 0px));
+    padding-top: 1rem;
+  }
+
+  /* AI 놀이터 탭 */
+  .pg-tab {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+  }
+  .pg-tab__label { font-size: 0.74rem; }
+  .pg-tab__icon  { font-size: 1.1rem; }
+
+  /* 컨트롤 라벨 min-width 축소 */
+  .pg-label { min-width: 120px; }
+
+  /* 페르소나 카드 — 3열 유지하되 패딩 축소 */
+  .pg-persona-card {
+    min-width: 80px;
+    padding: 0.55rem 0.3rem;
+    gap: 0.25rem;
+  }
+  .pg-persona-emoji { font-size: 1.35rem; }
+  .pg-persona-label { font-size: 0.72rem; }
+
+  /* 예측 카드 */
+  .pred-card { padding: 0.75rem 0.7rem; }
+
+  /* 통계 칩 */
+  .history-stat-chip {
+    min-width: 76px;
+    padding: 0.45rem 0.65rem;
+  }
+  .history-stat-chip__value { font-size: 0.95rem; }
+
+  /* 스포트라이트 섹션 패딩 */
+  .group-match-spotlight { padding: 0.85rem 0.85rem 1rem; }
+
+  /* 포메이션 피치 카드 패딩 */
+  .formation-mark__card {
+    padding: 0.32rem 0.3rem 0.36rem;
   }
 }
 
@@ -2782,6 +2884,31 @@ iframe {
   padding: 0.3rem 0.4rem;
   text-align: center;
   vertical-align: middle;
+}
+
+/* 명단 테이블 모바일 최적화 */
+.core-squad-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-sm);
+}
+@media (max-width: 520px) {
+  .core-squad-table th,
+  .core-squad-table td {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.35rem;
+    white-space: nowrap;
+  }
+  .core-squad-table .avatar-cell {
+    width: 36px;
+    padding: 0.25rem 0.3rem;
+  }
+  /* 클럽명 컬럼 — 좁은 화면에서 숨김 */
+  .core-squad-table .col-club { display: none; }
+}
+@media (max-width: 375px) {
+  /* 나이 컬럼도 숨김 */
+  .core-squad-table .col-age { display: none; }
 }
 
 /* 포메이션 피치 - 선수 카드에 사진 */
@@ -3265,6 +3392,10 @@ iframe {
 @media (max-width: 640px) {
   .group-a-schedule th:last-child,
   .group-a-schedule td:last-child { display: none; }
+
+  /* 역대 이력 테이블 — 좁은 화면에서 요약 열 숨김 */
+  .wc-history-main-table th:last-child,
+  .wc-history-main-table td:last-child { display: none; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -3907,6 +4038,55 @@ iframe {
 .pred-card:hover {
   box-shadow: 0 12px 32px rgba(29, 78, 216, 0.1);
   transform: translateY(-3px);
+}
+
+/* ─── @media: 375px 이하 (iPhone SE 등 최소형 기기) ──── */
+@media (max-width: 375px) {
+  /* 다음 경기 배너 */
+  .next-match-banner {
+    padding: 0.75rem 0.9rem;
+    gap: 0.55rem;
+  }
+  .next-match-banner__cd strong { font-size: 1.1rem; }
+  .next-match-banner__matchup   { font-size: 1.1rem; }
+  .next-match-banner__arrow     { display: none; }
+  .next-match-banner__sep       { font-size: 1rem; }
+
+  /* 페이지 제목 */
+  .page-title {
+    font-size: clamp(1.2rem, 6.5vw, 1.5rem);
+  }
+
+  /* 패널·카드 여백 최소화 */
+  .panel {
+    padding: 0.75rem 0.7rem;
+  }
+  .pg-panel {
+    padding: 0.85rem 0.75rem;
+  }
+
+  /* 카운트다운 */
+  .group-match-spotlight__countdown-digits span { min-width: 2.4rem; }
+  .group-match-spotlight__countdown-digits strong { font-size: 1.2rem; }
+
+  /* hero 여백 */
+  .hero { padding: 1.1rem 0.9rem; }
+
+  /* 선수 카드 그리드 — 2열 고정 */
+  .squad-pos-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 명단 테이블 폰트 */
+  .data-table th,
+  .data-table td {
+    padding: 0.45rem 0.4rem;
+    font-size: 0.78rem;
+  }
+
+  /* 스코어 예측 카드 텍스트 */
+  .pred-card__team  { font-size: 0.78rem; }
+  .pred-card__label { font-size: 0.68rem; }
 }
 
 /* ─── @media: 모션 줄이기 접근성 ─────────────────────── */

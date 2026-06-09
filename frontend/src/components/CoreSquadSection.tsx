@@ -115,7 +115,7 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
             ) : null}
 
             {viewMode === "table" ? (
-              <div className="table-wrap" style={{ marginTop: "0.65rem" }}>
+              <div className="table-wrap core-squad-table-wrap" style={{ marginTop: "0.65rem" }}>
                 <table className="data-table core-squad-table">
                   <thead>
                     <tr>
@@ -123,8 +123,8 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
                       <th>번호</th>
                       <th>이름</th>
                       <th>포지션</th>
-                      <th>나이</th>
-                      <th>소속(클럽)</th>
+                      <th className="col-age">나이</th>
+                      <th className="col-club">소속(클럽)</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -141,8 +141,8 @@ export default function CoreSquadSection({ teamKey, headingPrefix }: CoreSquadSe
                             ({p.position})
                           </span>
                         </td>
-                        <td>{p.age != null ? `${p.age}` : "—"}</td>
-                        <td className="muted" style={{ fontSize: "0.88rem" }}>
+                        <td className="col-age">{p.age != null ? `${p.age}` : "—"}</td>
+                        <td className="col-club muted" style={{ fontSize: "0.88rem" }}>
                           {p.club_ko?.trim() ? p.club_ko : "—"}
                         </td>
                       </tr>
