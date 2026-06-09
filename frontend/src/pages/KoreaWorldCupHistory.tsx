@@ -9,11 +9,14 @@ import {
 } from "../api/history";
 import HistoryYearAiPanel from "../components/HistoryYearAiPanel";
 import { postAiFunStep2History, type AiFunStep2Scenario, type AiFunStep2Summary } from "../api/worldcup2026";
+import { humanizeFetchError } from "../api/client";
 
 export default function KoreaWorldCupHistory() {
   const [data, setData] = useState<KoreaWorldCupHistoryResponse | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
+  const [slowLoad, setSlowLoad] = useState(false);
 
   const [openYear, setOpenYear] = useState<number | null>(null);
   const [detail, setDetail] = useState<KoreaWcTournamentDetailResponse | null>(null);
@@ -21,11 +24,19 @@ export default function KoreaWorldCupHistory() {
   const [detailErr, setDetailErr] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
+    setErr(null);
+    setSlowLoad(false);
+    const slowTimer = setTimeout(() => setSlowLoad(true), 6000);
     getKoreaWorldCupHistory()
       .then(setData)
-      .catch((e) => setErr(e instanceof Error ? e.message : "오류"))
-      .finally(() => setLoading(false));
-  }, []);
+      .catch((e) => setErr(humanizeFetchError(e)))
+      .finally(() => {
+        clearTimeout(slowTimer);
+        setLoading(false);
+      });
+    return () => clearTimeout(slowTimer);
+  }, [retryCount]);
 
   const closeModal = useCallback(() => {
     setOpenYear(null);
@@ -65,13 +76,35 @@ export default function KoreaWorldCupHistory() {
     return undefined;
   }, [openYear]);
 
-  if (loading) return <div className="loading-screen">불러오는 중…</div>;
+  if (loading)
+    return (
+      <div className="loading-screen">
+        불러오는 중…
+        {slowLoad && (
+          <p className="muted" style={{ fontSize: "0.86rem", textAlign: "center", maxWidth: "22rem", marginTop: "0.5rem" }}>
+            Render 백엔드가 슬립에서 깨어나는 중입니다. 30~60초 소요될 수 있습니다.
+          </p>
+        )}
+      </div>
+    );
   if (err || !data)
     return (
       <main className="page">
-        <h1 className="page-title">한국 월드컵 이력</h1>
-        <p className="text-error">{err ?? "데이터 없음"}</p>
-        <p className="muted">백엔드가 실행 중인지 확인하세요.</p>
+        <h1 className="page-title">🇰🇷 한국 월드컵 이력</h1>
+        <div className="callout" style={{ background: "#fef2f2", borderColor: "#fecaca", color: "#991b1b", marginBottom: "0.75rem" }}>
+          <strong>데이터를 불러오지 못했습니다.</strong><br />
+          {err ?? "알 수 없는 오류"}
+        </div>
+        <p className="muted" style={{ fontSize: "0.86rem", marginBottom: "1rem" }}>
+          Render 무료 플랜은 미사용 시 슬립됩니다. 버튼을 눌러 다시 시도하면 30~60초 내에 연결됩니다.
+        </p>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => setRetryCount((c) => c + 1)}
+        >
+          🔄 다시 시도
+        </button>
       </main>
     );
 
@@ -136,6 +169,7 @@ export default function KoreaWorldCupHistory() {
         <strong>개최국</strong>을 누르면 모달에서 동일 요약·<strong>영상 URL(새 탭)</strong>을 볼 수 있습니다.
       </p>
 
+      {/* 데스크톱: 테이블 */}
       <div className="table-wrap wc-history-table-wrap" style={{ marginBottom: "1.5rem" }}>
         <table className="data-table wc-history-main-table">
           <thead>
@@ -184,6 +218,36 @@ export default function KoreaWorldCupHistory() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* 모바일: 카드 리스트 */}
+      <div className="wc-history-mobile-cards">
+        {[...tournaments].reverse().map((t) => (
+          <div key={t.year} className="wc-history-mcard">
+            <div className="wc-history-mcard__top">
+              <span className="wc-history-mcard__year">{t.year}</span>
+              <button
+                type="button"
+                className="wc-host-btn wc-history-mcard__host"
+                onClick={() => setOpenYear(t.year)}
+                aria-haspopup="dialog"
+              >
+                {t.host} ↗
+              </button>
+              <span className={`wc-history-mcard__result${t.result_label.includes("4위") ? " wc-history-mcard__result--best" : ""}`}>
+                {t.result_label}
+              </span>
+            </div>
+            <div className="wc-history-mcard__stats">
+              <span>{t.matches_played}경기</span>
+              <span className="wc-history-mcard__dot">·</span>
+              <span>{t.wins}승 {t.draws}무 {t.losses}패</span>
+              <span className="wc-history-mcard__dot">·</span>
+              <span>{t.goals_for}득 {t.goals_against}실</span>
+            </div>
+            <p className="wc-history-mcard__highlights">{t.highlights}</p>
+          </div>
+        ))}
       </div>
 
       {data.disclaimer ? <p className="muted" style={{ marginTop: "1.5rem", fontSize: "0.82rem" }}>{data.disclaimer}</p> : null}
