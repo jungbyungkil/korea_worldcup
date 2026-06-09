@@ -2,191 +2,216 @@
   "team_key": "south_africa",
   "display_ko": "남아프리카 공화국",
   "display_en": "South Africa",
-  "note_ko": "Bafana Bafana 예시 23인(비공식·앱용). 초상은 public/player-faces/south_africa/{id} 로컬 파일로 추가하세요.",
+  "note_ko": "2026 북중미 월드컵 공식 최종 26인 엔트리 — Bafana Bafana (감독: 위고 브루스). FIFA 공식 발표 기준.",
   "players": [
     {
       "id": 3101,
       "name": "Ronwen Williams",
       "position": "GK",
       "number": 1,
-      "age": 33,
-      "club_ko": "마멜로디 선다운스 FC"
+      "age": 34,
+      "club_ko": "마멜로디 선다운스",
+      "captain": true
     },
     {
       "id": 3102,
-      "name": "Veli Mothwa",
+      "name": "Sipho Chaine",
       "position": "GK",
       "number": 16,
-      "age": 33,
-      "club_ko": "아마줄루 FC"
+      "age": 29,
+      "club_ko": "올랜도 파이리츠"
     },
     {
       "id": 3103,
       "name": "Ricardo Goss",
       "position": "GK",
-      "number": 23,
-      "age": 31,
-      "club_ko": "수퍼스포트 유나이티드"
+      "number": 22,
+      "age": 32,
+      "club_ko": "시웰렐레 FC"
     },
     {
       "id": 3104,
-      "name": "Khuliso Mudau",
+      "name": "Thabang Matuludi",
       "position": "DF",
       "number": 2,
-      "age": 30,
-      "club_ko": "마멜로디 선다운스 FC"
-    },
-    {
-      "id": 3105,
-      "name": "Mothobi Mvala",
-      "position": "DF",
-      "number": 5,
-      "age": 31,
-      "club_ko": "마멜로디 선다운스 FC"
-    },
-    {
-      "id": 3106,
-      "name": "Siyanda Xulu",
-      "position": "DF",
-      "number": 4,
-      "age": 34,
-      "club_ko": "수퍼스포트 유나이티드"
-    },
-    {
-      "id": 3107,
-      "name": "Njabulo Ngcobo",
-      "position": "DF",
-      "number": 15,
-      "age": 31,
-      "club_ko": "카이저 치프스 FC"
-    },
-    {
-      "id": 3108,
-      "name": "Aubrey Modiba",
-      "position": "DF",
-      "number": 3,
-      "age": 30,
-      "club_ko": "마멜로디 선다운스 FC"
-    },
-    {
-      "id": 3109,
-      "name": "Terrence Mashego",
-      "position": "DF",
-      "number": 14,
-      "age": 29,
-      "club_ko": "케이프 타운 시티 FC"
-    },
-    {
-      "id": 3110,
-      "name": "Siyabonga Ngezana",
-      "position": "DF",
-      "number": 6,
       "age": 27,
-      "club_ko": "스파르타 프라하"
-    },
-    {
-      "id": 3111,
-      "name": "Grant Kekana",
-      "position": "DF",
-      "number": 20,
-      "age": 33,
-      "club_ko": "마멜로디 선다운스 FC"
-    },
-    {
-      "id": 3112,
-      "name": "Teboho Mokoena",
-      "position": "MF",
-      "number": 24,
-      "age": 29,
-      "club_ko": "사우샘프턴 FC"
-    },
-    {
-      "id": 3113,
-      "name": "Sphephelo Sithole",
-      "position": "MF",
-      "number": 17,
-      "age": 26,
       "club_ko": "폴로콰네 시티 FC"
     },
     {
-      "id": 3114,
-      "name": "Jayden Adams",
-      "position": "MF",
-      "number": 8,
+      "id": 3105,
+      "name": "Khulumani Ndamane",
+      "position": "DF",
+      "number": 3,
       "age": 22,
-      "club_ko": "스텔렌보스 FC"
+      "club_ko": "마멜로디 선다운스"
+    },
+    {
+      "id": 3106,
+      "name": "Aubrey Modiba",
+      "position": "DF",
+      "number": 6,
+      "age": 30,
+      "club_ko": "마멜로디 선다운스"
+    },
+    {
+      "id": 3107,
+      "name": "Mbekezeli Mbokazi",
+      "position": "DF",
+      "number": 14,
+      "age": 20,
+      "club_ko": "시카고 파이어 FC (미국)"
+    },
+    {
+      "id": 3108,
+      "name": "Samukele Kabini",
+      "position": "DF",
+      "number": 18,
+      "age": 22,
+      "club_ko": "몰데 FK (노르웨이)"
+    },
+    {
+      "id": 3109,
+      "name": "Nkosinathi Sibisi",
+      "position": "DF",
+      "number": 19,
+      "age": 30,
+      "club_ko": "올랜도 파이리츠"
+    },
+    {
+      "id": 3110,
+      "name": "Khuliso Mudau",
+      "position": "DF",
+      "number": 20,
+      "age": 31,
+      "club_ko": "마멜로디 선다운스"
+    },
+    {
+      "id": 3111,
+      "name": "Ime Okon",
+      "position": "DF",
+      "number": 21,
+      "age": 22,
+      "club_ko": "하노버 96 (독일)"
+    },
+    {
+      "id": 3112,
+      "name": "Olwethu Makhanya",
+      "position": "DF",
+      "number": 24,
+      "age": 22,
+      "club_ko": "필라델피아 유니온 (미국)"
+    },
+    {
+      "id": 3113,
+      "name": "Bradley Cross",
+      "position": "DF",
+      "number": 26,
+      "age": 25,
+      "club_ko": "카이저 치프스 FC"
+    },
+    {
+      "id": 3114,
+      "name": "Teboho Mokoena",
+      "position": "MF",
+      "number": 4,
+      "age": 29,
+      "club_ko": "마멜로디 선다운스"
     },
     {
       "id": 3115,
-      "name": "Thapelo Maseko",
+      "name": "Thalente Mbatha",
       "position": "MF",
-      "number": 11,
-      "age": 21,
-      "club_ko": "마멜로디 선다운스 FC"
+      "number": 5,
+      "age": 26,
+      "club_ko": "올랜도 파이리츠"
     },
     {
       "id": 3116,
       "name": "Themba Zwane",
       "position": "MF",
-      "number": 10,
+      "number": 11,
       "age": 36,
-      "club_ko": "마멜로디 선다운스 FC"
+      "club_ko": "마멜로디 선다운스"
     },
     {
       "id": 3117,
-      "name": "Oswin Appollis",
+      "name": "Thapelo Maseko",
       "position": "MF",
-      "number": 13,
-      "age": 24,
-      "club_ko": "폴로콰네 시티 FC"
+      "number": 12,
+      "age": 22,
+      "club_ko": "AEL 리마솔 (키프로스)"
     },
     {
       "id": 3118,
-      "name": "Mihlali Mayambela",
-      "position": "FW",
-      "number": 7,
-      "age": 30,
-      "club_ko": "아리스 리마솔"
+      "name": "Sphephelo Sithole",
+      "position": "MF",
+      "number": 13,
+      "age": 27,
+      "club_ko": "CD 통델라 (포르투갈)"
     },
     {
       "id": 3119,
-      "name": "Evidence Makgopa",
-      "position": "FW",
-      "number": 9,
+      "name": "Jayden Adams",
+      "position": "MF",
+      "number": 23,
       "age": 25,
-      "club_ko": "올랜도 파이어츠 FC"
+      "club_ko": "마멜로디 선다운스"
     },
     {
       "id": 3120,
-      "name": "Lyle Foster",
+      "name": "Oswin Appollis",
       "position": "FW",
-      "number": 12,
-      "age": 25,
-      "club_ko": "번리 FC"
+      "number": 7,
+      "age": 24,
+      "club_ko": "올랜도 파이리츠"
     },
     {
       "id": 3121,
-      "name": "Zakhele Lepasa",
+      "name": "Tshepang Moremi",
       "position": "FW",
-      "number": 19,
-      "age": 28,
-      "club_ko": "수퍼스포트 유나이티드"
+      "number": 8,
+      "age": 25,
+      "club_ko": "올랜도 파이리츠"
     },
     {
       "id": 3122,
-      "name": "Percy Tau",
+      "name": "Lyle Foster",
       "position": "FW",
-      "number": 18,
-      "age": 31,
-      "club_ko": "알 카하라바흐 FK"
+      "number": 9,
+      "age": 25,
+      "club_ko": "번리 FC (잉글랜드)"
     },
     {
       "id": 3123,
-      "name": "Thapelo Morena",
+      "name": "Relebohile Mofokeng",
       "position": "FW",
-      "number": 21,
-      "age": 32,
-      "club_ko": "마멜로디 선다운스 FC"
+      "number": 10,
+      "age": 21,
+      "club_ko": "올랜도 파이리츠"
+    },
+    {
+      "id": 3124,
+      "name": "Evidence Makgopa",
+      "position": "FW",
+      "number": 17,
+      "age": 26,
+      "club_ko": "올랜도 파이리츠"
+    },
+    {
+      "id": 3125,
+      "name": "Iqraam Rayners",
+      "position": "FW",
+      "number": 15,
+      "age": 30,
+      "club_ko": "마멜로디 선다운스"
+    },
+    {
+      "id": 3126,
+      "name": "Kamogelo Sebelebele",
+      "position": "FW",
+      "number": 25,
+      "age": 23,
+      "club_ko": "올랜도 파이리츠"
     }
   ]
 }

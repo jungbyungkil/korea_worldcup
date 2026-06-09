@@ -1,7 +1,7 @@
 /**
  * 한국 대표팀 선수 사진 URL
  * 출처: 대한축구협회(KFA) 공식 홈페이지 (files.joinkfa.com)
- * 업데이트: 2026-05-23 — 2026 북중미 월드컵 최종 26인 소집 명단 기준
+ * 업데이트: 2026-06-09 — 조유민→조위제 교체 반영 (2026-06-01 KFA 발표)
  */
 export const KOREA_PLAYER_PHOTOS: Record<number, string> = {
   // GK
@@ -13,7 +13,7 @@ export const KOREA_PLAYER_PHOTOS: Record<number, string> = {
   1108: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026033002535338487.jpg",  // 박진섭
   1110: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026033002501629668.jpg",  // 설영우
   1111: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026033002514319670.jpg",  // 이한범
-  1124: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026033002520675198.jpg",  // 조유민
+  1124: "https://files.joinkfa.com/NAT/2026/PHOTO/%EC%82%AC%EC%A7%84_2026060213033994769.jpg",  // 조위제
   1125: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026033002495934223.jpg",  // 김태현
   1126: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026051815125158052.jpg",  // 이기혁
   1127: "https://files.joinkfa.com/NAT/2026/PHOTO/S/%EC%82%AC%EC%A7%84_2026033002511410494.jpg",  // 이태석

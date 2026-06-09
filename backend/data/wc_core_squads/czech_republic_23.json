@@ -2,190 +2,215 @@
   "team_key": "czech_republic",
   "display_ko": "체코",
   "display_en": "Czech Republic",
-  "note_ko": "2026 북중미 월드컵 A조 1차전 상대 예시 23인(비공식·앱용). 초상은 public/player-faces/czech_republic/{id} 로컬 파일로 추가하세요.",
+  "note_ko": "2026 북중미 월드컵 공식 최종 26인 엔트리 (감독: 미로슬라프 코우벡). FIFA 공식 발표 기준.",
   "players": [
     {
       "id": 2401,
-      "name": "Jindřich Staněk",
+      "name": "Matěj Kovář",
       "position": "GK",
-      "number": 23,
-      "age": 29,
-      "club_ko": "SK 슬라비아 프라하"
+      "number": 1,
+      "age": 26,
+      "club_ko": "PSV 에인트호번 (네덜란드)"
     },
     {
       "id": 2402,
-      "name": "Matěj Kovář",
+      "name": "Jindřich Staněk",
       "position": "GK",
-      "number": 12,
-      "age": 25,
-      "club_ko": "바이어 레버쿠젠"
+      "number": 16,
+      "age": 30,
+      "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2403,
-      "name": "Vítězslav Jaroš",
+      "name": "Lukáš Horníček",
       "position": "GK",
-      "number": 1,
-      "age": 24,
-      "club_ko": "그라스호퍼 취리히"
+      "number": 23,
+      "age": 23,
+      "club_ko": "SC 브라가 (포르투갈)"
     },
     {
       "id": 2404,
-      "name": "Vladimír Coufal",
+      "name": "David Zima",
       "position": "DF",
       "number": 2,
-      "age": 33,
-      "club_ko": "웨스트 햄 유나이티드 FC"
+      "age": 25,
+      "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2405,
       "name": "Tomáš Holeš",
       "position": "DF",
-      "number": 4,
-      "age": 32,
+      "number": 3,
+      "age": 33,
       "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2406,
-      "name": "David Zima",
+      "name": "Robin Hranáč",
       "position": "DF",
-      "number": 19,
-      "age": 25,
-      "club_ko": "SK 슬라비아 프라하"
+      "number": 4,
+      "age": 26,
+      "club_ko": "TSG 호펜하임 (독일)"
     },
     {
       "id": 2407,
-      "name": "Martin Vitík",
+      "name": "Vladimír Coufal",
       "position": "DF",
-      "number": 18,
-      "age": 22,
-      "club_ko": "AC 스파르타 프라하"
+      "number": 5,
+      "age": 33,
+      "club_ko": "TSG 호펜하임 (독일)"
     },
     {
       "id": 2408,
-      "name": "Ladislav Krejčí",
+      "name": "Štěpán Chaloupek",
       "position": "DF",
-      "number": 7,
-      "age": 26,
-      "club_ko": "브라가 SC"
+      "number": 6,
+      "age": 23,
+      "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2409,
-      "name": "David Jurásek",
+      "name": "Ladislav Krejčí",
       "position": "DF",
-      "number": 16,
-      "age": 25,
-      "club_ko": "호펜하임"
+      "number": 7,
+      "age": 27,
+      "club_ko": "울버햄프턴 원더러스 (잉글랜드)",
+      "captain": true
     },
     {
       "id": 2410,
-      "name": "David Jemelka",
+      "name": "David Jurásek",
       "position": "DF",
-      "number": 6,
+      "number": 14,
       "age": 25,
-      "club_ko": "SK 시그마 올로모우츠"
+      "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2411,
-      "name": "Aleš Matějů",
+      "name": "Jaroslav Zelený",
       "position": "DF",
-      "number": 3,
-      "age": 29,
-      "club_ko": "파르마 칼초"
+      "number": 20,
+      "age": 33,
+      "club_ko": "AC 스파르타 프라하"
     },
     {
       "id": 2412,
-      "name": "Tomáš Souček",
-      "position": "MF",
-      "number": 22,
-      "age": 30,
-      "club_ko": "웨스트 햄 유나이티드 FC"
-    },
-    {
-      "id": 2413,
-      "name": "Antonín Barák",
-      "position": "MF",
-      "number": 8,
-      "age": 30,
-      "club_ko": "파르마 칼초"
-    },
-    {
-      "id": 2414,
-      "name": "Lukáš Provod",
-      "position": "MF",
-      "number": 14,
+      "name": "David Douděra",
+      "position": "DF",
+      "number": 21,
       "age": 28,
       "club_ko": "SK 슬라비아 프라하"
     },
     {
-      "id": 2415,
-      "name": "Michal Sadílek",
+      "id": 2413,
+      "name": "Vladimír Darida",
       "position": "MF",
-      "number": 5,
-      "age": 26,
-      "club_ko": "트벤테"
+      "number": 8,
+      "age": 35,
+      "club_ko": "FC 흐라데츠 크랄로베"
+    },
+    {
+      "id": 2414,
+      "name": "Lukáš Červ",
+      "position": "MF",
+      "number": 12,
+      "age": 25,
+      "club_ko": "FC 빅토리아 플젠"
+    },
+    {
+      "id": 2415,
+      "name": "Lukáš Provod",
+      "position": "MF",
+      "number": 17,
+      "age": 29,
+      "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2416,
-      "name": "Václav Černý",
+      "name": "Michal Sadílek",
       "position": "MF",
-      "number": 17,
+      "number": 18,
       "age": 27,
-      "club_ko": "레인저스 FC"
+      "club_ko": "SK 슬라비아 프라하"
     },
     {
       "id": 2417,
-      "name": "Adam Hložek",
+      "name": "Tomáš Souček",
       "position": "MF",
-      "number": 24,
-      "age": 23,
-      "club_ko": "바이어 레버쿠젠"
+      "number": 22,
+      "age": 31,
+      "club_ko": "웨스트 햄 유나이티드 (잉글랜드)"
     },
     {
       "id": 2418,
-      "name": "Ondřej Lingr",
+      "name": "Alexandr Sojka",
       "position": "MF",
-      "number": 15,
-      "age": 27,
-      "club_ko": "AC 스파르타 프라하"
+      "number": 24,
+      "age": 23,
+      "club_ko": "FC 빅토리아 플젠"
     },
     {
       "id": 2419,
-      "name": "Patrik Schick",
-      "position": "FW",
-      "number": 10,
-      "age": 29,
-      "club_ko": "바이어 레버쿠젠"
-    },
-    {
-      "id": 2420,
-      "name": "Tomáš Chorý",
-      "position": "FW",
-      "number": 9,
-      "age": 31,
-      "club_ko": "SK 시그마 올로모우츠"
-    },
-    {
-      "id": 2421,
-      "name": "Jan Kuchta",
-      "position": "FW",
-      "number": 20,
-      "age": 28,
+      "name": "Hugo Sochůrek",
+      "position": "MF",
+      "number": 25,
+      "age": 18,
       "club_ko": "AC 스파르타 프라하"
     },
     {
-      "id": 2422,
-      "name": "Jan Kliment",
+      "id": 2420,
+      "name": "Adam Hložek",
       "position": "FW",
-      "number": 21,
-      "age": 32,
-      "club_ko": "FC 루제니트로키"
+      "number": 9,
+      "age": 23,
+      "club_ko": "TSG 호펜하임 (독일)"
+    },
+    {
+      "id": 2421,
+      "name": "Patrik Schick",
+      "position": "FW",
+      "number": 10,
+      "age": 30,
+      "club_ko": "바이어 레버쿠젠 (독일)"
+    },
+    {
+      "id": 2422,
+      "name": "Jan Kuchta",
+      "position": "FW",
+      "number": 11,
+      "age": 29,
+      "club_ko": "AC 스파르타 프라하"
     },
     {
       "id": 2423,
+      "name": "Mojmír Chytil",
+      "position": "FW",
+      "number": 13,
+      "age": 27,
+      "club_ko": "SK 슬라비아 프라하"
+    },
+    {
+      "id": 2424,
       "name": "Pavel Šulc",
       "position": "FW",
-      "number": 11,
-      "age": 22,
+      "number": 15,
+      "age": 25,
+      "club_ko": "올랭피크 리옹 (프랑스)"
+    },
+    {
+      "id": 2425,
+      "name": "Tomáš Chorý",
+      "position": "FW",
+      "number": 19,
+      "age": 31,
+      "club_ko": "SK 슬라비아 프라하"
+    },
+    {
+      "id": 2426,
+      "name": "Denis Višinský",
+      "position": "FW",
+      "number": 26,
+      "age": 23,
       "club_ko": "FC 빅토리아 플젠"
     }
   ]

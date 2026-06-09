@@ -2,191 +2,216 @@
   "team_key": "mexico",
   "display_ko": "멕시코",
   "display_en": "Mexico",
-  "note_ko": "2026 북중미 월드컵 공동 개최국 El Tri 예시 23인(비공식·앱용). 초상은 public/player-faces/mexico/{id} 로컬 파일로 추가하세요.",
+  "note_ko": "2026 북중미 월드컵 공식 최종 26인 엔트리 (감독: 하비에르 아기레). FIFA 공식 발표 기준.",
   "players": [
     {
       "id": 2101,
-      "name": "Guillermo Ochoa",
-      "position": "GK",
-      "number": 13,
-      "age": 39,
-      "club_ko": "아바이 FC (브라질)"
-    },
-    {
-      "id": 2102,
-      "name": "Luis Malagón",
-      "position": "GK",
-      "number": 1,
-      "age": 28,
-      "club_ko": "클럽 아메리카"
-    },
-    {
-      "id": 2103,
       "name": "Raúl Rangel",
       "position": "GK",
-      "number": 12,
-      "age": 25,
+      "number": 1,
+      "age": 26,
       "club_ko": "CD 과달라하라 (치바스)"
     },
     {
+      "id": 2102,
+      "name": "Carlos Acevedo",
+      "position": "GK",
+      "number": 12,
+      "age": 30,
+      "club_ko": "산토스 라구나"
+    },
+    {
+      "id": 2103,
+      "name": "Guillermo Ochoa",
+      "position": "GK",
+      "number": 13,
+      "age": 40,
+      "club_ko": "AEL 리마솔 (키프로스)"
+    },
+    {
       "id": 2104,
-      "name": "César Montes",
+      "name": "Jorge Sánchez",
       "position": "DF",
-      "number": 3,
-      "age": 32,
-      "club_ko": "알 샤바브 FC"
+      "number": 2,
+      "age": 28,
+      "club_ko": "PAOK FC (그리스)"
     },
     {
       "id": 2105,
-      "name": "Johan Vásquez",
+      "name": "César Montes",
       "position": "DF",
-      "number": 5,
-      "age": 26,
-      "club_ko": "몬테레이 UANL (티그레스)"
+      "number": 3,
+      "age": 29,
+      "club_ko": "FC 로코모티프 모스크바 (러시아)"
     },
     {
       "id": 2106,
+      "name": "Edson Álvarez",
+      "position": "DF",
+      "number": 4,
+      "age": 28,
+      "club_ko": "페네르바체 (터키)",
+      "captain": true
+    },
+    {
+      "id": 2107,
+      "name": "Johan Vásquez",
+      "position": "DF",
+      "number": 5,
+      "age": 27,
+      "club_ko": "제노아 CFC (이탈리아)"
+    },
+    {
+      "id": 2108,
+      "name": "Israel Reyes",
+      "position": "DF",
+      "number": 15,
+      "age": 26,
+      "club_ko": "클럽 아메리카"
+    },
+    {
+      "id": 2109,
       "name": "Jesús Gallardo",
       "position": "DF",
       "number": 23,
       "age": 31,
-      "club_ko": "클럽 티후아나"
-    },
-    {
-      "id": 2107,
-      "name": "Gerardo Arteaga",
-      "position": "DF",
-      "number": 2,
-      "age": 27,
-      "club_ko": "CF 몬테레이"
-    },
-    {
-      "id": 2108,
-      "name": "Jorge Sánchez",
-      "position": "DF",
-      "number": 4,
-      "age": 28,
-      "club_ko": "크루스 아술"
-    },
-    {
-      "id": 2109,
-      "name": "Kevin Álvarez",
-      "position": "DF",
-      "number": 19,
-      "age": 26,
-      "club_ko": "클럽 아메리카"
+      "club_ko": "톨루카 FC"
     },
     {
       "id": 2110,
-      "name": "Israel Reyes",
+      "name": "Mateo Chávez",
       "position": "DF",
-      "number": 15,
-      "age": 25,
-      "club_ko": "클럽 아메리카"
+      "number": 20,
+      "age": 22,
+      "club_ko": "AZ 알크마르 (네덜란드)"
     },
     {
       "id": 2111,
-      "name": "Jesús Orozco",
-      "position": "DF",
+      "name": "Érik Lira",
+      "position": "MF",
       "number": 6,
-      "age": 23,
-      "club_ko": "CD 과달라하라 (치바스)"
+      "age": 26,
+      "club_ko": "크루스 아술"
     },
     {
       "id": 2112,
-      "name": "Edson Álvarez",
+      "name": "Luis Romo",
       "position": "MF",
       "number": 7,
-      "age": 28,
-      "club_ko": "웨스트 햄 유나이티드 FC"
+      "age": 31,
+      "club_ko": "CD 과달라하라 (치바스)"
     },
     {
       "id": 2113,
-      "name": "Luis Chávez",
+      "name": "Álvaro Fidalgo",
       "position": "MF",
-      "number": 18,
+      "number": 8,
       "age": 29,
-      "club_ko": "디나모 모스크바"
+      "club_ko": "레알 베티스 (스페인)"
     },
     {
       "id": 2114,
       "name": "Orbelín Pineda",
       "position": "MF",
       "number": 17,
-      "age": 29,
-      "club_ko": "AEK 아테네"
+      "age": 30,
+      "club_ko": "AEK 아테네 (그리스)"
     },
     {
       "id": 2115,
-      "name": "Carlos Rodríguez",
+      "name": "Obed Vargas",
       "position": "MF",
-      "number": 8,
-      "age": 23,
-      "club_ko": "크루스 아술"
+      "number": 18,
+      "age": 20,
+      "club_ko": "아틀레티코 마드리드 (스페인)"
     },
     {
       "id": 2116,
-      "name": "Erick Sánchez",
+      "name": "Gilberto Mora",
       "position": "MF",
-      "number": 14,
-      "age": 25,
-      "club_ko": "클럽 아메리카"
+      "number": 19,
+      "age": 17,
+      "club_ko": "클럽 티후아나"
     },
     {
       "id": 2117,
+      "name": "Luis Chávez",
+      "position": "MF",
+      "number": 24,
+      "age": 30,
+      "club_ko": "디나모 모스크바 (러시아)"
+    },
+    {
+      "id": 2118,
       "name": "Roberto Alvarado",
       "position": "MF",
-      "number": 11,
+      "number": 25,
       "age": 27,
       "club_ko": "CD 과달라하라 (치바스)"
     },
     {
-      "id": 2118,
-      "name": "Uriel Antuna",
-      "position": "FW",
-      "number": 16,
-      "age": 27,
-      "club_ko": "몬테레이 UANL (티그레스)"
-    },
-    {
       "id": 2119,
-      "name": "Hirving Lozano",
-      "position": "FW",
-      "number": 22,
-      "age": 30,
-      "club_ko": "산호세 어스퀘이크스"
+      "name": "Brian Gutiérrez",
+      "position": "MF",
+      "number": 26,
+      "age": 22,
+      "club_ko": "CD 과달라하라 (치바스)"
     },
     {
       "id": 2120,
-      "name": "Santiago Giménez",
+      "name": "Raúl Jiménez",
       "position": "FW",
       "number": 9,
-      "age": 24,
-      "club_ko": "AC 밀란"
+      "age": 35,
+      "club_ko": "풀럼 FC (잉글랜드)"
     },
     {
       "id": 2121,
-      "name": "Raúl Jiménez",
+      "name": "Alexis Vega",
       "position": "FW",
       "number": 10,
-      "age": 34,
-      "club_ko": "크루스 아술"
+      "age": 28,
+      "club_ko": "톨루카 FC"
     },
     {
       "id": 2122,
-      "name": "Henry Martín",
+      "name": "Santiago Giménez",
       "position": "FW",
-      "number": 20,
-      "age": 33,
-      "club_ko": "클럽 아메리카"
+      "number": 11,
+      "age": 25,
+      "club_ko": "AC 밀란 (이탈리아)"
     },
     {
       "id": 2123,
+      "name": "Armando González",
+      "position": "FW",
+      "number": 14,
+      "age": 23,
+      "club_ko": "CD 과달라하라 (치바스)"
+    },
+    {
+      "id": 2124,
       "name": "Julián Quiñones",
       "position": "FW",
+      "number": 16,
+      "age": 29,
+      "club_ko": "알 카드시아 (사우디아라비아)"
+    },
+    {
+      "id": 2125,
+      "name": "César Huerta",
+      "position": "FW",
       "number": 21,
-      "age": 28,
-      "club_ko": "클럽 아메리카"
+      "age": 25,
+      "club_ko": "RSC 안더레흐트 (벨기에)"
+    },
+    {
+      "id": 2126,
+      "name": "Guillermo Martínez",
+      "position": "FW",
+      "number": 22,
+      "age": 31,
+      "club_ko": "푸마스 UNAM"
     }
   ]
 }
