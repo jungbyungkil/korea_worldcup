@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { Link } from "react-router-dom";
 import AiInsightPanel from "../components/AiInsightPanel";
-import NextMatchBanner from "../components/NextMatchBanner";
+import MexicoDashboard from "../components/MexicoDashboard";
 import ScorePredictionGame from "../components/ScorePredictionGame";
 import { postAiHomeWelcome } from "../api/aiInsights";
 import { useScrollReveal } from "../hooks/useScrollReveal";
@@ -32,19 +32,19 @@ export default function Home() {
           대한민국 축구 · 월드컵 허브
         </h1>
         <p>
-          과거 본선 이력부터 2026 북중미 대회 준비, 한국 대표팀 선수 스탯까지 한곳에서 확인하세요.
+          <strong style={{ color: "#86efac" }}>1차전 체코 2:1 승리!</strong> 이제 A조 1위로 개최국 멕시코를 만납니다.
         </p>
         <div className="hero-chips">
-          <span className="hero-chip">📅 2026. 6. 12 ~ 7. 19</span>
-          <span className="hero-chip hero-chip--highlight">🇰🇷 ELO 1820위</span>
-          <span className="hero-chip">⚽ A조 · 3경기</span>
+          <span className="hero-chip">✅ 1차전 2-1 승</span>
+          <span className="hero-chip hero-chip--highlight">🇰🇷 A조 1위 · 3점</span>
+          <span className="hero-chip">⚽ 2차전 멕시코 D-5</span>
           <span className="hero-chip">🌎 북중미 3개국 공동 개최</span>
         </div>
       </section>
 
-      {/* 다음 경기 카운트다운 배너 */}
+      {/* 멕시코전 메인 대시보드 */}
       <div ref={bannerRef} className="scroll-reveal">
-        <NextMatchBanner />
+        <MexicoDashboard />
       </div>
 
       <div ref={aiRef} className="scroll-reveal scroll-reveal--d1">

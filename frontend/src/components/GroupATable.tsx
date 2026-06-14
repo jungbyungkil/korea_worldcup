@@ -1,15 +1,14 @@
-/**
- * A조 조별리그 순위표
- * 경기 전 상태: 전 팀 0경기 · 스탯 0
- * 경기가 시작되면 이 컴포넌트를 API 연동으로 업데이트 가능
- */
-
 const GROUP_A_TEAMS = [
-  { flag: "🇰🇷", name: "대한민국", nameEn: "Korea Republic", elo: 1820, highlight: true },
-  { flag: "🇲🇽", name: "멕시코",   nameEn: "Mexico",         elo: 1775 },
-  { flag: "🇨🇿", name: "체코",     nameEn: "Czech Republic", elo: 1670 },
-  { flag: "🇿🇦", name: "남아공",   nameEn: "South Africa",   elo: 1620 },
-];
+  { flag: "🇰🇷", name: "대한민국", nameEn: "Korea Republic", elo: 1820, mp: 1, w: 1, d: 0, l: 0, gf: 2, ga: 1, pts: 3, highlight: true },
+  { flag: "🇲🇽", name: "멕시코",   nameEn: "Mexico",         elo: 1775, mp: 1, w: 1, d: 0, l: 0, gf: 2, ga: 0, pts: 3, tbd: false },
+  { flag: "🇨🇿", name: "체코",     nameEn: "Czech Republic", elo: 1670, mp: 1, w: 0, d: 0, l: 1, gf: 1, ga: 2, pts: 0, tbd: false },
+  { flag: "🇿🇦", name: "남아공",   nameEn: "South Africa",   elo: 1620, mp: 1, w: 0, d: 0, l: 1, gf: 0, ga: 2, pts: 0, tbd: false },
+].sort((a, b) => {
+  if (b.pts !== a.pts) return b.pts - a.pts;
+  const gdA = a.gf - a.ga, gdB = b.gf - b.ga;
+  if (gdB !== gdA) return gdB - gdA;
+  return b.gf - a.gf;
+});
 
 const GROUP_A_SCHEDULE = [
   {
@@ -19,14 +18,18 @@ const GROUP_A_SCHEDULE = [
     home: "🇰🇷 대한민국",
     away: "🇨🇿 체코",
     venue: "에스타디오 아크론 · 사포판",
+    result: "2 - 1",
+    done: true,
   },
   {
     match: 2,
     date: "2026-06-12",
-    kstTime: "미정",
+    kstTime: "15:00",
     home: "🇲🇽 멕시코",
     away: "🇿🇦 남아공",
-    venue: "미정",
+    venue: "SoFi 스타디움 · 잉글우드",
+    result: "2 - 0",
+    done: true,
   },
   {
     match: 3,
@@ -35,6 +38,7 @@ const GROUP_A_SCHEDULE = [
     home: "🇰🇷 대한민국",
     away: "🇲🇽 멕시코",
     venue: "에스타디오 아크론 · 사포판",
+    done: false,
   },
   {
     match: 4,
@@ -43,6 +47,7 @@ const GROUP_A_SCHEDULE = [
     home: "🇨🇿 체코",
     away: "🇿🇦 남아공",
     venue: "미정",
+    done: false,
   },
   {
     match: 5,
@@ -51,6 +56,7 @@ const GROUP_A_SCHEDULE = [
     home: "🇰🇷 대한민국",
     away: "🇿🇦 남아공",
     venue: "에스타디오 BBVA · 과달루페",
+    done: false,
   },
   {
     match: 6,
@@ -59,6 +65,7 @@ const GROUP_A_SCHEDULE = [
     home: "🇨🇿 체코",
     away: "🇲🇽 멕시코",
     venue: "미정",
+    done: false,
   },
 ];
 
@@ -67,7 +74,7 @@ export default function GroupATable() {
     <section className="panel group-a-section">
       <h2 className="panel-title">A조 현황 · 2026 FIFA 월드컵</h2>
       <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem" }}>
-        경기 전 기준 — ELO는 eloratings.net 추정치입니다.
+        1차전 반영 기준 (2026-06-12) — ELO는 eloratings.net 추정치
       </p>
 
       {/* 순위표 */}
@@ -89,29 +96,34 @@ export default function GroupATable() {
             </tr>
           </thead>
           <tbody>
-            {GROUP_A_TEAMS.map((team, idx) => (
-              <tr key={team.nameEn} className={team.highlight ? "group-a-table__row--highlight" : ""}>
-                <td style={{ fontWeight: 700, color: "var(--color-muted)" }}>{idx + 1}</td>
-                <td>
-                  <span className="group-a-table__team">
-                    <span aria-hidden>{team.flag}</span>
-                    <span>{team.name}</span>
-                    <span className="muted" style={{ fontSize: "0.78rem" }}>{team.nameEn}</span>
-                  </span>
-                </td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td style={{ fontWeight: 800 }}>0</td>
-                <td>
-                  <span className="elo-badge">{team.elo}</span>
-                </td>
-              </tr>
-            ))}
+            {GROUP_A_TEAMS.map((team, idx) => {
+              const gd = team.gf - team.ga;
+              return (
+                <tr key={team.nameEn} className={team.highlight ? "group-a-table__row--highlight" : ""}>
+                  <td style={{ fontWeight: 700, color: "var(--color-muted)" }}>{idx + 1}</td>
+                  <td>
+                    <span className="group-a-table__team">
+                      <span aria-hidden>{team.flag}</span>
+                      <span>{team.name}</span>
+                      <span className="muted" style={{ fontSize: "0.78rem" }}>{team.nameEn}</span>
+                    </span>
+                  </td>
+                  <td>{team.mp}</td>
+                  <td>{team.w}</td>
+                  <td>{team.d}</td>
+                  <td>{team.l}</td>
+                  <td>{team.gf}</td>
+                  <td>{team.ga}</td>
+                  <td style={{ color: gd > 0 ? "var(--color-success)" : gd < 0 ? "var(--color-accent)" : undefined, fontWeight: 700 }}>
+                    {gd > 0 ? `+${gd}` : gd}
+                  </td>
+                  <td style={{ fontWeight: 800 }}>{team.pts}</td>
+                  <td>
+                    <span className="elo-badge">{team.elo}</span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -126,7 +138,7 @@ export default function GroupATable() {
               <th>날짜</th>
               <th>KST</th>
               <th>홈</th>
-              <th></th>
+              <th style={{ textAlign: "center" }}>결과</th>
               <th>어웨이</th>
               <th>경기장</th>
             </tr>
@@ -140,7 +152,9 @@ export default function GroupATable() {
                   <td className="muted" style={{ fontSize: "0.85rem" }}>{g.date}</td>
                   <td style={{ fontWeight: 600 }}>{g.kstTime}</td>
                   <td style={{ textAlign: "right" }}>{g.home}</td>
-                  <td style={{ fontWeight: 800, color: "var(--color-muted)", textAlign: "center" }}>vs</td>
+                  <td style={{ fontWeight: 800, textAlign: "center", color: g.done ? "var(--color-text)" : "var(--color-muted)", fontSize: g.done ? "0.95rem" : undefined }}>
+                    {g.done && g.result ? g.result : "vs"}
+                  </td>
                   <td>{g.away}</td>
                   <td className="muted" style={{ fontSize: "0.8rem" }}>{g.venue}</td>
                 </tr>
@@ -150,7 +164,7 @@ export default function GroupATable() {
         </table>
       </div>
       <p className="muted" style={{ fontSize: "0.8rem", marginTop: "0.5rem" }}>
-        * 2·4·6차전 시간·경기장은 FIFA 발표 확인 필요. KST 시간 = 한국 표준시 기준.
+        * KST 시간 = 한국 표준시 기준.
       </p>
     </section>
   );
