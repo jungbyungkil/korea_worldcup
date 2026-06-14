@@ -109,8 +109,8 @@ export default function MexicoDashboard() {
           <div style={{ fontSize: "0.85rem", opacity: 0.85 }}>2026-06-12 · 에스타디오 아크론 · 사포판</div>
         </div>
         <div style={{ marginLeft: "auto", textAlign: "right" }}>
-          <div style={{ fontWeight: 900, fontSize: "1.4rem" }}>A조 1위</div>
-          <div style={{ fontSize: "0.8rem", opacity: 0.85 }}>승점 3점</div>
+          <div style={{ fontWeight: 900, fontSize: "1.4rem" }}>A조 2위</div>
+          <div style={{ fontSize: "0.8rem", opacity: 0.85 }}>승점 3점 · 골득실 +1</div>
         </div>
       </div>
 

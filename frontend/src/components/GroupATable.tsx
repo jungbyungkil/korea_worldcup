@@ -24,10 +24,10 @@ const GROUP_A_SCHEDULE = [
   {
     match: 2,
     date: "2026-06-12",
-    kstTime: "15:00",
+    kstTime: "04:00",
     home: "🇲🇽 멕시코",
     away: "🇿🇦 남아공",
-    venue: "SoFi 스타디움 · 잉글우드",
+    venue: "에스타디오 아스테카 · 멕시코시티",
     result: "2 - 0",
     done: true,
   },
@@ -43,10 +43,10 @@ const GROUP_A_SCHEDULE = [
   {
     match: 4,
     date: "2026-06-19",
-    kstTime: "미정",
+    kstTime: "01:00",
     home: "🇨🇿 체코",
     away: "🇿🇦 남아공",
-    venue: "미정",
+    venue: "메르세데스-벤츠 스타디움 · 애틀랜타",
     done: false,
   },
   {
@@ -61,10 +61,10 @@ const GROUP_A_SCHEDULE = [
   {
     match: 6,
     date: "2026-06-25",
-    kstTime: "미정",
+    kstTime: "10:00",
     home: "🇨🇿 체코",
     away: "🇲🇽 멕시코",
-    venue: "미정",
+    venue: "에스타디오 아스테카 · 멕시코시티",
     done: false,
   },
 ];

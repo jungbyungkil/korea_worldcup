@@ -32,11 +32,11 @@ export default function Home() {
           대한민국 축구 · 월드컵 허브
         </h1>
         <p>
-          <strong style={{ color: "#86efac" }}>1차전 체코 2:1 승리!</strong> 이제 A조 1위로 개최국 멕시코를 만납니다.
+          <strong style={{ color: "#86efac" }}>1차전 체코 2:1 승리!</strong> 멕시코(1위)에 골득실 1점 차 A조 2위, 개최국 원정에 도전합니다.
         </p>
         <div className="hero-chips">
           <span className="hero-chip">✅ 1차전 2-1 승</span>
-          <span className="hero-chip hero-chip--highlight">🇰🇷 A조 1위 · 3점</span>
+          <span className="hero-chip hero-chip--highlight">🇰🇷 A조 2위 · 3점</span>
           <span className="hero-chip">⚽ 2차전 멕시코 D-5</span>
           <span className="hero-chip">🌎 북중미 3개국 공동 개최</span>
         </div>
