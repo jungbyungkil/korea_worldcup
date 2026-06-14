@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import KnockoutScenario from "./KnockoutScenario";
 import OctopusOracle from "./OctopusOracle";
 
 const MEXICO_KICKOFF_UTC = "2026-06-19T01:00:00.000Z";
@@ -248,6 +249,9 @@ export default function MexicoDashboard() {
 
       {/* ─── 문어 예언 ─── */}
       <OctopusOracle />
+
+      {/* ─── 32강 시나리오 ─── */}
+      <KnockoutScenario />
 
       {/* ─── 관전 포인트 ─── */}
       <div className="panel">
