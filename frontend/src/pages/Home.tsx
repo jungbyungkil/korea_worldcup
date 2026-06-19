@@ -32,13 +32,15 @@ export default function Home() {
           대한민국 축구 · 월드컵 허브
         </h1>
         <p>
-          <strong style={{ color: "#86efac" }}>1차전 체코 2:1 승리!</strong> 멕시코(1위)에 골득실 1점 차 A조 2위, 개최국 원정에 도전합니다.
+          <strong style={{ color: "#fbbf24" }}>2차전 멕시코에 패배...</strong>{" "}
+          하지만 아직 끝나지 않았습니다!{" "}
+          <strong style={{ color: "#86efac" }}>6월 25일 남아공전 무승부 이상이면 16강 확정!</strong>
         </p>
         <div className="hero-chips">
-          <span className="hero-chip">✅ 1차전 2-1 승</span>
-          <span className="hero-chip hero-chip--highlight">🇰🇷 A조 2위 · 3점</span>
-          <span className="hero-chip">⚽ 2차전 멕시코 D-5</span>
-          <span className="hero-chip">🌎 북중미 3개국 공동 개최</span>
+          <span className="hero-chip">✅ 1차전 2-1 승 (체코)</span>
+          <span className="hero-chip" style={{ background: "rgba(239,68,68,0.15)", borderColor: "#f87171", color: "#fca5a5" }}>❌ 2차전 패배 (멕시코)</span>
+          <span className="hero-chip hero-chip--highlight">🔥 3차전 남아공 · D-6</span>
+          <span className="hero-chip">🎟️ 무승부 이상 → 16강!</span>
         </div>
       </section>
 
@@ -94,15 +96,16 @@ export default function Home() {
           <div className="feature-card__icon">🇲🇽</div>
           <h2 className="feature-card__title">멕시코 대표팀</h2>
           <p className="feature-card__desc">
-            예시 23인·감독 AI 포메이션(4-3-3·4-1-4-1 등) + 나무위키 요약. API 연동 시 부상·요약이 추가됩니다.
+            A조 2차전 상대 (종료). 23인·감독 AI 포메이션·나무위키 요약. A조 1위 확정.
           </p>
         </Link>
-        <Link to="/2026/south-africa" className="feature-card">
+        <Link to="/2026/south-africa" className="feature-card feature-card--korea">
           <div className="feature-card__icon">🇿🇦</div>
           <h2 className="feature-card__title">남아공 대표팀</h2>
           <p className="feature-card__desc">
-            예시 23인·감독 AI 포메이션·슬롯별 코멘트 + Bafana Bafana 나무위키 요약. API 연동 시 부가 정보가 붙습니다.
+            3차전 상대! 바파나 바파나 23인·포메이션 분석·나무위키 요약. 승리하면 16강 확정!
           </p>
+          <span className="feature-card__badge">🔥 3차전</span>
         </Link>
         <Link to="/2026/korea/playground" className="feature-card feature-card--accent">
           <div className="feature-card__icon">🤖</div>

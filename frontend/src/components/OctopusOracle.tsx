@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 const PREDICTIONS = [
-  { score: "2 - 1", verdict: "승리", emoji: "🏆", msg: "문어님 왈: \"한국이 체코전 기세를 이어간다! 이번엔 멕시코 원정도 문제없어!\"" },
-  { score: "1 - 0", verdict: "승리", emoji: "🔥", msg: "문어님 왈: \"수비 집중, 한 방! 조직력으로 개최국을 잠재운다.\"" },
-  { score: "2 - 0", verdict: "승리", emoji: "💪", msg: "문어님 왈: \"1998·2014 징크스 완전 파괴! 역사를 새로 쓴다!\"" },
-  { score: "1 - 1", verdict: "무승부", emoji: "🤝", msg: "문어님 왈: \"양 팀 모두 조심스럽게... 그래도 포인트 하나는 챙긴다.\"" },
-  { score: "3 - 2", verdict: "승리", emoji: "🎉", msg: "문어님 왈: \"스릴 넘치는 명승부! 한국이 극적으로 뒤집는다!\"" },
-  { score: "2 - 2", verdict: "무승부", emoji: "⚡", msg: "문어님 왈: \"치열한 접전 끝에 무승부. 남아공전 승리면 16강 확정!\"" },
+  { score: "2 - 0", verdict: "승리", emoji: "🏆", msg: "문어님 왈: \"한국이 남아공을 완벽하게 제압! 승점 6점으로 당당히 16강 진출!\"" },
+  { score: "1 - 0", verdict: "승리", emoji: "🔥", msg: "문어님 왈: \"수비 단단히, 한 방으로 결정! 16강 티켓 당당히 따낸다!\"" },
+  { score: "2 - 1", verdict: "승리", emoji: "💪", msg: "문어님 왈: \"긴장의 연속이지만 결국 한국이 웃는다. 극적 역전 16강!\"" },
+  { score: "1 - 1", verdict: "무승부", emoji: "🤝", msg: "문어님 왈: \"가슴 졸이는 무승부지만 충분해! H2H 우위로 16강 확정!\"" },
+  { score: "0 - 0", verdict: "무승부", emoji: "🛡️", msg: "문어님 왈: \"무실점 무승부로 안전하게 16강! 수비가 한국을 구한다.\"" },
+  { score: "3 - 1", verdict: "승리", emoji: "🎉", msg: "문어님 왈: \"대폭발! 손흥민·황희찬이 빛을 발하며 통쾌한 16강 진출!\"" },
 ];
 
 const OCTOPUS_FRAMES = ["🐙", "💫", "🌊", "🐙"];
@@ -37,16 +37,16 @@ export default function OctopusOracle() {
     revealed?.verdict === "승리"
       ? "#047857"
       : revealed?.verdict === "무승부"
-      ? "#b45309"
+      ? "#1d4ed8"
       : "#b91c1c";
 
   return (
     <div className="panel" style={{ textAlign: "center", padding: "1.5rem" }}>
       <h3 className="panel-title" style={{ marginBottom: "0.25rem" }}>
-        🐙 문어의 예언 · 멕시코전
+        🐙 문어의 예언 · 남아공전 16강 결정전
       </h3>
       <p className="muted" style={{ fontSize: "0.85rem", marginTop: 0, marginBottom: "1.25rem" }}>
-        파울 선생님의 영광을 이을 신비의 문어가 예언을 내립니다
+        파울 선생님의 영광을 이을 신비의 문어가 3차전 결과를 예언합니다
       </p>
 
       <div
@@ -66,8 +66,8 @@ export default function OctopusOracle() {
       {revealed && !animating && (
         <div
           style={{
-            background: "linear-gradient(135deg, #f0fdf4, #ecfdf5)",
-            border: "2px solid #6ee7b7",
+            background: "linear-gradient(135deg, #eff6ff, #dbeafe)",
+            border: "2px solid #93c5fd",
             borderRadius: 12,
             padding: "1rem 1.5rem",
             marginBottom: "1rem",
@@ -75,7 +75,7 @@ export default function OctopusOracle() {
           }}
         >
           <div style={{ fontSize: "2.5rem", fontWeight: 900, letterSpacing: "0.05em", marginBottom: "0.25rem" }}>
-            🇰🇷 {revealed.score} 🇲🇽
+            🇰🇷 {revealed.score} 🇿🇦
           </div>
           <div
             style={{
@@ -87,6 +87,22 @@ export default function OctopusOracle() {
           >
             {revealed.emoji} 한국 {revealed.verdict}
           </div>
+          {(revealed.verdict === "승리" || revealed.verdict === "무승부") && (
+            <div
+              style={{
+                display: "inline-block",
+                background: "#1d4ed8",
+                color: "#fff",
+                borderRadius: 20,
+                padding: "0.2rem 0.85rem",
+                fontSize: "0.82rem",
+                fontWeight: 800,
+                marginBottom: "0.5rem",
+              }}
+            >
+              🎟️ 16강 진출!
+            </div>
+          )}
           <p style={{ margin: 0, fontSize: "0.9rem", color: "#374151", fontStyle: "italic" }}>
             {revealed.msg}
           </p>
