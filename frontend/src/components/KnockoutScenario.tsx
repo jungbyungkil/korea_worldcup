@@ -1,67 +1,121 @@
-const GROUP_B_TEAMS = [
-  { flag: "🇨🇦", name: "캐나다", nameEn: "Canada", note: "개최국" },
-  { flag: "🇨🇭", name: "스위스", nameEn: "Switzerland", note: "UEFA" },
-  { flag: "🇧🇦", name: "보스니아", nameEn: "Bosnia-Herz.", note: "UEFA" },
-  { flag: "🇶🇦", name: "카타르", nameEn: "Qatar", note: "AFC" },
-];
+/** 3차전(6월 25일) 한국 vs 남아공 결과에 따른 경우의 수 */
 
-const SCENARIOS = [
+type Scenario = {
+  id: string;
+  result: string;
+  resultEmoji: string;
+  verdict: string;
+  verdictShort: string;
+  accentColor: string;
+  bgGradient: string;
+  borderColor: string;
+  verdictColor: string;
+  finalRank: string;
+  details: string[];
+  note?: string;
+};
+
+const SCENARIOS: Scenario[] = [
   {
-    rank: "1위",
-    rankNum: 1,
+    id: "win",
+    result: "한국 승리",
+    resultEmoji: "⚽",
+    verdict: "16강 확정",
+    verdictShort: "진출",
     accentColor: "#059669",
     bgGradient: "linear-gradient(135deg, #064e3b 0%, #047857 100%)",
     borderColor: "#34d399",
-    kstDate: "7월 1일 (수)",
-    kstTime: "10:00",
-    matchNo: 79,
-    opponentLabel: "C·E·F·H·I조 최상위 3위팀",
-    opponentNote: "그룹스테이지 종료 후 확정",
-    venue: "에스타디오 아스테카",
-    venueEn: "Estadio Azteca",
-    city: "멕시코시티",
-    capacity: "87,523석",
-    venueNote: "세계 최대 월드컵 경기장",
-    pros: ["유리한 대진 (이론상 약체 가능성)", "멕시코 원정 연장선에서 연속 경기"],
-    cons: ["멕시코시티 고지대(2,240m) 계속 적응 필요", "상대 미확정으로 준비 어려움"],
-    possibleOpponents: null,
+    verdictColor: "#34d399",
+    finalRank: "A조 2위",
+    details: [
+      "승점 6점 → 체코·남아공 따라잡기 불가",
+      "멕시코(6pts)와 동률이나 득실차로 순위 결정",
+      "32강 상대: B조 2위 (소파이 스타디움·LA, 6/29 04:00 KST)",
+    ],
+    note: undefined,
   },
   {
-    rank: "2위",
-    rankNum: 2,
+    id: "draw",
+    result: "한국 무승부",
+    resultEmoji: "🤝",
+    verdict: "16강 확정",
+    verdictShort: "진출",
     accentColor: "#3b82f6",
     bgGradient: "linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)",
     borderColor: "#93c5fd",
-    kstDate: "6월 29일 (월)",
-    kstTime: "04:00",
-    matchNo: 73,
-    opponentLabel: "B조 2위",
-    opponentNote: "캐나다·스위스·보스니아·카타르 중 1팀",
-    venue: "소파이 스타디움",
-    venueEn: "SoFi Stadium",
-    city: "잉글우드 (LA)",
-    capacity: "70,240석",
-    venueNote: "NFL 슈퍼볼 홈 경기장",
-    pros: ["LA 중립 지역 — 한국 교민 응원단 다수 기대", "B조 현재 4팀 전원 무승부 — 대진 열려 있음"],
-    cons: ["1위보다 4일 빠른 6월 29일 출발", "새벽 4시 KST 킥오프"],
-    possibleOpponents: GROUP_B_TEAMS,
+    verdictColor: "#93c5fd",
+    finalRank: "A조 2위",
+    details: [
+      "승점 4점 → 체코와 동률 가능성 있으나",
+      "상대전적 우위: 1차전 한국 2-1 체코 승리",
+      "FIFA 규정상 H2H 상대전적 먼저 적용 → 한국 2위 확정",
+      "남아공 최대 2점 → 역전 불가",
+    ],
+    note: "체코가 멕시코를 이기더라도 한국이 체코를 앞선 것(H2H)으로 2위 유지",
+  },
+  {
+    id: "loss",
+    result: "한국 패배",
+    resultEmoji: "💔",
+    verdict: "탈락 (사실상)",
+    verdictShort: "탈락",
+    accentColor: "#dc2626",
+    bgGradient: "linear-gradient(135deg, #7f1d1d 0%, #b91c1c 100%)",
+    borderColor: "#f87171",
+    verdictColor: "#f87171",
+    finalRank: "A조 3위",
+    details: [
+      "승점 3점 — 남아공이 4점으로 2위 등극",
+      "3위권 와일드카드 8팀 중 포함 가능성 희박",
+      "득실차 0 이하, 다른 조 3위팀과 비교해 불리",
+    ],
+    note: "기적을 위해선 남아공에 대패하지 않고 + 다른 조 3위가 전원 부진해야",
   },
 ];
+
+const CONCURRENT_MATCH = {
+  home: "🇨🇿 체코",
+  away: "🇲🇽 멕시코",
+  venue: "에스타디오 아스테카 · 멕시코시티",
+  kst: "6월 25일 10:00 KST",
+};
 
 export default function KnockoutScenario() {
   return (
     <div className="panel">
       <h3 className="panel-title" style={{ marginBottom: "0.25rem" }}>
-        🏆 32강 진출 시나리오
+        🎯 3차전 경우의 수 · 한국의 운명
       </h3>
-      <p className="muted" style={{ fontSize: "0.85rem", marginTop: 0, marginBottom: "1.25rem" }}>
-        A조 최종 순위에 따라 경기 날짜·경기장·상대가 달라집니다
+      <p className="muted" style={{ fontSize: "0.85rem", marginTop: 0, marginBottom: "0.5rem" }}>
+        6월 25일 10:00 KST · 한국 🇰🇷 vs 남아공 🇿🇦 · 에스타디오 BBVA, 과달루페
       </p>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
+      {/* 현재 순위 요약 */}
+      <div
+        style={{
+          background: "rgba(255,255,255,0.04)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: 10,
+          padding: "0.7rem 1rem",
+          marginBottom: "1.1rem",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem 1.5rem",
+          fontSize: "0.82rem",
+        }}
+      >
+        <span><strong style={{ color: "#facc15" }}>📊 2차전 후 현황</strong></span>
+        <span>🇲🇽 멕시코 <strong style={{ color: "#34d399" }}>6점</strong> (1위 확정)</span>
+        <span>🇰🇷 한국 <strong style={{ color: "#60a5fa" }}>3점</strong></span>
+        <span>🇨🇿 체코 <strong>1점</strong></span>
+        <span>🇿🇦 남아공 <strong>1점</strong></span>
+      </div>
+
+      {/* 3개 시나리오 카드 */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
         {SCENARIOS.map((sc) => (
           <div
-            key={sc.rank}
+            key={sc.id}
             style={{
               borderRadius: 14,
               overflow: "hidden",
@@ -73,122 +127,94 @@ export default function KnockoutScenario() {
               style={{
                 background: sc.bgGradient,
                 color: "#fff",
-                padding: "0.85rem 1.1rem",
+                padding: "0.75rem 1.1rem",
                 display: "flex",
                 alignItems: "center",
-                gap: "0.65rem",
+                gap: "0.75rem",
+                flexWrap: "wrap",
               }}
             >
-              <span style={{ fontSize: "1.6rem" }}>{sc.rankNum === 1 ? "🥇" : "🥈"}</span>
-              <div>
-                <div style={{ fontWeight: 900, fontSize: "1.05rem" }}>A조 {sc.rank} 진출 시</div>
-                <div style={{ fontSize: "0.78rem", opacity: 0.85 }}>32강 매치 #{sc.matchNo}</div>
+              <span style={{ fontSize: "1.5rem" }}>{sc.resultEmoji}</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 900, fontSize: "1.05rem" }}>{sc.result}</div>
+                <div style={{ fontSize: "0.78rem", opacity: 0.85 }}>최종 {sc.finalRank} 예상</div>
               </div>
-              <div style={{ marginLeft: "auto", textAlign: "right" }}>
-                <div style={{ fontWeight: 800, fontSize: "0.95rem" }}>KST {sc.kstDate}</div>
-                <div style={{ fontSize: "0.8rem", opacity: 0.85 }}>{sc.kstTime} 킥오프</div>
+              <div
+                style={{
+                  background: "rgba(0,0,0,0.25)",
+                  borderRadius: 20,
+                  padding: "0.3rem 0.85rem",
+                  fontWeight: 900,
+                  fontSize: "0.95rem",
+                  color: sc.verdictColor,
+                  border: `1px solid ${sc.borderColor}`,
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {sc.verdict}
               </div>
             </div>
 
             {/* 본문 */}
-            <div style={{ padding: "1rem 1.1rem", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-
-              {/* 경기장 */}
-              <div style={{ display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
-                <span style={{ fontSize: "1.3rem", marginTop: "0.05rem" }}>🏟️</span>
-                <div>
-                  <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>{sc.venue}</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--color-muted)" }}>{sc.city} · {sc.capacity}</div>
-                  <div style={{ fontSize: "0.78rem", color: "var(--color-muted)" }}>{sc.venueNote}</div>
-                </div>
-              </div>
-
-              {/* 상대 */}
-              <div style={{ display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
-                <span style={{ fontSize: "1.3rem", marginTop: "0.05rem" }}>⚔️</span>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: "0.95rem", marginBottom: "0.3rem" }}>
-                    🇰🇷 한국 vs {sc.opponentLabel}
-                  </div>
-                  {sc.possibleOpponents ? (
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-                      {sc.possibleOpponents.map((op) => (
-                        <span
-                          key={op.nameEn}
-                          style={{
-                            background: "rgba(59,130,246,0.1)",
-                            border: "1px solid rgba(59,130,246,0.3)",
-                            borderRadius: 20,
-                            padding: "0.2rem 0.55rem",
-                            fontSize: "0.8rem",
-                            fontWeight: 600,
-                          }}
-                        >
-                          {op.flag} {op.name}
-                        </span>
-                      ))}
-                    </div>
-                  ) : (
-                    <span
-                      style={{
-                        background: "rgba(5,150,105,0.1)",
-                        border: "1px solid rgba(5,150,105,0.3)",
-                        borderRadius: 20,
-                        padding: "0.2rem 0.65rem",
-                        fontSize: "0.8rem",
-                        fontWeight: 600,
-                        color: sc.accentColor,
-                      }}
-                    >
-                      🔍 조별리그 종료 후 확정
-                    </span>
-                  )}
-                  <div style={{ fontSize: "0.76rem", color: "var(--color-muted)", marginTop: "0.3rem" }}>
-                    {sc.opponentNote}
-                  </div>
-                </div>
-              </div>
-
-              {/* 장단점 */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+            <div style={{ padding: "0.85rem 1.1rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              {sc.details.map((d, i) => (
                 <div
+                  key={i}
                   style={{
-                    background: "rgba(5,150,105,0.07)",
-                    border: "1px solid rgba(5,150,105,0.2)",
-                    borderRadius: 8,
-                    padding: "0.55rem 0.65rem",
+                    fontSize: "0.83rem",
+                    color: "var(--color-text)",
+                    lineHeight: 1.5,
+                    display: "flex",
+                    gap: "0.4rem",
                   }}
                 >
-                  <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#059669", marginBottom: "0.3rem" }}>✅ 유리한 점</div>
-                  {sc.pros.map((p, i) => (
-                    <div key={i} style={{ fontSize: "0.76rem", color: "var(--color-text)", lineHeight: 1.45, marginBottom: i < sc.pros.length - 1 ? "0.2rem" : 0 }}>
-                      · {p}
-                    </div>
-                  ))}
+                  <span style={{ color: sc.accentColor, fontWeight: 700, flexShrink: 0 }}>·</span>
+                  <span>{d}</span>
                 </div>
+              ))}
+              {sc.note && (
                 <div
                   style={{
-                    background: "rgba(239,68,68,0.05)",
-                    border: "1px solid rgba(239,68,68,0.15)",
+                    marginTop: "0.35rem",
+                    background: `${sc.accentColor}18`,
+                    border: `1px solid ${sc.accentColor}44`,
                     borderRadius: 8,
-                    padding: "0.55rem 0.65rem",
+                    padding: "0.45rem 0.7rem",
+                    fontSize: "0.78rem",
+                    color: "var(--color-muted)",
+                    lineHeight: 1.5,
                   }}
                 >
-                  <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "#dc2626", marginBottom: "0.3rem" }}>⚠️ 고려 사항</div>
-                  {sc.cons.map((c, i) => (
-                    <div key={i} style={{ fontSize: "0.76rem", color: "var(--color-text)", lineHeight: 1.45, marginBottom: i < sc.cons.length - 1 ? "0.2rem" : 0 }}>
-                      · {c}
-                    </div>
-                  ))}
+                  💡 {sc.note}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         ))}
       </div>
 
-      <p className="muted" style={{ fontSize: "0.76rem", marginTop: "0.75rem" }}>
-        * FIFA 공식 32강 대진표 기준. B조 최종 2위는 6월 24일 확정. 3위 상대는 조별리그 전체 종료 후 결정.
+      {/* 동시 진행 경기 안내 */}
+      <div
+        style={{
+          marginTop: "1rem",
+          background: "rgba(250,204,21,0.06)",
+          border: "1px solid rgba(250,204,21,0.2)",
+          borderRadius: 10,
+          padding: "0.7rem 1rem",
+          fontSize: "0.82rem",
+        }}
+      >
+        <div style={{ fontWeight: 700, color: "#facc15", marginBottom: "0.3rem" }}>⚡ 동시 진행 · {CONCURRENT_MATCH.kst}</div>
+        <div style={{ color: "var(--color-text)" }}>
+          {CONCURRENT_MATCH.home} vs {CONCURRENT_MATCH.away} · <span className="muted">{CONCURRENT_MATCH.venue}</span>
+        </div>
+        <div style={{ color: "var(--color-muted)", marginTop: "0.25rem" }}>
+          한국이 무승부 이상이면 체코-멕시코 결과 무관하게 16강 확정
+        </div>
+      </div>
+
+      <p className="muted" style={{ fontSize: "0.76rem", marginTop: "0.6rem" }}>
+        * H2H = 상대전적. FIFA 동점 처리: ① H2H 승점 → ② H2H 득실차 → ③ H2H 득점 → ④ 전체 득실차 순 적용.
       </p>
     </div>
   );

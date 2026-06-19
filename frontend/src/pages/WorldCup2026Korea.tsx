@@ -3,6 +3,7 @@ import { humanizeFetchError } from "../api/client";
 import { postAiAGroupLens } from "../api/aiInsights";
 import AiInsightPanel from "../components/AiInsightPanel";
 import GroupATable from "../components/GroupATable";
+import KnockoutScenario from "../components/KnockoutScenario";
 import NextMatchBanner from "../components/NextMatchBanner";
 import ScorePredictionGame from "../components/ScorePredictionGame";
 import { getKoreaFixtures, getKoreaOverview, type Fixture, type KoreaFixtures, type KoreaOverview } from "../api/worldcup2026";
@@ -149,6 +150,8 @@ export default function WorldCup2026Korea() {
       />
 
       <GroupATable />
+
+      <KnockoutScenario />
 
       <FirstGroupMatchSpotlight
         officialKickoffIso={firstMatchKickoffIso}
