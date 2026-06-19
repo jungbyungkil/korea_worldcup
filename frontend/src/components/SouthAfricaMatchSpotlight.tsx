@@ -13,10 +13,10 @@ export default function SouthAfricaMatchSpotlight({ officialKickoffIso, official
   return (
     <GroupStageMatchSpotlight
       variant="south-africa"
-      badge="A조 하이라이트 · 3차전"
-      badgeEmoji="🌅"
+      badge="A조 3차전 · 운명의 최종전"
+      badgeEmoji="🔥"
       title="🇰🇷 대한민국 vs 🇿🇦 남아프리카 공화국"
-      subtitle="조별리그 최종전 · 과달루페(누에보레온)"
+      subtitle="무승부 이상이면 16강 확정! · 6월 25일 10:00 KST"
       officialKickoffIso={officialKickoffIso}
       fallbackKickoffIso={GROUP_A_FALLBACK_KICKOFF_UTC.southAfrica}
       officialVenue={officialVenue}
@@ -24,7 +24,7 @@ export default function SouthAfricaMatchSpotlight({ officialKickoffIso, official
       defaultPlaceLine="에스타디오 BBVA · 과달루페(FIFA 확정 2026-05)"
       localTimeZone="America/Monterrey"
       localTimeLabel="과달루페·몬테레이(중부) 현지"
-      hooksTitle="3차전이 왜 중요한가"
+      hooksTitle="16강 진출 조건 · 지금 상황"
       hooks={SOUTH_AFRICA_MATCH_HOOKS_KO}
       ariaTitleId="south-africa-spotlight-title"
       actions={

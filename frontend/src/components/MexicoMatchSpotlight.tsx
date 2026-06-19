@@ -13,10 +13,10 @@ export default function MexicoMatchSpotlight({ officialKickoffIso, officialVenue
   return (
     <GroupStageMatchSpotlight
       variant="mexico"
-      badge="A조 하이라이트 · 2차전"
-      badgeEmoji="🌶️"
-      title="🇰🇷 대한민국 vs 🇲🇽 멕시코"
-      subtitle="개최국과의 조별리그"
+      badge="A조 2차전 · 종료"
+      badgeEmoji="🔴"
+      title="🇰🇷 대한민국 0 - 1 🇲🇽 멕시코"
+      subtitle="패배 · 한국 3점, 멕시코 6점(1위 확정)"
       officialKickoffIso={officialKickoffIso}
       fallbackKickoffIso={GROUP_A_FALLBACK_KICKOFF_UTC.mexico}
       officialVenue={officialVenue}
