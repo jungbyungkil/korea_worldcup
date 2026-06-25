@@ -1,8 +1,8 @@
 const GROUP_A_TEAMS = [
-  { flag: "🇲🇽", name: "멕시코",   nameEn: "Mexico",         elo: 1775, mp: 2, w: 2, d: 0, l: 0, gf: 3, ga: 0, pts: 6 },
-  { flag: "🇰🇷", name: "대한민국", nameEn: "Korea Republic", elo: 1820, mp: 2, w: 1, d: 0, l: 1, gf: 2, ga: 2, pts: 3, highlight: true },
-  { flag: "🇨🇿", name: "체코",     nameEn: "Czech Republic", elo: 1670, mp: 2, w: 0, d: 1, l: 1, gf: 2, ga: 3, pts: 1 },
-  { flag: "🇿🇦", name: "남아공",   nameEn: "South Africa",   elo: 1620, mp: 2, w: 0, d: 1, l: 1, gf: 1, ga: 3, pts: 1 },
+  { flag: "🇲🇽", name: "멕시코",   nameEn: "Mexico",         elo: 1775, mp: 3, w: 3, d: 0, l: 0, gf: 4, ga: 0, pts: 9 },
+  { flag: "🇿🇦", name: "남아공",   nameEn: "South Africa",   elo: 1620, mp: 3, w: 1, d: 1, l: 1, gf: 2, ga: 3, pts: 4 },
+  { flag: "🇰🇷", name: "대한민국", nameEn: "Korea Republic", elo: 1820, mp: 3, w: 1, d: 0, l: 2, gf: 2, ga: 3, pts: 3, highlight: true },
+  { flag: "🇨🇿", name: "체코",     nameEn: "Czech Republic", elo: 1670, mp: 3, w: 0, d: 1, l: 2, gf: 2, ga: 4, pts: 1 },
 ].sort((a, b) => {
   if (b.pts !== a.pts) return b.pts - a.pts;
   const gdA = a.gf - a.ga, gdB = b.gf - b.ga;
@@ -58,7 +58,8 @@ const GROUP_A_SCHEDULE = [
     home: "🇰🇷 대한민국",
     away: "🇿🇦 남아공",
     venue: "에스타디오 BBVA · 과달루페",
-    done: false,
+    result: "0 - 1",
+    done: true,
   },
   {
     match: 6,
@@ -67,7 +68,8 @@ const GROUP_A_SCHEDULE = [
     home: "🇨🇿 체코",
     away: "🇲🇽 멕시코",
     venue: "에스타디오 아스테카 · 멕시코시티",
-    done: false,
+    result: "0 - 1",
+    done: true,
   },
 ];
 
@@ -76,7 +78,7 @@ export default function GroupATable() {
     <section className="panel group-a-section">
       <h2 className="panel-title">A조 현황 · 2026 FIFA 월드컵</h2>
       <p className="muted" style={{ marginTop: 0, fontSize: "0.88rem" }}>
-        2차전 반영 기준 (2026-06-19) — ELO는 eloratings.net 추정치
+        3차전 완료 · 최종 순위 (2026-06-25) — ELO는 eloratings.net 추정치 · 체코 vs 멕시코 결과 추정 포함
       </p>
 
       {/* 순위표 */}

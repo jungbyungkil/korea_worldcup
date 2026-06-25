@@ -10,6 +10,7 @@ import { getKoreaFixtures, getKoreaOverview, type Fixture, type KoreaFixtures, t
 import FirstGroupMatchSpotlight from "../components/FirstGroupMatchSpotlight";
 import MexicoMatchSpotlight from "../components/MexicoMatchSpotlight";
 import SouthAfricaMatchSpotlight from "../components/SouthAfricaMatchSpotlight";
+import Round32GermanySpotlight from "../components/Round32GermanySpotlight";
 import { bucketByCompetition } from "../lib/fixtureBuckets";
 
 /** A조에서 멕시코·남아공이 아닌 경기 = 1차전(체코)로 간주 */
@@ -171,6 +172,9 @@ export default function WorldCup2026Korea() {
         officialVenue={southAfricaFixture?.venue}
         officialCity={southAfricaFixture?.city}
       />
+
+      {/* 32강 와일드카드 진출 시 독일전 */}
+      <Round32GermanySpotlight />
 
       {/* 팬 스코어 예측 게임 */}
       <ScorePredictionGame />
