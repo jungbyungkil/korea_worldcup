@@ -1,26 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import KnockoutScenario from "./KnockoutScenario";
 import OctopusOracle from "./OctopusOracle";
-
-const SOUTH_AFRICA_KICKOFF_UTC = "2026-06-25T01:00:00.000Z";
-
-function useCountdown(targetIso: string) {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(id);
-  }, []);
-  const diff = new Date(targetIso).getTime() - now.getTime();
-  if (diff <= 0) return null;
-  const s = Math.floor(diff / 1000);
-  return {
-    days: Math.floor(s / 86400),
-    hours: Math.floor((s % 86400) / 3600),
-    mins: Math.floor((s % 3600) / 60),
-    secs: s % 60,
-  };
-}
 
 const MATCH_RESULTS = [
   {
@@ -45,137 +25,65 @@ const MATCH_RESULTS = [
     status: "loss" as const,
     pts: "0점",
   },
+  {
+    round: "3차전",
+    flag1: "🇰🇷",
+    score: "0 - 1",
+    flag2: "🇿🇦",
+    opponent: "남아공",
+    date: "6월 25일",
+    result: "패",
+    status: "loss" as const,
+    pts: "0점",
+  },
 ];
 
-const SA_TALKING_POINTS = [
+const WILDCARD_ANALYSIS = [
   {
-    icon: "🏆",
-    title: "16강 결정전",
-    desc: "무승부 이상이면 16강 확정! 승점 4점으로 H2H 우위 확보. 지금 이 경기가 전부다.",
+    icon: "✅",
+    color: "#34d399",
+    bg: "rgba(6,78,59,0.15)",
+    border: "#34d399",
+    title: "진출 가능 조건",
+    desc: "다른 11개 조의 3위 팀 중 4점 이상인 팀이 4팀 이하 → 한국 32강 진출 유력",
   },
   {
-    icon: "🇿🇦",
-    title: "바파나 바파나도 벼랑 끝",
-    desc: "남아공도 승점 1점. 반드시 이겨야 하는 두 팀의 사실상 '생사결전'. 집중력이 승패를 가른다.",
+    icon: "⚠️",
+    color: "#facc15",
+    bg: "rgba(113,63,18,0.2)",
+    border: "#ca8a04",
+    title: "GD 경쟁 구간",
+    desc: "4점 이상 팀이 정확히 4팀이면 → GD(득실차), GF(득점) 비교로 결정",
   },
   {
-    icon: "⚡",
-    title: "손흥민·황희찬 반드시 살아야",
-    desc: "멕시코전 아쉬움을 딛고 한국의 투 에이스가 남아공 수비를 무너뜨려야 한다. 기회는 지금뿐.",
+    icon: "❌",
+    color: "#f87171",
+    bg: "rgba(127,29,29,0.15)",
+    border: "#f87171",
+    title: "탈락 조건",
+    desc: "다른 조 3위 팀 중 4점 이상이 5팀 이상 → 한국은 3pts로 9위 이하, 탈락",
   },
   {
-    icon: "🛡️",
-    title: "퍼시 타우 봉쇄 관건",
-    desc: "남아공의 핵심 퍼시 타우의 개인기와 빠른 역습을 수비라인이 얼마나 잘 막느냐가 핵심.",
+    icon: "🎟️",
+    color: "#a5b4fc",
+    bg: "rgba(79,70,229,0.12)",
+    border: "#818cf8",
+    title: "한국의 현재 스탯",
+    desc: "3점 · 득실차 -1 · 득점 2골 — 다른 조 3위들의 결과가 나와야 최종 확정",
   },
 ];
 
 export default function MexicoDashboard() {
-  const cd = useCountdown(SOUTH_AFRICA_KICKOFF_UTC);
-
-  const krTime = useMemo(() => {
-    const d = new Date(SOUTH_AFRICA_KICKOFF_UTC);
-    return d.toLocaleString("ko-KR", {
-      timeZone: "Asia/Seoul",
-      month: "long",
-      day: "numeric",
-      weekday: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  }, []);
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
 
-      {/* ─── 경기 결과 요약 (1·2차전) ─── */}
-      <div className="panel">
-        <h3 className="panel-title" style={{ marginBottom: "0.75rem" }}>
-          📋 조별리그 경과 · A조 한국
-        </h3>
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-          {MATCH_RESULTS.map((m) => (
-            <div
-              key={m.round}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "0.75rem",
-                padding: "0.8rem 1rem",
-                borderRadius: 10,
-                background:
-                  m.status === "win"
-                    ? "linear-gradient(135deg, rgba(6,78,59,0.25), rgba(4,120,87,0.15))"
-                    : "linear-gradient(135deg, rgba(127,29,29,0.25), rgba(185,28,28,0.15))",
-                border: `1.5px solid ${m.status === "win" ? "#34d399" : "#f87171"}`,
-              }}
-            >
-              <span
-                style={{
-                  minWidth: "3.8rem",
-                  fontWeight: 800,
-                  fontSize: "0.82rem",
-                  color: m.status === "win" ? "#34d399" : "#f87171",
-                }}
-              >
-                {m.round}
-              </span>
-              <span style={{ fontSize: "1.1rem" }}>{m.flag1}</span>
-              <span style={{ fontWeight: 900, fontSize: "1rem", letterSpacing: "0.05em", minWidth: "5rem", textAlign: "center" }}>
-                {m.score}
-              </span>
-              <span style={{ fontSize: "1.1rem" }}>{m.flag2}</span>
-              <span style={{ fontSize: "0.85rem", flex: 1 }}>{m.opponent}</span>
-              <div style={{ textAlign: "right" }}>
-                <div
-                  style={{
-                    fontWeight: 900,
-                    fontSize: "0.9rem",
-                    color: m.status === "win" ? "#34d399" : "#f87171",
-                    background: m.status === "win" ? "rgba(52,211,153,0.12)" : "rgba(248,113,113,0.12)",
-                    borderRadius: 20,
-                    padding: "0.2rem 0.7rem",
-                    border: `1px solid ${m.status === "win" ? "#34d399" : "#f87171"}`,
-                  }}
-                >
-                  {m.result}
-                </div>
-                <div style={{ fontSize: "0.72rem", color: "var(--color-muted)", marginTop: "0.15rem" }}>{m.date}</div>
-              </div>
-            </div>
-          ))}
-
-          {/* 현재 순위 요약 */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "0.5rem 1.25rem",
-              padding: "0.7rem 1rem",
-              borderRadius: 10,
-              background: "rgba(250,204,21,0.06)",
-              border: "1px solid rgba(250,204,21,0.22)",
-              fontSize: "0.82rem",
-              marginTop: "0.1rem",
-            }}
-          >
-            <span><strong style={{ color: "#facc15" }}>📊 현재 순위</strong></span>
-            <span>🇲🇽 멕시코 <strong style={{ color: "#f87171" }}>6점</strong> (1위)</span>
-            <span>🇰🇷 한국 <strong style={{ color: "#60a5fa" }}>3점</strong> (2위*)</span>
-            <span>🇨🇿 체코 <strong>1점</strong></span>
-            <span>🇿🇦 남아공 <strong>1점</strong></span>
-          </div>
-        </div>
-      </div>
-
-      {/* ─── 3차전 카운트다운 히어로 ─── */}
+      {/* ─── 조별리그 최종 결과 히어로 ─── */}
       <div
         style={{
-          background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #4338ca 100%)",
+          background: "linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e3a5f 100%)",
           color: "#fff",
           borderRadius: 14,
-          padding: "1.75rem 1.5rem",
-          textAlign: "center",
+          padding: "1.5rem",
           position: "relative",
           overflow: "hidden",
         }}
@@ -186,106 +94,100 @@ export default function MexicoDashboard() {
             inset: "-30% -10% auto auto",
             width: "min(300px, 50vw)",
             height: "min(300px, 50vw)",
-            background: "radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)",
             pointerEvents: "none",
           }}
+          aria-hidden
         />
 
-        <div
-          style={{
-            display: "inline-block",
-            background: "rgba(255,255,255,0.15)",
-            borderRadius: 20,
-            padding: "0.25rem 0.9rem",
-            fontSize: "0.8rem",
-            fontWeight: 700,
-            letterSpacing: "0.06em",
-            marginBottom: "0.5rem",
-          }}
-        >
-          🔥 A조 3차전 · 16강 결정전
+        <div style={{ display: "inline-block", background: "rgba(255,255,255,0.12)", borderRadius: 20, padding: "0.2rem 0.85rem", fontSize: "0.78rem", fontWeight: 700, marginBottom: "0.6rem" }}>
+          📋 A조 조별리그 완료 · 2026-06-25
         </div>
 
-        <div style={{ fontSize: "clamp(1.5rem, 5vw, 2.2rem)", fontWeight: 900, marginBottom: "0.4rem" }}>
-          🇰🇷 대한민국 vs 🇿🇦 남아공
+        <div style={{ fontSize: "clamp(1.1rem, 4vw, 1.6rem)", fontWeight: 900, marginBottom: "0.5rem" }}>
+          🇰🇷 대한민국 조별리그 1승 2패 종료
         </div>
-        <div style={{ fontSize: "0.9rem", opacity: 0.85, marginBottom: "0.35rem" }}>
-          🕙 {krTime} (한국 시간) · 에스타디오 BBVA, 과달루페
-        </div>
-        <div style={{ fontSize: "0.82rem", opacity: 0.75, marginBottom: "1.25rem" }}>
-          무승부 이상이면 <strong style={{ color: "#a5b4fc" }}>16강 확정</strong> · 반드시 잡아야 할 경기!
+        <div style={{ fontSize: "0.85rem", opacity: 0.85, marginBottom: "1rem" }}>
+          A조 3위 마감 · 승점 3점 · 득실차 -1 · <strong style={{ color: "#facc15" }}>32강 와일드카드 진출 여부 대기 중</strong>
         </div>
 
-        {cd ? (
-          <div style={{ display: "flex", justifyContent: "center", gap: "0.5rem", flexWrap: "wrap" }}>
-            {[
-              { val: cd.days, label: "일" },
-              { val: cd.hours, label: "시" },
-              { val: cd.mins, label: "분" },
-              { val: cd.secs, label: "초" },
-            ].map(({ val, label }, i) => (
-              <div key={label}>
-                {i > 0 && <span style={{ fontSize: "1.5rem", fontWeight: 900, opacity: 0.5, marginRight: "0.5rem" }}>:</span>}
-                <div
-                  style={{
-                    display: "inline-flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    background: "rgba(0,0,0,0.3)",
-                    borderRadius: 10,
-                    padding: "0.5rem 0.75rem",
-                    minWidth: "3.5rem",
-                  }}
-                >
-                  <span style={{ fontSize: "clamp(1.6rem, 5vw, 2.4rem)", fontWeight: 900, lineHeight: 1 }}>
-                    {String(val).padStart(2, "0")}
-                  </span>
-                  <span style={{ fontSize: "0.7rem", opacity: 0.7, marginTop: "0.15rem" }}>{label}</span>
-                </div>
+        {/* 3경기 결과 인라인 */}
+        <div style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", marginBottom: "1.1rem" }}>
+          {MATCH_RESULTS.map((m) => (
+            <div
+              key={m.round}
+              style={{
+                background: m.status === "win" ? "rgba(16,185,129,0.25)" : "rgba(220,38,38,0.2)",
+                border: `1.5px solid ${m.status === "win" ? "#34d399" : "#f87171"}`,
+                borderRadius: 10,
+                padding: "0.5rem 0.85rem",
+                textAlign: "center",
+                minWidth: "5rem",
+                flex: "1 1 5rem",
+              }}
+            >
+              <div style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.6)", marginBottom: "0.15rem" }}>{m.round} · {m.date}</div>
+              <div style={{ fontWeight: 900, fontSize: "1rem", letterSpacing: "0.04em" }}>
+                {m.flag1} {m.score} {m.flag2}
               </div>
-            ))}
-          </div>
-        ) : (
-          <div style={{ fontSize: "1.4rem", fontWeight: 800 }}>⚽ 경기 시작!</div>
-        )}
+              <div style={{ fontSize: "0.78rem", fontWeight: 800, color: m.status === "win" ? "#6ee7b7" : "#fca5a5", marginTop: "0.1rem" }}>
+                {m.result} · {m.opponent}
+              </div>
+            </div>
+          ))}
+        </div>
 
-        <div style={{ marginTop: "1.25rem", display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap" }}>
-          <Link to="/2026/south-africa" className="btn" style={{ background: "rgba(255,255,255,0.2)", color: "#fff", border: "1px solid rgba(255,255,255,0.35)", fontWeight: 700 }}>
-            남아공 팀 분석
+        {/* A조 최종 순위 */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem 1.1rem", fontSize: "0.82rem", marginBottom: "1rem" }}>
+          <span style={{ color: "rgba(255,255,255,0.5)" }}>A조 최종:</span>
+          <span>🥇 🇲🇽 멕시코 <strong style={{ color: "#fbbf24" }}>9점</strong></span>
+          <span>🥈 🇿🇦 남아공 <strong style={{ color: "#e2e8f0" }}>4점</strong></span>
+          <span>🥉 🇰🇷 한국 <strong style={{ color: "#93c5fd" }}>3점</strong></span>
+          <span>4위 🇨🇿 체코 <strong style={{ color: "rgba(255,255,255,0.4)" }}>1점</strong></span>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "flex-start", gap: "0.75rem", flexWrap: "wrap" }}>
+          <Link to="/2026/korea" className="btn" style={{ background: "rgba(255,255,255,0.18)", color: "#fff", border: "1px solid rgba(255,255,255,0.35)", fontWeight: 700 }}>
+            A조 상세 대시보드
           </Link>
-          <Link to="/2026/korea" className="btn" style={{ background: "rgba(255,255,255,0.2)", color: "#fff", border: "1px solid rgba(255,255,255,0.35)", fontWeight: 700 }}>
-            A조 대시보드
+          <Link to="/2026/south-africa" className="btn" style={{ background: "rgba(255,255,255,0.1)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontWeight: 600 }}>
+            남아공 팀 데이터
           </Link>
         </div>
       </div>
 
-      {/* ─── 문어 예언 ─── */}
-      <OctopusOracle />
-
-      {/* ─── 3차전 경우의 수 ─── */}
-      <KnockoutScenario />
-
-      {/* ─── 3차전 관전 포인트 ─── */}
+      {/* ─── 32강 와일드카드 분석 ─── */}
       <div className="panel">
-        <h3 className="panel-title" style={{ marginBottom: "0.85rem" }}>🔍 남아공전 관전 포인트</h3>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: "0.75rem" }}>
-          {SA_TALKING_POINTS.map((p) => (
+        <h3 className="panel-title" style={{ marginBottom: "0.25rem" }}>🎟️ 32강 와일드카드 — 한국의 진출 조건</h3>
+        <p className="muted" style={{ fontSize: "0.83rem", marginTop: 0, marginBottom: "0.85rem" }}>
+          2026 월드컵은 12개 조의 <strong style={{ color: "var(--color-text)" }}>3위 중 상위 8팀</strong>도 32강 진출. 한국은 현재 <strong style={{ color: "#facc15" }}>3점 GD-1</strong>로 대기 중.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))", gap: "0.65rem" }}>
+          {WILDCARD_ANALYSIS.map((w) => (
             <div
-              key={p.title}
+              key={w.title}
               style={{
-                background: "rgba(0,0,0,0.03)",
-                border: "1px solid var(--color-border)",
+                background: w.bg,
+                border: `1px solid ${w.border}44`,
                 borderRadius: 10,
-                padding: "0.9rem",
+                padding: "0.75rem 0.9rem",
               }}
             >
-              <div style={{ fontSize: "1.5rem", marginBottom: "0.35rem" }}>{p.icon}</div>
-              <div style={{ fontWeight: 700, fontSize: "0.92rem", marginBottom: "0.25rem" }}>{p.title}</div>
-              <div style={{ fontSize: "0.82rem", color: "var(--color-muted)", lineHeight: 1.5 }}>{p.desc}</div>
+              <div style={{ fontWeight: 800, color: w.color, marginBottom: "0.3rem", fontSize: "0.88rem" }}>
+                {w.icon} {w.title}
+              </div>
+              <div style={{ fontSize: "0.8rem", color: "var(--color-text)", lineHeight: 1.55 }}>{w.desc}</div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* ─── 문어의 예언 (32강 와일드카드) ─── */}
+      <OctopusOracle />
+
+      {/* ─── 12개 조 3위 현황 + 경우의 수 ─── */}
+      <KnockoutScenario />
+
     </div>
   );
 }

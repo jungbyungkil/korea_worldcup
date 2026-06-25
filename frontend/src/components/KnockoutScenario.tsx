@@ -1,274 +1,348 @@
-/** A조 최종 결과 + 32강 와일드카드 진출 현황 */
+/** 32강 와일드카드 — 12개 조 3위 현황 + 한국 경우의 수 */
 
-const WILDCARD_GROUPS = [
-  { group: "A조", team: "🇰🇷 대한민국", pts: 3, gd: -1, gf: 2, status: "확정", highlight: true },
-  { group: "B조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "C조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "D조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "E조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "F조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "G조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "H조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "I조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "J조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "K조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
-  { group: "L조", team: "진행 중", pts: null, gd: null, gf: null, status: "대기" },
+type GroupStatus = "done" | "ongoing" | "pending";
+
+type ThirdPlaceTeam = {
+  group: string;
+  flag: string;
+  team: string;
+  pts: number | null;
+  w: number | null;
+  d: number | null;
+  l: number | null;
+  gf: number | null;
+  ga: number | null;
+  status: GroupStatus;
+  highlight?: boolean;
+};
+
+const THIRD_PLACE_TEAMS: ThirdPlaceTeam[] = [
+  { group: "A", flag: "🇰🇷", team: "대한민국", pts: 3, w: 1, d: 0, l: 2, gf: 2, ga: 3, status: "done", highlight: true },
+  { group: "B", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "C", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "D", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "E", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "F", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "G", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "H", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "I", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "J", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "K", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
+  { group: "L", flag: "🏳️", team: "집계 중", pts: null, w: null, d: null, l: null, gf: null, ga: null, status: "pending" },
 ];
 
-const HISTORY_REFERENCE = [
-  { year: 2022, format: "32팀 8조", threshold: "4점 (4위까지 진출)", pass3rd: "4점 이상 필요" },
-  { year: 2026, format: "48팀 12조", threshold: "상위 8/12팀 진출 (66.7%)", pass3rd: "3점도 가능 (GD 중요)" },
+const SCENARIOS = [
+  {
+    id: "safe",
+    title: "안전권 진출",
+    condition: "나머지 11개 조 3위 팀 중 4점 이상이 ≤ 3팀",
+    verdict: "32강 확정",
+    verdictColor: "#34d399",
+    bg: "linear-gradient(135deg, #064e3b, #047857)",
+    border: "#34d399",
+    probability: "높음",
+    probColor: "#34d399",
+    details: [
+      "3pts 팀이 하위권에 적을 경우 한국이 자연스럽게 상위 8위 안에 진입",
+      "12개 조 중 8팀 진출이므로 4팀만 탈락 → 3pts로도 충분한 경우 많음",
+      "득실차(-1)가 낮아도 다른 3위 팀들이 더 낮으면 자동 통과",
+    ],
+    example: "예: 다른 조 3위들이 전원 1~2점 → 한국 3pts로 안전 진출",
+  },
+  {
+    id: "gd",
+    title: "득실차 경쟁",
+    condition: "4점 이상 팀이 정확히 4팀 = 한국이 딱 8위권",
+    verdict: "GD·득점 비교",
+    verdictColor: "#facc15",
+    bg: "linear-gradient(135deg, #451a03, #78350f)",
+    border: "#fbbf24",
+    probability: "중간",
+    probColor: "#facc15",
+    details: [
+      "4점 팀 4팀 + 3pts 팀 중 한국과 동률 경쟁",
+      "FIFA 3위팀 순위: ① 승점 → ② 득실차 → ③ 득점 → ④ 페어플레이",
+      "한국 득실차 -1 · 득점 2 — 동점 팀 대비 불리한 편",
+      "하지만 동률 3pts 팀 중 GD가 -2 이하인 팀이 4팀 이상이면 진출",
+    ],
+    example: "예: 3pts 동률 팀 중 GD -2, -3 팀이 많으면 한국(GD-1) 통과",
+  },
+  {
+    id: "out",
+    title: "탈락 구간",
+    condition: "4점 이상 팀이 5팀 이상 = 한국 9위 이하",
+    verdict: "조별리그 탈락",
+    verdictColor: "#f87171",
+    bg: "linear-gradient(135deg, #7f1d1d, #991b1b)",
+    border: "#f87171",
+    probability: "낮음",
+    probColor: "#f87171",
+    details: [
+      "4점 이상 팀이 5개 이상이면 한국은 수학적으로 9위 이하 확정",
+      "또는 동점 3pts 팀이 많고 한국보다 GD/GF 모두 높으면 밀림",
+      "2026 World Cup은 48팀이지만 조별리그는 동일한 경쟁 구도",
+    ],
+    example: "예: B~L 11개 조 중 5개 조 3위가 1승 1무 = 4점 이상 → 한국 탈락",
+  },
 ];
+
+function gdDisplay(gf: number | null, ga: number | null): string {
+  if (gf == null || ga == null) return "—";
+  const gd = gf - ga;
+  return gd > 0 ? `+${gd}` : String(gd);
+}
+
+function statusBadge(status: GroupStatus) {
+  if (status === "done") return { label: "완료", color: "#34d399", bg: "rgba(16,185,129,0.15)" };
+  if (status === "ongoing") return { label: "진행 중", color: "#facc15", bg: "rgba(234,179,8,0.12)" };
+  return { label: "대기", color: "var(--color-muted)", bg: "rgba(255,255,255,0.05)" };
+}
 
 export default function KnockoutScenario() {
-  const koreaChance = 55; // 3pts, GD-1 기준 추정 확률 (%)
+  const confirmedBetter = THIRD_PLACE_TEAMS.filter(
+    (t) => !t.highlight && t.pts != null && t.pts > 3
+  ).length;
+  const pendingCount = THIRD_PLACE_TEAMS.filter((t) => t.status === "pending").length;
 
   return (
     <div className="panel">
-      {/* 조별리그 최종 결과 배너 */}
-      <div
-        style={{
-          background: "linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%)",
-          border: "2px solid #f87171",
-          borderRadius: 14,
-          padding: "1rem 1.25rem",
-          marginBottom: "1.25rem",
-          display: "flex",
-          alignItems: "center",
-          gap: "1rem",
-          flexWrap: "wrap",
-        }}
-      >
-        <span style={{ fontSize: "2rem" }}>💔</span>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 900, fontSize: "1.1rem", color: "#fca5a5" }}>
-            조별리그 탈락 · A조 3위 마감
-          </div>
-          <div style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.8)", marginTop: "0.25rem" }}>
-            1승 2패 · 승점 3점 · 득실차 -1 · 득점 2 · 실점 3
-          </div>
-        </div>
-        <div
-          style={{
-            background: "rgba(0,0,0,0.3)",
-            borderRadius: 10,
-            padding: "0.5rem 1rem",
-            textAlign: "center",
-            border: "1px solid #f87171",
-          }}
-        >
-          <div style={{ fontSize: "0.75rem", color: "#fca5a5" }}>최종 스코어</div>
-          <div style={{ fontWeight: 900, fontSize: "1.3rem", color: "#fff" }}>
-            🇰🇷 0 – 1 🇿🇦
-          </div>
-          <div style={{ fontSize: "0.72rem", color: "rgba(255,255,255,0.6)" }}>vs 남아공 (6월 25일)</div>
-        </div>
-      </div>
-
-      <h3 className="panel-title" style={{ marginBottom: "0.25rem" }}>
-        🎟️ 32강 와일드카드 진출 가능성
+      <h3 className="panel-title" style={{ marginBottom: "0.2rem" }}>
+        🌐 32강 와일드카드 · 12개 조 3위 현황
       </h3>
-      <p className="muted" style={{ fontSize: "0.85rem", marginTop: 0, marginBottom: "1rem" }}>
-        2026 월드컵은 12개 조 3위 중 <strong style={{ color: "var(--color-text)" }}>상위 8팀</strong>도 32강 진출 · 한국은 현재 3위 후보 중 <strong style={{ color: "#facc15" }}>A조 3위 확정</strong>
+      <p className="muted" style={{ fontSize: "0.83rem", marginTop: 0, marginBottom: "1rem" }}>
+        12개 조의 3위 팀 중 <strong style={{ color: "var(--color-text)" }}>상위 8팀</strong>이 32강 진출 · 4팀 탈락
       </p>
 
-      {/* 확률 시각화 */}
+      {/* 한국 현재 스탯 하이라이트 */}
       <div
         style={{
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.12)",
+          background: "linear-gradient(135deg, rgba(29,78,216,0.2), rgba(59,130,246,0.12))",
+          border: "2px solid #3b82f6",
           borderRadius: 12,
-          padding: "1rem 1.25rem",
-          marginBottom: "1.1rem",
+          padding: "0.75rem 1.1rem",
+          marginBottom: "1rem",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.5rem 1.5rem",
+          alignItems: "center",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "0.6rem",
-          }}
-        >
-          <span style={{ fontWeight: 700, fontSize: "0.9rem" }}>🇰🇷 한국 32강 진출 추정 확률</span>
-          <span
-            style={{
-              fontWeight: 900,
-              fontSize: "1.4rem",
-              color: koreaChance >= 60 ? "#34d399" : koreaChance >= 40 ? "#facc15" : "#f87171",
-            }}
-          >
-            {koreaChance}%
-          </span>
-        </div>
-        {/* 프로그레스 바 */}
-        <div
-          style={{
-            width: "100%",
-            height: 18,
-            background: "rgba(255,255,255,0.08)",
-            borderRadius: 9,
-            overflow: "hidden",
-            position: "relative",
-          }}
-        >
-          <div
-            style={{
-              width: `${koreaChance}%`,
-              height: "100%",
-              background: "linear-gradient(90deg, #d97706 0%, #f59e0b 100%)",
-              borderRadius: 9,
-              transition: "width 0.6s ease",
-            }}
-          />
-          {/* 50% 기준선 */}
-          <div
-            style={{
-              position: "absolute",
-              left: "66.7%",
-              top: 0,
-              bottom: 0,
-              width: 2,
-              background: "rgba(255,255,255,0.4)",
-            }}
-          />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: "0.72rem",
-            color: "var(--color-muted)",
-            marginTop: "0.3rem",
-          }}
-        >
-          <span>0%</span>
-          <span style={{ marginLeft: "55%" }}>← 66.7% (수학적 기대)</span>
-          <span>100%</span>
-        </div>
-        <p className="muted" style={{ fontSize: "0.78rem", margin: "0.6rem 0 0" }}>
-          ※ 3pts·GD -1 기준 역대 월드컵 유사 사례 비교 추정치 (실시간 변동). 다른 조 3위 결과에 따라 크게 달라짐.
-        </p>
+        <span style={{ fontWeight: 900, color: "#93c5fd", fontSize: "0.95rem" }}>🇰🇷 한국 현재 스탯</span>
+        <span>승점 <strong style={{ color: "#facc15" }}>3점</strong></span>
+        <span>득실차 <strong style={{ color: "#f87171" }}>-1</strong></span>
+        <span>득점 <strong>2골</strong></span>
+        <span>실점 <strong>3골</strong></span>
+        <span style={{ fontSize: "0.78rem", color: "var(--color-muted)" }}>
+          A조 확정 · 나머지 {pendingCount}개 조 대기 중
+        </span>
       </div>
 
-      {/* 조건 설명 카드들 */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.7rem", marginBottom: "1.1rem" }}>
-        <div
-          style={{
-            background: "rgba(16,185,129,0.08)",
-            border: "1px solid rgba(16,185,129,0.3)",
-            borderRadius: 10,
-            padding: "0.75rem",
-          }}
-        >
-          <div style={{ fontWeight: 800, color: "#34d399", marginBottom: "0.3rem", fontSize: "0.88rem" }}>
-            ✅ 유리한 조건
-          </div>
-          <ul style={{ margin: 0, paddingLeft: "1rem", fontSize: "0.8rem", color: "var(--color-text)", lineHeight: 1.6 }}>
-            <li>8/12팀 진출 → 기본 66.7%</li>
-            <li>3pts는 역대 진출 충분 사례 다수</li>
-            <li>A매치 실력팀(ELO 1820)</li>
-          </ul>
-        </div>
-        <div
-          style={{
-            background: "rgba(220,38,38,0.08)",
-            border: "1px solid rgba(220,38,38,0.3)",
-            borderRadius: 10,
-            padding: "0.75rem",
-          }}
-        >
-          <div style={{ fontWeight: 800, color: "#f87171", marginBottom: "0.3rem", fontSize: "0.88rem" }}>
-            ⚠️ 불리한 조건
-          </div>
-          <ul style={{ margin: 0, paddingLeft: "1rem", fontSize: "0.8rem", color: "var(--color-text)", lineHeight: 1.6 }}>
-            <li>GD -1 · 득점 2골</li>
-            <li>3pts로 탈락한 사례 존재</li>
-            <li>4점 이상 3위팀에 밀릴 수 있음</li>
-          </ul>
-        </div>
-      </div>
-
-      {/* 12조 3위팀 현황 */}
-      <h4 style={{ fontSize: "0.9rem", fontWeight: 700, margin: "0 0 0.5rem" }}>
-        📊 12개 조 3위팀 현황 (8팀 진출, 4팀 탈락)
-      </h4>
-      <div className="table-wrap" style={{ marginBottom: "1rem" }}>
+      {/* 12개 조 3위팀 테이블 */}
+      <div className="table-wrap" style={{ marginBottom: "1.25rem" }}>
         <table className="data-table" style={{ fontSize: "0.8rem" }}>
           <thead>
             <tr>
               <th>조</th>
               <th>3위 팀</th>
-              <th>승점</th>
-              <th>득실차</th>
-              <th>득점</th>
+              <th title="승점">점</th>
+              <th title="승">승</th>
+              <th title="무">무</th>
+              <th title="패">패</th>
+              <th title="득점">득</th>
+              <th title="실점">실</th>
+              <th title="득실차">±</th>
               <th>상태</th>
             </tr>
           </thead>
           <tbody>
-            {WILDCARD_GROUPS.map((g) => (
-              <tr
-                key={g.group}
-                style={g.highlight ? { background: "rgba(59,130,246,0.12)", fontWeight: 700 } : undefined}
-              >
-                <td style={{ fontWeight: 700 }}>{g.group}</td>
-                <td>{g.team}</td>
-                <td>{g.pts ?? "—"}</td>
-                <td>{g.gd != null ? (g.gd > 0 ? `+${g.gd}` : g.gd) : "—"}</td>
-                <td>{g.gf ?? "—"}</td>
-                <td>
-                  <span
+            {THIRD_PLACE_TEAMS.map((t) => {
+              const badge = statusBadge(t.status);
+              const gd = t.gf != null && t.ga != null ? t.gf - t.ga : null;
+              return (
+                <tr
+                  key={t.group}
+                  style={
+                    t.highlight
+                      ? { background: "rgba(59,130,246,0.13)", fontWeight: 700 }
+                      : undefined
+                  }
+                >
+                  <td style={{ fontWeight: 800 }}>{t.group}조</td>
+                  <td>
+                    {t.flag} {t.team}
+                    {t.highlight && (
+                      <span style={{ marginLeft: "0.3rem", fontSize: "0.7rem", color: "#93c5fd" }}>★</span>
+                    )}
+                  </td>
+                  <td style={{ fontWeight: t.pts != null ? 800 : 400, color: t.pts != null ? (t.pts >= 4 ? "#34d399" : t.pts === 3 ? "#facc15" : undefined) : undefined }}>
+                    {t.pts ?? "—"}
+                  </td>
+                  <td>{t.w ?? "—"}</td>
+                  <td>{t.d ?? "—"}</td>
+                  <td>{t.l ?? "—"}</td>
+                  <td>{t.gf ?? "—"}</td>
+                  <td>{t.ga ?? "—"}</td>
+                  <td
                     style={{
-                      fontSize: "0.72rem",
                       fontWeight: 700,
-                      color: g.status === "확정" ? "#60a5fa" : "var(--color-muted)",
-                      background: g.status === "확정" ? "rgba(59,130,246,0.15)" : "rgba(255,255,255,0.05)",
-                      borderRadius: 6,
-                      padding: "0.15rem 0.5rem",
+                      color: gd == null ? undefined : gd > 0 ? "#34d399" : gd < 0 ? "#f87171" : undefined,
                     }}
                   >
-                    {g.status === "확정" ? "📌 확정" : "⏳ 대기"}
-                  </span>
-                </td>
-              </tr>
-            ))}
+                    {gdDisplay(t.gf, t.ga)}
+                  </td>
+                  <td>
+                    <span
+                      style={{
+                        fontSize: "0.72rem",
+                        fontWeight: 700,
+                        color: badge.color,
+                        background: badge.bg,
+                        borderRadius: 6,
+                        padding: "0.12rem 0.5rem",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {badge.label}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
-      {/* 포맷 비교 */}
+      {/* 현재 확인된 상위 팀 수 요약 */}
       <div
         style={{
-          background: "rgba(250,204,21,0.06)",
-          border: "1px solid rgba(250,204,21,0.2)",
+          display: "flex",
+          gap: "0.6rem",
+          flexWrap: "wrap",
+          marginBottom: "1.25rem",
+        }}
+      >
+        {[
+          { label: "4점 이상 확정 팀", val: confirmedBetter, color: "#f87171", note: "이미 한국보다 유리" },
+          { label: "현재 한국 예상 순위", val: `≥ ${confirmedBetter + 1}위`, color: "#facc15", note: "나머지 집계 후 확정" },
+          { label: "남은 확인 필요 조", val: `${pendingCount}개 조`, color: "#93c5fd", note: "B조~L조 진행 중" },
+        ].map((item) => (
+          <div
+            key={item.label}
+            style={{
+              flex: "1 1 140px",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.1)",
+              borderRadius: 10,
+              padding: "0.65rem 0.85rem",
+              textAlign: "center",
+            }}
+          >
+            <div style={{ fontWeight: 900, fontSize: "1.3rem", color: item.color }}>{item.val}</div>
+            <div style={{ fontSize: "0.75rem", fontWeight: 700 }}>{item.label}</div>
+            <div style={{ fontSize: "0.72rem", color: "var(--color-muted)" }}>{item.note}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* 경우의 수 3가지 시나리오 */}
+      <h4 style={{ fontSize: "0.95rem", fontWeight: 800, margin: "0 0 0.65rem" }}>
+        🎯 경우의 수 — 한국의 세 가지 운명
+      </h4>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem", marginBottom: "1rem" }}>
+        {SCENARIOS.map((sc) => (
+          <div
+            key={sc.id}
+            style={{
+              borderRadius: 12,
+              overflow: "hidden",
+              border: `2px solid ${sc.border}`,
+            }}
+          >
+            <div
+              style={{
+                background: sc.bg,
+                color: "#fff",
+                padding: "0.7rem 1rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.75rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 900, fontSize: "1rem" }}>{sc.title}</div>
+                <div style={{ fontSize: "0.78rem", opacity: 0.85, marginTop: "0.1rem" }}>{sc.condition}</div>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "0.2rem" }}>
+                <span
+                  style={{
+                    background: "rgba(0,0,0,0.25)",
+                    borderRadius: 20,
+                    padding: "0.2rem 0.8rem",
+                    fontWeight: 900,
+                    fontSize: "0.88rem",
+                    color: sc.verdictColor,
+                    border: `1px solid ${sc.border}`,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {sc.verdict}
+                </span>
+                <span style={{ fontSize: "0.72rem", color: sc.probColor, fontWeight: 700 }}>
+                  가능성: {sc.probability}
+                </span>
+              </div>
+            </div>
+            <div style={{ padding: "0.75rem 1rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+              {sc.details.map((d, i) => (
+                <div key={i} style={{ fontSize: "0.8rem", display: "flex", gap: "0.4rem", lineHeight: 1.5 }}>
+                  <span style={{ color: sc.verdictColor, fontWeight: 700, flexShrink: 0 }}>·</span>
+                  <span>{d}</span>
+                </div>
+              ))}
+              <div
+                style={{
+                  marginTop: "0.3rem",
+                  background: "rgba(255,255,255,0.04)",
+                  borderRadius: 7,
+                  padding: "0.4rem 0.65rem",
+                  fontSize: "0.77rem",
+                  color: "var(--color-muted)",
+                  border: `1px solid rgba(255,255,255,0.08)`,
+                }}
+              >
+                💡 {sc.example}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 3위팀 순위 결정 기준 */}
+      <div
+        style={{
+          background: "rgba(250,204,21,0.05)",
+          border: "1px solid rgba(250,204,21,0.18)",
           borderRadius: 10,
           padding: "0.75rem 1rem",
           fontSize: "0.8rem",
         }}
       >
         <div style={{ fontWeight: 700, color: "#facc15", marginBottom: "0.4rem" }}>
-          💡 2026 포맷 vs 2022 비교
+          📐 FIFA 3위팀 순위 결정 기준 (동점 시)
         </div>
-        {HISTORY_REFERENCE.map((h) => (
-          <div
-            key={h.year}
-            style={{
-              display: "flex",
-              gap: "0.75rem",
-              flexWrap: "wrap",
-              marginBottom: "0.25rem",
-              color: "var(--color-text)",
-            }}
-          >
-            <strong style={{ color: "#facc15", minWidth: "3rem" }}>{h.year}</strong>
-            <span className="muted">{h.format}</span>
-            <span>{h.pass3rd}</span>
-          </div>
-        ))}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem 1rem", color: "var(--color-text)" }}>
+          {["① 승점", "② 득실차 (GD)", "③ 총 득점 (GF)", "④ 페어플레이 점수", "⑤ 추첨"].map((rule) => (
+            <span key={rule} style={{ fontSize: "0.78rem" }}>{rule}</span>
+          ))}
+        </div>
+        <div style={{ color: "var(--color-muted)", marginTop: "0.4rem", fontSize: "0.76rem" }}>
+          ※ 한국의 현재 스탯: 3pts · GD -1 · GF 2 — 같은 3pts 팀 대비 GD가 낮아 불리한 편
+        </div>
       </div>
 
       <p className="muted" style={{ fontSize: "0.76rem", marginTop: "0.6rem" }}>
-        * 3위팀 순위 결정: ① 승점 → ② 득실차 → ③ 득점 → ④ 페어플레이 점수 → ⑤ 추첨 (FIFA 규정 기준).
+        * 다른 조 결과가 집계되는 대로 업데이트 예정. 현재 A조만 완료.
       </p>
     </div>
   );
